@@ -5,44 +5,44 @@ export type FaqItem = {
 
 export const faqItems: FaqItem[] = [
   {
-    question: "What is Vigi?",
+    question: "O que é o Vigi?",
     answer:
-      "Vigi is an open-source, self-hosted uptime monitoring and status page tool built with Go and React. It monitors websites, APIs, and internal services and sends real-time notifications when issues occur.",
+      "O Vigi é uma ferramenta de monitoramento de tempo de atividade e página de status de código aberto e auto-hospedada, construída com Go e React. Ele monitora sites, APIs e serviços internos e envia notificações em tempo real quando ocorrem problemas.",
   },
   {
-    question: "How does Vigi compare to Uptime Kuma?",
+    question: "Como o Vigi se compara ao Uptime Kuma?",
     answer:
-      "Vigi offers a similar experience with a focus on strongly typed code (Go + TypeScript), an API-first design with Swagger, and a modular architecture that makes it easy to extend and swap storage backends.",
+      "O Vigi oferece uma experiência semelhante com foco em código fortemente tipado (Go + TypeScript), um design API-first com Swagger e uma arquitetura modular que facilita a extensão e a troca de back-ends de armazenamento.",
   },
   {
-    question: "Does Vigi have public status pages?",
+    question: "O Vigi possui páginas de status públicas?",
     answer:
-      "Yes. You can publish branded public status pages that show uptime, and performance metrics.",
+      "Sim. Você pode publicar páginas de status públicas com sua marca que mostram o tempo de atividade e métricas de desempenho.",
   },
   {
-    question: "How do I deploy Vigi?",
+    question: "Como eu implanto o Vigi?",
     answer:
-      "Use official Docker images and docker-compose for quick setup, or run the Go API and React web app on a VM or bare metal.",
+      "Use as imagens Docker oficiais e o docker-compose para uma configuração rápida, ou execute a API Go e o aplicativo da web React em uma VM ou bare metal.",
   },
   {
-    question: "Which databases are supported?",
+    question: "Quais bancos de dados são suportados?",
     answer:
-      "Vigi supports MongoDB with options for PostgreSQL and SQLite via its pluggable storage design.",
+      "O Vigi suporta MongoDB com opções para PostgreSQL e SQLite através de seu design de armazenamento plugável.",
   },
   {
-    question: "Is there a REST API?",
+    question: "Existe uma API REST?",
     answer:
-      "Yes. Vigi is API-first and includes Swagger/OpenAPI documentation for automation and integrations.",
+      "Sim. O Vigi é API-first e inclui documentação Swagger/OpenAPI para automação e integrações.",
   },
   {
-    question: "Can I migrate from Uptime Kuma?",
+    question: "Posso migrar do Uptime Kuma?",
     answer:
-      "A migration tool is being developed. For now, you can migrate manually.",
+      "Uma ferramenta de migração está sendo desenvolvida. Por enquanto, você pode migrar manualmente.",
   },
   {
-    question: "Is Vigi free for commercial use?",
+    question: "O Vigi é gratuito para uso comercial?",
     answer:
-      "Yes. It’s MIT-licensed and free for personal and commercial projects.",
+      "Sim. Ele é licenciado pelo MIT e gratuito para projetos pessoais e comerciais.",
   },
 ];
 
