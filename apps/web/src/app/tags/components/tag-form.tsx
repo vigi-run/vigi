@@ -29,6 +29,7 @@ import {
 } from "@/lib/utils";
 import type { TagModel } from "@/api";
 import { useLocalizedTranslation } from "@/hooks/useTranslation";
+import { useOrganizationStore } from "@/store/organization";
 
 const tagSchema = z.object({
     name: z
@@ -45,8 +46,6 @@ interface TagFormProps {
     mode: "create" | "edit";
     tag?: TagModel;
 }
-
-import { useOrganizationStore } from "@/store/organization";
 
 const TagForm = ({ mode, tag }: TagFormProps) => {
     const { t } = useLocalizedTranslation();
