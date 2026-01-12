@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocalizedTranslation } from "@/hooks/useTranslation";
 import { useQuery } from "@tanstack/react-query";
 import { getUserInvitations } from "@/api/sdk.gen";
+import type { OrganizationInvitation } from "@/api/types.gen";
 
 export function NavUser({
     user,
@@ -46,7 +47,7 @@ export function NavUser({
         staleTime: 60 * 1000,
     });
 
-    const invitationsCount = (invitationsResponse?.data?.data as any[])?.length || 0;
+    const invitationsCount = (invitationsResponse?.data?.data as OrganizationInvitation[])?.length || 0;
 
     const handleLogout = () => {
         clearTokens();

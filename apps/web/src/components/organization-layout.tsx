@@ -65,7 +65,7 @@ export const OrganizationLayout = ({ isGlobal = false }: { isGlobal?: boolean })
         };
 
         fetchOrg();
-    }, [slug, setCurrentOrganization, setIsLoading, navigate, currentOrganization?.slug, isGlobal]);
+    }, [slug, setCurrentOrganization, setIsLoading, navigate, currentOrganization?.slug, isGlobal, queryClient, setOrganizations]);
 
     if (isLoading) {
         // TODO: Replace with a proper Loading Spinner component

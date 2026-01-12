@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useOrganizationStore } from "@/store/organization";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const organizationSchema = (t: (key: string, options?: any) => string) => z.object({
     name: z.string().min(3, t("organization.validation.name_min_length")),
     slug: z
@@ -35,7 +36,7 @@ interface OrganizationFormProps {
     mode?: "create" | "edit";
     initialValues?: OrganizationFormValues;
     organizationId?: string;
-    onSuccess?: (data: any) => void;
+    onSuccess?: (data: unknown) => void;
 }
 
 export function OrganizationForm({
@@ -106,7 +107,7 @@ export function OrganizationForm({
         onError: handleMutationError,
     });
 
-    function handleMutationError(error: any) {
+    function handleMutationError(error: { response?: { data?: { error?: { code?: string; slug?: string } } } }) {
         // Handle SLUG_EXISTS
         const errorData = error.response?.data?.error;
         if (errorData?.code === "SLUG_EXISTS") {

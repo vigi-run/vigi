@@ -11,6 +11,18 @@ import { getOrganizationsByIdMembers, postOrganizationsByIdMembers } from "@/api
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Copy, Loader2 } from "lucide-react";
+import type { OrganizationRole } from "@/api/types.gen";
+
+interface MemberItem {
+    user_id?: string;
+    invitation_token?: string;
+    user?: {
+        name?: string;
+        email?: string;
+    };
+    role?: OrganizationRole;
+    status: string;
+}
 
 export default function OrganizationMembersPage() {
     const { currentOrganization } = useOrganizationStore();
@@ -37,7 +49,7 @@ export default function OrganizationMembersPage() {
 
             // If we want to show the link immediately toast it? 
             // Although it will appear in the list also.
-            const invitation = (data.data as any).data;
+            const invitation = (data.data as unknown as { data: { token: string } }).data;
             if (invitation?.token) {
                 const link = `${window.location.origin}/invite/${invitation.token}`;
                 navigator.clipboard.writeText(link);
@@ -66,7 +78,7 @@ export default function OrganizationMembersPage() {
         return <div>Loading...</div>;
     }
 
-    const members = (membersResponse?.data?.data as any[]) || [];
+    const members = (membersResponse?.data?.data as MemberItem[]) || [];
 
     return (
         <Layout pageName={t("organization.members_title") || "Organization Members"}>
@@ -121,7 +133,7 @@ export default function OrganizationMembersPage() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {members.map((member: any) => (
+                                    {members.map((member) => (
                                         <TableRow key={member.user_id || member.invitation_token || Math.random()}>
                                             <TableCell>
                                                 <div className="flex flex-col">
@@ -140,7 +152,7 @@ export default function OrganizationMembersPage() {
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        onClick={() => copyInviteLink(member.invitation_token)}
+                                                        onClick={() => copyInviteLink(member.invitation_token!)}
                                                         title="Copy Invitation Link"
                                                     >
                                                         <Copy className="h-4 w-4" />

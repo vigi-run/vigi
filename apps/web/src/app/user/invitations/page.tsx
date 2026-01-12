@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useLocalizedTranslation } from "@/hooks/useTranslation";
+import type { OrganizationInvitation } from "@/api/types.gen";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserInvitations, postInvitationsByTokenAccept } from "@/api/sdk.gen";
@@ -34,7 +35,7 @@ export default function UserInvitationsPage() {
         }
     });
 
-    const invitations = (data?.data?.data || []) as any[];
+    const invitations = (data?.data?.data || []) as OrganizationInvitation[];
 
     return (
         <Layout pageName={t("user_invitations.page_title")}>
