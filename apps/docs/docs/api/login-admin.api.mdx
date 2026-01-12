@@ -5,9 +5,9 @@ description: "Login admin"
 sidebar_label: "Login admin"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVsFu2zAM/RWDpw1QkXbYLr65Qw9pBzRo021AEBSMzcRqbEmV5KRZ4H8fKDttOtsr0FtziUKJfOTjk5g9WHqsyPlzne0g3kOqlSfleYnGFDJFL7UaPTit2ObSnErklbHakPWSHP+iEmXBC78zBDE4b6VaQS3AoHNbbbPeTa/XpHp2ahHykpYyiGdt9KNYc3Hw0IsHSj3U7JKRS600nDDE8EOvpIoy9AjH0bytKIR3RivXZP/l9JS/XvtfX4F4Lx0BtWPFNCXnpgM1c05LSy4fPlA5sn1hvdzQkcNC64JQsUdqCT1lie+NN9w1OdCvrV7ivfPoK9cPWJlsELDudq1jEVCSc7iit1XRtvZwvk8TtYCvfb09xyy6aYT//iYPJyqgQ9FADYcYzx6DVZx1q7hTWPlcW/mHso9Rxre+ZoyVJ6uwiG7JbshGF9Zq+xHqYfXiyrFDUvmcD/U9QZiVUgWh+lxnEIPRQXYGfQ4xjLiJo4KPMl7ggGPuobJF2DdytDmDes67aWWl391y7U25iZFXtAv4HWaTyTha0y5iBFK+ZTD6ZNb3kbG0lE/RUtsS/WcQINkjJ8yIyVdYcrW/T5LJ+OSKdvBMAAZAZvNy6/txL39No/C0d5DPCS3ZdvMN7KQVd3Dt4tcCWAo3L/Pr4glLU9DRPDr093gMvdja6XP87KmlPkxBTFl63GPpOSj8lCsZJZMxCOAWNaWGEaedLzGIsk39deNfkfMsPU9PfmQKlM27acND3GhiBswbCGhUMReQs2TiGez3C3R0Z4u6ZvNjRXYH8WwuYINW4oITnc1rcSCTZbSmHcTwvblNJ1NG5+NF1bD5z82qxcEjSVMy/r9n50eqnlzfTkHAov0jUeqMfSxuefzilrkSoAMLQbjBtocC1aoK9xWamPz5C4Yt9co=
+api: eJzVVsFu2zAM/RWDpw1QkHbYLr6law9pByRo021AEBSMzcRqbEmV5KZZ4H8fKDttOtsr0FtziS2JfOTjo+g9WHooyfkzne4g3kOilSfl+RGNyWWCXmo1vHda8ZpLMiqQn4zVhqyX5PiNCpQ5P/idIYjBeSvVGioBBp3bapt2bnq9IdWxU4kQl7SUQjxvvB/5WoiDhV7eU+KhYpOUXGKl4YAhhh96LVWUokc49uZtScG9M1q5OvovJyf899p+cgXivXQE1NYqJgk5N+vJmWNaWXJZ/4HSke1y6+UjHRkstc4JFVskltBTOvKd/vqrJnvqtdUrvHMefem6AUuT9gJW7aq1VgQU5Byu6W1VNKU9nO/SRCXga1dtzzCNrmvhv7/I/YEKaFHUk8PBx7NFbxan7SxuFZY+01b+ofRjpPGtqxhj5ckqzKMbso9kowtrtf0I+bB6ce3YYFT6jA91XUGYFlIFofpMpxCD0UF2Bn0GMQy5iMOcjzJe4IB97qG0edg3cvh4CtWCd5PSSr+74dzrdEdGXtEu4LeYHU3H0YZ2ESOQ8g2D0SezuYuMpZV8ilbaFug/gwDJFhlhSky+woKz/T0YTceDK9rBMwEYAJnNy63vxr38NYvC1d5CPiO0ZJvNN7BHjbiDaRf+xK7HaXcEE7tG1ZhG4/NWHDXW29kf+xmMz9tRVAJYkNcvU/TiCQuT09FUPKjseBi+rDUz8PjyVSt9mMWYcAOw0qRnp/BTrmU0mo5BAAulTjcMWu18gaE1mvBfy+8VQc8N4OnJD02Osr69bRgHtTLnwKyBgFqbCwEZCzeew36/REe3Nq8qXn4oye4gni8EPKKVuORA54tKHAhlMW9oBzF8r3t6MGN0Pp6XNZv/9HclDhajJCHj/3t2cdRb08nNDAQsm8+ZQqdsY3HLHwG4Za4E6MBCaJ+wtocc1boMtwbUPvn3Fx42I3E=
 sidebar_class_name: "post api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/auth/login"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Login admin
 <ParamsDetails
   parameters={undefined}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"content":{"application/json":{"schema":{"properties":{"email":{"type":"string"},"password":{"type":"string"},"token":{"type":"string"}},"required":["email","password"],"type":"object"}}},"description":"Login data","required":true}}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Login admin
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{"properties":{"accessToken":{"type":"string"},"refreshToken":{"type":"string"},"user":{"properties":{"active":{"type":"boolean"},"createdAt":{"type":"string"},"email":{"type":"string"},"id":{"type":"string"},"twofa_status":{"type":"boolean"},"updatedAt":{"type":"string"}},"type":"object"}},"type":"object"},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"401":{"description":"Unauthorized","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

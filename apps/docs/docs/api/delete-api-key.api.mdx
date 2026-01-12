@@ -5,9 +5,9 @@ description: "Delete an API key"
 sidebar_label: "Delete API key"
 hide_title: true
 hide_table_of_contents: true
-api: eJzNVNtu2zAM/RWBT2uhIt3QvfgtWzMg7TAUa3cBimBQbSbWYksqRWfNDP37QNu5tE231z35Qh6eQ/JILRQYc7KBrXeQwTlWyKiMU+OrqVriGjQEQ6ZGRoqQ3bZPAEOamp6DBit/guESNDhTI2RgC9BAeN9YwgIypgY1xLzE2kDWAq+DZEUm6xaQ0kySY/AuYpT4m9MzeTzm/OTVe+8YHUPScHY4hdUH3zhhz4fcrIXj0bE8dvyBfEBi27PVGKNZ4AFhGiIbbuIhzfv93W5rbBEzvUH4u5+YM6QkmLenp89lTx0jOVOpa6QVkpoQefpPW5CCmDdked354uIXjxsuIbudyRrZLMQvYII9WeK6K1Ijl76ADIrOZp23BAGjTdaotUUS4q7/3nANVUPKaPUapPaG91qG0Pc9DvYS172AlzxqGi7Rsc2NBNSrsPyhAuHcPqi5p9rw0cbDJZoCaefi7yfjq+nJZXcchkmYjlDGum38Ke/FtxvFfonuGfM7NIQ0BP/BLbU92d8d9Dl/EtjcC7u4xOTikqSBLVeS99UurBxm0CAT7ZWJ7OAj18YJcGAaDv/u5D9qp9258OA1MehifOBRqIx1QtLtrh3WvGcGDZktxBKljyyRtr0zEb9QlZL8vm+QxFYzDStD1txJL3L52CjvBWRzU0X8i8RXnwdHH6lHd9RBmZuZOmlkZapGvkCDdNbdYWmW9GYzoqMPjPMcA+9B5HCmfaOfTz5ObiagwQwO2W2vn9rwIjUPini6/Z542TnvBUjb9t5IaZvfh15EbC039Ouk35T+AIv/CgE=
+api: eJzNVMtu2zAQ/BViT0lAw2mRXnRzaxdwUjRBkz4AwygYaW2xlkiFXLlxBf57sRL9iKM015704M7ODDncBjL0qdMVaWsggTEWSCiUEaObqVjhBiRUyqkSCZ2HZNYcAWKZmI5BguY/laIcJBhVIiSgM5Dg8KHWDjNIyNUowac5lgqSBmhTcZUnp80SQphzsa+s8eh5/e35BT+ecn624oM1hIYgSLjoLyHx0daG2dNYmzRwNjzjx56/crZCR7pjK9F7tcQeYRI8Kap9n+ZDf7Ndjx1iLrcIe/8LU4IQGPPu/Py57KkhdEYV4hbdGp2YOGfdf2qBG2JaO02bNheXv2lUUw7JbM7HSGrJeQFV6cEKN22TEim3GSSQtTFrs8UIGG6rho3OAhO3/rvA1a6IJcP1G+DeW95b3oTO96jSV7jpBLyUUVVTjoZ0qnhBnFSrn6JyuNCPYmFdqeh0m+EcVYZun+Ifg9HNdHDVXoe4E6ol5G3dGT/mvfx+J8iu0Dxjfo/KoYuLr3Bzb+v0nxbax3/tltOsX8G1WyoToWI6fqaj43rd/WGfQXvVj1QEhi4sK+CsqpSzGiSQpoLrvuml5pECEvhcO3UsvrKeSmUYGNniCNrPnyeWmv1d6B1WURfhIw2rQmnDJG2Cmhi2g0hKSHTGwcytJ15pmnvl8asrQuDfDzU6Dvdcwlo5re7ZC49A7fk9g2ShCo//kHjyJd6rU/FkUvbK3O6pYSNrVdT8BRLYWTtJwzzI7emwjm5hlKZY0QGER0Q4vG7jyafJ3QQkqJiS/el1uxZfuGeviOMMdsSrNn8vQJqmy0YIu/pu6UXELnbRr2G/IfwFmjg3mQ==
 sidebar_class_name: "delete api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/api-keys/{id}"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Delete an API key
 <ParamsDetails
   parameters={[{"description":"API key ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Delete an API key
   label={undefined}
   responses={{"204":{"description":"No Content"},"404":{"description":"Not Found","content":{"*/*":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

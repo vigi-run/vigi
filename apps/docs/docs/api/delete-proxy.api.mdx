@@ -5,9 +5,9 @@ description: "Delete proxy"
 sidebar_label: "Delete proxy"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVU1P20AQ/SurOYG0KLSiF9+CSKVA1UZAP6QoqgZ7kixxvMvsOCW1/N+rsZ0QSBBSb5xs73y8N29m1hUEZFySEEdIxhVkFFN2QZwvIIER+8e1GV6ABaffAWUOFgpcEiTgMrDA9FA6pgwS4ZIsxHROS4SkAlkH9YrCrphBXU/UOQZfRIpq/3h6qo/niN+uwELqC6FC1Ioh5C5Ftfbuo7pUOxCBfSAW1ybMUPS0trCkGHFGh1jsMh63IU/+E7vx93f3lArUtUacHWJ6jpm5poeSovw/5deJWoiCUsa3a9jk2Ea8WsXZfhVfvZjPviyy91HDp0OdGBZCXGBubohXxGbA7Pk91KMJKS3ZybpZvnNCJu6XModkPNGFEZzpXjaLqPQm9kXtF5STkAm6qM0gy9xnkEDWnINtVzaBXmgz9CqX1Uqrkard+ZJz9cDgeqsPoLAbVjcqUatKP7grWrfcXjagPxqaBa0NljKnQjqhzVFY/DaBaeoezdTzEuV4c5HMCTPip6vk10l/NDy5Iq2h0wkbQBX98o8cxr38eWvEL6jYQ26V7IxvYGtuz+5vE7qPX2vY1Cu6DhSm0t4x4iRXvx9u5kx/NAQLqmjLTGkHH2WJzah1SC+a9ayY7UQJPUov5OgKTdL0puq6OIaui2AhcZlOw9xHUUNV3WGk75zXtR4/lMQ6UxMLK2SHd0pVr3cX9T2DZIp5pD0O25WBo+tunI/Nzl/gIMeNYIUWtcK81C+wsKB1+5eoJ7XdyK4sWkM/TSnITsjekuoobif6YvBlcDuAuv4HyvZKlg==
+api: eJzVVU1v2zAM/SsCTy2gIt3QXXzLkAxwO6xB230AQTCoNhOrcSyVorNmhv/7QNtJ08RFgd16Six+vEeKj6rAGzIrZKQA0bSCFENC1rN1BUQwIfe0UfEINFj59oYz0FCYFUIENgUNhI+lJUwhYipRQ0gyXBmIKuCNF6/AZIsF1PVMnIN3RcAg9o/n5/LzEvH6CjQkrmAsWKzG+9wmRqyDhyAu1R6EJ+eR2LYJU8NyWmtYYQhmgX0s9hlP25Bn/5ne+rv7B0wY6loiLvqYfjapusHHEgP/P+XXiWoIbLgMb9ewzbGLeLWKi+MqvjlWX1xZpO+jhk99NxEXjFSYXN0irZHUmMjRe6hHEmJSkuVNI77PaAhpWHIG0XQmgmGzEF02QhR6M31Q+whzZFRehNoMMmcuhQjS5hx0K9kIBr7NMKhsWgutplWt5kvKxcN4O1h/AIHdsrqVFrVdGXp7hZuW2+EFDCexWuJGmZIzLLhrtDrxy9/KE87tk5o7Whk+3S6SDE2K9LxKfp0NJ/HZFUoNXZ9MAyhNv/zD/biXP+8UuyUWR8htJzvjG9iS25H924T24V/TIk77GVzTwhRdqIpHRzxarLer389z1uzbAxa1hM6dMJCxNgm3m44t5+L3wy6sGk5i0CD32rIT8t4FXplm4Du0g5F5UdBurhmfeOBzYwtJ0kxI1c3SFLpZAg2RTWUmMxdYDFV1bwJ+p7yu5fixRJLJnmlYG7LmXqjKI2OD/E8hmps84BGHnXDh5KYT1anae4t6OW4bVkhRa5OX8gUalrhp36p6Vutt64VFaxgmCXreCzlaFSKIna5G46/juzHU9T+Z4Hgu
 sidebar_class_name: "delete api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/proxies/{id}"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Delete proxy
 <ParamsDetails
   parameters={[{"description":"Proxy ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Delete proxy
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

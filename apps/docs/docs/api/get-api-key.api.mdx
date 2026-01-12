@@ -5,9 +5,9 @@ description: "Get a specific API key by ID"
 sidebar_label: "Get API key"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVdtu2kAQ/RVrnhrJEWmVvviNqmlEorZRk16kCKHBHmCD2d3sjinU2n+vxjZggglS3/qE2bmcuZw9W0JGPnXKsjIaErgmjjDyllI1UWnUvxtEc1pH43U0+AgxWHS4ICbnIXksX8RunCtPJScWeQYxaFwQJKAyiMHRc6EcZZCwKygGn85ogZCUwGsrXp6d0lMIYSjO3hrtyYv93cWF/Oxjfr2FGFKjmTSLFa3NVYpi7T15cSlbENYZS45VnTBD7jhNHSFTNkLuKCqGTHmb43o0p/VhNZ/RzymrhjAxLmp8IT5MQyurHPljKCrrPM7R86jw1G1d4GpUeJzSKDWFbidWmmlKTpzqXXREFzZ7re8TiUN7s4/tIe6PLK5ZUFWxh7mPMNyOzIyfKOWqPfLi0UWVffBqrzv/w1xBIi4vLg8X+MVw9MkUOvt3Vh0vMwbPyIU/3cEmxzbiSA/vu67EQDM5jXl0T25JLrpyzrj/oR9JSGnhFK8rdbn5zf2CZ5A8DkUMGKeiOoBWnc9pXSVZEM9MBglMiSt5EnfobVx6pcqCoFaTqDWrcHnj0lu+BUm8Ab2XCdRN9626pXWNfkzmsOAZaW7mGL2x81FkHU3USi7/AvlsI4MzwozcTgh/nffvBue31FIGrABlptuuX+Le/HyI2MxJHyB/IHTkGuMJbMltnPpThR7ii/boiamE0GjGVPgSYmDFufj9UFMlrwLEIBOtK5OyrfG8wIpJDZI8Jc2sRATavZQ7Mp56cZr6mFbcszkqXYmR7LBs1t1iRAyJyoQXM+NZLGU5Rk/fXR6CHD8X5IRbwxiW6BSOpSd5x5SX7wySCeaeXqn2zbeG1mfR3nPXWeZmtloGsMS8kH8QQ/V2iBCGYYg3G5I6akM/TclyK+TguoY29a+vHiAGbDiz22c99+ZDsneW85IPdQnziotHQsqyZksIW//adDRiS8Kmc+kghPAXmB3hZg==
+api: eJzVVdtu2kAQ/RVrnhrJiLRKX/xGlTQiUZuoSS9ShNDEHmCD2d3sjmmo5X+vZm3ABBOkvvUJs3M5czl7toSMfOqUZWU0JHBJHGHkLaVqotJocDuM5rSKHlfR8BxisOhwQUzOQ/JQvopdOwdPJScWeQYxaFwQJKAyiMHRc6EcZZCwKygGn85ogZCUwCsrXp6d0lOoqpE4e2u0Jy/2D6en8rOLeXMNMaRGM2kWK1qbqxTF2n/y4lK2IKwzlhyrOmGG3HGaOkKmbIzcUVQMmfI2x9V4Tqv9ar6gn1MWhjAxLmp8Id5PQy9WOfKHUFTWeZyj53Hhqdu6wJdx4XFK49QUup1YaaYpOXGqd9ERXdjsrb6PJK7am31oD3F3ZHHNglDFDuYuwmgzMvP4RCmH9siLRxdVdsHDXrf++7kqiTg7Pdtf4FfD0WdT6OzfWXW4zBg8Ixf+eAfrHJuIAz187LoSQ83kNObRHbkluejCOeP+h34kIaWFU7wK6nL1mwcFzyB5GIkYME5FdQCt6s1pFZIsiGcmgwSmxEGexB36a5d+qbJKUMMkas0qXN649JfvQRKvQe9kAnXTA6uuaVWjH5I5LHhGmps5Ru/sfBxZRxP1Ipd/gXyylsEZYUZuK4S/eoPbYe+aWsqAAVBmuun6Ne7Vz/uIzZz0HvInQkeuMR7BltzGqT8htAv/xk2HWXcFN26KugmNhud7ddRYx7tv5+mF1+JVFaKAemKCHBvNmAprqxhYcS5+P9RUydsEMche6+qkeGs8LzDwuUGTB63ZmEhRu59yeyWOvXtNfUwv3Lc5Kh0kUZhUNqRr8TKGRGXCzpnxLJayfERP311eVXL8XJATho9iWKJT+Cg9yWuqvHxnkEww9/RGte++NZfrJNp5dDvLXM9WywCWmBfyD2IIL5jIcTWq4vWWpI7aMEhTstwK2RONqn0BLy/uIQZseLPdZz335kOyd5bzmpV1CfPAyAMhZVmzpao2/rXpYMSGiE3n0kFVVX8Bw64PDQ==
 sidebar_class_name: "get api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/api-keys/{id}"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Get a specific API key by ID
 <ParamsDetails
   parameters={[{"description":"API key ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Get a specific API key by ID
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{"properties":{"created_at":{"type":"string"},"display_key":{"description":"Masked key for display","type":"string"},"expires_at":{"type":"string"},"id":{"type":"string"},"last_used":{"type":"string"},"max_usage_count":{"type":"integer"},"name":{"type":"string"},"updated_at":{"type":"string"},"usage_count":{"type":"integer"}},"required":["created_at","display_key","id","name","updated_at","usage_count"],"type":"object"},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      
