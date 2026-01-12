@@ -5,9 +5,9 @@ description: "Delete notification channel"
 sidebar_label: "Delete notification channel"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVU1v2zAM/SsGTy2gIt3QXXzL0AxIO3RF230AQTCwNhOrcSRVorNmhv77QDtOk8Vdgd16siU9ku/xQ6rBocclMfkA6aSGnELmtWNtDaRwZVnPdIayTMbnoEDLtkMuQIHBJUEKOgcFnh4r7SmHlH1FCkJW0BIhrYHXTlCBvTZziHEq4OCsCRTk/P3pqXz2A3+5BAWZNUyG5RSdKzc8Bg9BIPVOCOetI8+6dZgjy25UsKQQcE59LHYZT1qTZ/xUdXh7/0AZQ4xicdbH9CPmyQ09VhT4/ym/TFRBYOQqvK6h87G1eFHF2aGKK8vJJ1uZ/G1o+NBXibFh8gbL5Jb8inwy8t76t6BHHFJWec3rZgY/Enryw4oLSCdTGRjGuYzn/jxmBRpDZeN0PxPnVBJTYnrQTZdzYXNIIW9goNp5TmGwa3DSuR/UOo+ioMlqe0tUvhQ8Oj1YvQNh2Am4lWy2CRw6fUnrVsbftRpej5MFrROsuCDDHckjt/iZOE8z/ZTMrF8iH3d3TkGYk3++dX6cDK/HJ5e0hm1KsQko9bn4xf1xL77fJWwXZA4it0nfHL4SW3xbr383pofxo5jNrESX3sOM2+uINZeC+6bnOhlej0GBZLRlJrSdDbzEpis3kf5dyT1t215keuKBK1Eb8dmUqt6UeAK9JQYFqc6ljwobWGB1fY+BvvoyRtl+rMhLb04VrNBrvBcd8lroIP85pDMsAx0w2o4eHN1sxuI4OXxUeol3STVS4RWWlaxAwYLW7aMTp1F1pREy7cEwy8jxjsnBzEu7bmfgfPR5dDeCGP8AWklr8Q==
+api: eJzVVU1P20AQ/SvWnEDaKLSiF9+CkkqBChDQDymKqsGexEuc3WV3nJJa/u9o7DgkxBSpN06Jd+fjvZl5syU49LgkJh8gnpSQUki8dqytgRguLeuZTlA+o/EQFGg5dsgZKDC4JIhBp6DA02OhPaUQsy9IQUgyWiLEJfDaiVVgr80cqmoqxsFZEyjI/eeTE/nZT3x1AQoSa5gMyy06l29w9B+CmJQ7KZy3jjzrJmCKLKeVgiWFgHPqQrGLeNK4vNhPVWtv7x8oYagq8TjtQnqGaXRDjwUF/n/IbwNVEBi5CO9zaGNsPd5kcXrI4tJy9NUWJv0YHL50dWJsmLzBPLolvyIfjby3/iPwkYCUFF7zutbgGaEnPyg4g3gyFcEwzkWe+3pMMjSG8jrofiWGlBNTZDqs6ynnzKYQQ1qbgWr0HEN/16HXhu+XOq2EQV3VZksUPhd7dLq/+gSCsCVwK9VsCjhw+oLWDY3XvRpcj6MFrSMsOCPDLcgjt/gdOU8z/RTNrF8iH7c7JyNMyb9snV+9wfW4d0Fr2JYU64TSn/M/3J33/OddxHZB5iBzU/TN5Tu5Jbb1+m/t2pX/ys/HaTeCKz9Hs3GNxsMDHE2u99nvxunVq/kVikpcZ1YQiAIw4WYpsuZc7H7ouY4G12NQIH1t0Al4ZwMvsdbGJtu/52mP31YRTE/cdzlqIzHrgSk3gzaBzkEDBbFOZZozG1jMyvIeA333eVXJ8WNBXhQyVbBCr/FeeMibpYP8TyGeYR7oANF2AcDRzUacx9Hh09YJvC2qkTlbYV7IFyhY0Lp5+qpppdr2CJjmYpAk5HjH5WDziGi2ShyOvo3uRlBVz7jPmYk=
 sidebar_class_name: "delete api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/notification-channels/{id}"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Delete notification channel
 <ParamsDetails
   parameters={[{"description":"Notification ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Delete notification channel
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

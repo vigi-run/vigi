@@ -5,9 +5,9 @@ description: "Refresh access token"
 sidebar_label: "Refresh access token"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVk1v2kAQ/SvWnFppI5KqvfjmVDmQHIIS+iEhFA32gDfY3s3uGOIi//dqbENJbBopt3DBrOfN23nzdpYdOHoqyfOlSSoIdxCbgqlgeURrMx0ja1OMHr0pZM3HKeUoT9YZS441efnlaOnIp1OzpiaOK0sQgmenixXUtWp4tKMEwtnL6LnaR5vFI8UMtYQn5GOnrZBDCHctIGBBBAkywnFGdiU1FN6awrc7+nJ+Ll8v89zegHpviQ1rbxXjmLw/Vbd6SxgFpSc3lJb1ho4AC2MywkIQsSNkSiIezEc56mzwjU4Gl3lrlvjgGbn0w4SlTU4S1v3u9VYU5OQ9ruhtZ3St3ccPeaNW8HWot5eYBHetmd/f5NMbVdCT6EQN+xwHxMkqLvpV/Ciw5NQ4/YeSj1HGt6FmjAsmV2AW3JPbkAuunDPuI9Qj7sWVF0BUcipBw6OoPfjtRGocy6lJIARrGv9Z5BRCGEk3R90QEOpGDkm/g9JlTYTVo80F1HN5G5dOc3UvMrSVR1bfUNVspSdyNBkHa6oC4aCCOzGDT3b9EFhHS/0cLI3LkT+DAi2IlDAh6UOBuRT++yyajM9uqIKDFtgQirDXWx7mvf417Sbxa+ZLQkeue/kGd9T5vIH2+WsF4oq7f9fT1TPmNqP+dXM844ql2V9jGIvPpKGaBQY/9UoH0WQMCqQJbTGCkp7l2Diw29yJLr/Q4WA4pmce2Qx1Oy1dM35bA8xAJILDPSB+SsUh4Qx2uwV6+uGyupblp5JcBeFsrmCDTuNC9jyb12qvnHhmTRWE8L09RWdT4ZfwrGyle3WiarVHRHFMlv8bOz8y8eT2fgoKFt2fgtwkgnG4lUpwK7IpMI0O7fUvazvIsFiVzTmFNqd8/gI3Hea2
+api: eJzVVsFu2zAM/RWDpw1QkHbYLr65aw9pDwnadBsQBAVjM7EaW1IlOakX+N8H2k6W1s4C7NZcYkskH/n4RHkHll4Kcv5KJyWEO4i18qQ8P6IxmYzRS62Gz04rXnNxSjnyk7HakPWSHL9ZWlpy6VSvqbbzpSEIwXkr1QqqStQ40lIC4eyt9VzsrfXimWIPFZsn5GIrDYNDCPeNQ+DZI0jQIxxH9LagGsIZrVyT0ZeLC/57G2d8B+J/S6xRO6sYx+TcqbrFOWIEFI5sX1gvN3TksNA6I1TsEVtCT0nke+NRjjLr3ZFJ77Lf6iU+OY++cP2AhUlOAlbd7nVWBOTkHK7ovDLa1u7t+7RRCfja19srTIL7Rsz/3+TTiQroUHSihn2Mg8fJKi67VTwqLHyqrfxNycco41tfM0bKk1WYBQ9kN2SDG2u1/Qj1sHpx5dghKnzKRv2jqDn4zUSqFetTnUAIRtf6M+hTCGHI3Ry2Q4Chazo4/A4Km9UWRg43l1DNeTcurPTlA9PQVB4ZeUdlnUqH5GgyCtZUBoxByrdkBp/M+ikwlpbyNVhqm6P/DAIke6SECXEfFOZc+K9BNBkN7qiEAxdYAzKxt1vfj3v7c9pO4vfIV4SWbLt5BjtqdV679uGP7WqU9GcwtitUrWswuu7k0WCdr/44zmB03c2iEsDavP97Sd68Ym4y6l56x5NWLfX+MsWY1c6ykp7d4IdcySCajEAAS6EpiL1YOTnW56BN8ITW3nBxkL2nVz80GcpmZtv6EmhkOAMmCA63Eas6ZZ2GM9jtFujo0WZVxcsvBdkSwtlcwAatxAXnPJtXYs8eK3dNJYTwvTnLgynjs3lWNNS9O9eV2HtEcUzG/9N2fnSUJuOHKQhYtJ8muU7Yx+KWK8Et0yZA1zw0HyG8toMM1aqopwU0Mfn3B1gfFF0=
 sidebar_class_name: "post api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/auth/refresh"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Refresh access token
 <ParamsDetails
   parameters={undefined}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"content":{"application/json":{"schema":{"properties":{"refreshToken":{"type":"string"}},"required":["refreshToken"],"type":"object"}}},"description":"Refresh token data","required":true}}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Refresh access token
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{"properties":{"accessToken":{"type":"string"},"refreshToken":{"type":"string"},"user":{"properties":{"active":{"type":"boolean"},"createdAt":{"type":"string"},"email":{"type":"string"},"id":{"type":"string"},"twofa_status":{"type":"boolean"},"updatedAt":{"type":"string"}},"type":"object"}},"type":"object"},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"401":{"description":"Unauthorized","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      
