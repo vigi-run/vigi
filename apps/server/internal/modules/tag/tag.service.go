@@ -9,13 +9,13 @@ import (
 )
 
 type Service interface {
-	Create(ctx context.Context, entity *CreateUpdateDto) (*Model, error)
-	FindByID(ctx context.Context, id string) (*Model, error)
-	FindAll(ctx context.Context, page int, limit int, q string) ([]*Model, error)
-	UpdateFull(ctx context.Context, id string, entity *CreateUpdateDto) (*Model, error)
-	UpdatePartial(ctx context.Context, id string, entity *PartialUpdateDto) (*Model, error)
-	Delete(ctx context.Context, id string) error
-	FindByName(ctx context.Context, name string) (*Model, error)
+	Create(ctx context.Context, entity *CreateUpdateDto, orgID string) (*Model, error)
+	FindByID(ctx context.Context, id string, orgID string) (*Model, error)
+	FindAll(ctx context.Context, page int, limit int, q string, orgID string) ([]*Model, error)
+	UpdateFull(ctx context.Context, id string, entity *CreateUpdateDto, orgID string) (*Model, error)
+	UpdatePartial(ctx context.Context, id string, entity *PartialUpdateDto, orgID string) (*Model, error)
+	Delete(ctx context.Context, id string, orgID string) error
+	FindByName(ctx context.Context, name string, orgID string) (*Model, error)
 }
 
 type ServiceImpl struct {
@@ -36,9 +36,9 @@ func NewService(
 	}
 }
 
-func (s *ServiceImpl) Create(ctx context.Context, entity *CreateUpdateDto) (*Model, error) {
-	// Check if tag with same name already exists
-	existingTag, err := s.repository.FindByName(ctx, entity.Name)
+func (s *ServiceImpl) Create(ctx context.Context, entity *CreateUpdateDto, orgID string) (*Model, error) {
+	// Check if tag with same name already exists in this org
+	existingTag, err := s.repository.FindByName(ctx, entity.Name, orgID)
 	if err != nil {
 		return nil, err
 	}
@@ -47,6 +47,7 @@ func (s *ServiceImpl) Create(ctx context.Context, entity *CreateUpdateDto) (*Mod
 	}
 
 	createModel := &Model{
+		OrgID:       orgID,
 		Name:        entity.Name,
 		Color:       entity.Color,
 		Description: entity.Description,
@@ -55,12 +56,12 @@ func (s *ServiceImpl) Create(ctx context.Context, entity *CreateUpdateDto) (*Mod
 	return s.repository.Create(ctx, createModel)
 }
 
-func (s *ServiceImpl) FindByID(ctx context.Context, id string) (*Model, error) {
-	return s.repository.FindByID(ctx, id)
+func (s *ServiceImpl) FindByID(ctx context.Context, id string, orgID string) (*Model, error) {
+	return s.repository.FindByID(ctx, id, orgID)
 }
 
-func (s *ServiceImpl) FindByName(ctx context.Context, name string) (*Model, error) {
-	return s.repository.FindByName(ctx, name)
+func (s *ServiceImpl) FindByName(ctx context.Context, name string, orgID string) (*Model, error) {
+	return s.repository.FindByName(ctx, name, orgID)
 }
 
 func (s *ServiceImpl) FindAll(
@@ -68,13 +69,14 @@ func (s *ServiceImpl) FindAll(
 	page int,
 	limit int,
 	q string,
+	orgID string,
 ) ([]*Model, error) {
-	return s.repository.FindAll(ctx, page, limit, q)
+	return s.repository.FindAll(ctx, page, limit, q, orgID)
 }
 
-func (s *ServiceImpl) UpdateFull(ctx context.Context, id string, entity *CreateUpdateDto) (*Model, error) {
+func (s *ServiceImpl) UpdateFull(ctx context.Context, id string, entity *CreateUpdateDto, orgID string) (*Model, error) {
 	// Check if another tag with same name exists (exclude current tag)
-	existingTag, err := s.repository.FindByName(ctx, entity.Name)
+	existingTag, err := s.repository.FindByName(ctx, entity.Name, orgID)
 	if err != nil {
 		return nil, err
 	}
@@ -84,6 +86,7 @@ func (s *ServiceImpl) UpdateFull(ctx context.Context, id string, entity *CreateU
 
 	updateModel := &Model{
 		ID:          id,
+		OrgID:       orgID,
 		Name:        entity.Name,
 		Color:       entity.Color,
 		Description: entity.Description,
@@ -97,10 +100,10 @@ func (s *ServiceImpl) UpdateFull(ctx context.Context, id string, entity *CreateU
 	return updateModel, nil
 }
 
-func (s *ServiceImpl) UpdatePartial(ctx context.Context, id string, entity *PartialUpdateDto) (*Model, error) {
+func (s *ServiceImpl) UpdatePartial(ctx context.Context, id string, entity *PartialUpdateDto, orgID string) (*Model, error) {
 	// Check if another tag with same name exists (exclude current tag)
 	if entity.Name != nil {
-		existingTag, err := s.repository.FindByName(ctx, *entity.Name)
+		existingTag, err := s.repository.FindByName(ctx, *entity.Name, orgID)
 		if err != nil {
 			return nil, err
 		}
@@ -111,6 +114,7 @@ func (s *ServiceImpl) UpdatePartial(ctx context.Context, id string, entity *Part
 
 	updateModel := &UpdateModel{
 		ID:          &id,
+		OrgID:       orgID,
 		Name:        entity.Name,
 		Color:       entity.Color,
 		Description: entity.Description,
@@ -121,7 +125,7 @@ func (s *ServiceImpl) UpdatePartial(ctx context.Context, id string, entity *Part
 		return nil, err
 	}
 
-	updatedModel, err := s.repository.FindByID(ctx, id)
+	updatedModel, err := s.repository.FindByID(ctx, id, orgID)
 	if err != nil {
 		return nil, err
 	}
@@ -129,12 +133,21 @@ func (s *ServiceImpl) UpdatePartial(ctx context.Context, id string, entity *Part
 	return updatedModel, nil
 }
 
-func (s *ServiceImpl) Delete(ctx context.Context, id string) error {
+func (s *ServiceImpl) Delete(ctx context.Context, id string, orgID string) error {
+	// Verify tag exists and belongs to org
+	tag, err := s.repository.FindByID(ctx, id, orgID)
+	if err != nil {
+		return err
+	}
+	if tag == nil {
+		return errors.New("tag not found")
+	}
+
 	// Delete monitor_tag relations first
-	err := s.monitorTagService.DeleteByTagID(ctx, id)
+	err = s.monitorTagService.DeleteByTagID(ctx, id)
 	if err != nil {
 		s.logger.Warnw("Failed to delete monitor-tag relations", "tagID", id, "error", err)
 	}
 
-	return s.repository.Delete(ctx, id)
+	return s.repository.Delete(ctx, id, orgID)
 }

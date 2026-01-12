@@ -51,7 +51,10 @@ func (c *Controller) FindAll(ctx *gin.Context) {
 
 	q := ctx.Query("q")
 
-	response, err := c.service.FindAll(ctx, page, limit, q)
+	// Extract orgID from context
+	orgID := ctx.GetString("orgId")
+
+	response, err := c.service.FindAll(ctx, page, limit, q, orgID)
 	if err != nil {
 		c.logger.Errorw("Failed to fetch tags", "error", err)
 		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse("Internal server error"))
@@ -85,7 +88,10 @@ func (c *Controller) Create(ctx *gin.Context) {
 		return
 	}
 
-	createdTag, err := c.service.Create(ctx, tag)
+	// Extract orgID from context
+	orgID := ctx.GetString("orgId")
+
+	createdTag, err := c.service.Create(ctx, tag, orgID)
 	if err != nil {
 		c.logger.Errorw("Failed to create tag", "error", err)
 		if err.Error() == "tag with this name already exists" {
@@ -112,7 +118,10 @@ func (c *Controller) Create(ctx *gin.Context) {
 func (c *Controller) FindByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	tag, err := c.service.FindByID(ctx, id)
+	// Extract orgID from context
+	orgID := ctx.GetString("orgId")
+
+	tag, err := c.service.FindByID(ctx, id, orgID)
 	if err != nil {
 		c.logger.Errorw("Failed to fetch tag", "error", err)
 		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse("Internal server error"))
@@ -153,7 +162,10 @@ func (c *Controller) UpdateFull(ctx *gin.Context) {
 		return
 	}
 
-	updatedTag, err := c.service.UpdateFull(ctx, id, &tag)
+	// Extract orgID from context
+	orgID := ctx.GetString("orgId")
+
+	updatedTag, err := c.service.UpdateFull(ctx, id, &tag, orgID)
 	if err != nil {
 		c.logger.Errorw("Failed to update tag", "error", err)
 		if err.Error() == "tag with this name already exists" {
@@ -193,7 +205,10 @@ func (c *Controller) UpdatePartial(ctx *gin.Context) {
 		return
 	}
 
-	updatedTag, err := c.service.UpdatePartial(ctx, id, &tag)
+	// Extract orgID from context
+	orgID := ctx.GetString("orgId")
+
+	updatedTag, err := c.service.UpdatePartial(ctx, id, &tag, orgID)
 	if err != nil {
 		c.logger.Errorw("Failed to update tag", "error", err)
 		if err.Error() == "tag with this name already exists" {
@@ -220,7 +235,10 @@ func (c *Controller) UpdatePartial(ctx *gin.Context) {
 func (c *Controller) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	err := c.service.Delete(ctx, id)
+	// Extract orgID from context
+	orgID := ctx.GetString("orgId")
+
+	err := c.service.Delete(ctx, id, orgID)
 	if err != nil {
 		c.logger.Errorw("Failed to delete tag", "error", err)
 		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse("Internal server error"))
