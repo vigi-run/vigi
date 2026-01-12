@@ -1,0 +1,1 @@
+ALTER TABLE proxies ADD COLUMN org_id VARCHAR(255);

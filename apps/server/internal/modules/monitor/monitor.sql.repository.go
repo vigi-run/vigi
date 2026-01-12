@@ -29,6 +29,7 @@ type sqlModel struct {
 	Config         string               `bun:"config"`
 	ProxyId        *string              `bun:"proxy_id"`
 	PushToken      string               `bun:"push_token"`
+	OrgID          *string              `bun:"org_id,type:uuid"`
 }
 
 func toDomainModelFromSQL(sm *sqlModel) *Model {
@@ -54,7 +55,15 @@ func toDomainModelFromSQL(sm *sqlModel) *Model {
 		Config:         sm.Config,
 		ProxyId:        proxyId,
 		PushToken:      sm.PushToken,
+		OrgID:          getStringFromPointer(sm.OrgID),
 	}
+}
+
+func getStringFromPointer(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
 }
 
 func toSQLModel(m *Model) *sqlModel {
@@ -80,7 +89,15 @@ func toSQLModel(m *Model) *sqlModel {
 		Config:         m.Config,
 		ProxyId:        proxyId,
 		PushToken:      m.PushToken,
+		OrgID:          getPointerFromString(m.OrgID),
 	}
+}
+
+func getPointerFromString(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
 }
 
 type SQLRepositoryImpl struct {
@@ -105,9 +122,13 @@ func (r *SQLRepositoryImpl) Create(ctx context.Context, monitor *Model) (*Model,
 	return toDomainModelFromSQL(sm), nil
 }
 
-func (r *SQLRepositoryImpl) FindByID(ctx context.Context, id string) (*Model, error) {
+func (r *SQLRepositoryImpl) FindByID(ctx context.Context, id string, orgID string) (*Model, error) {
 	sm := new(sqlModel)
-	err := r.db.NewSelect().Model(sm).Where("id = ?", id).Scan(ctx)
+	query := r.db.NewSelect().Model(sm).Where("id = ?", id)
+	if orgID != "" {
+		query = query.Where("org_id = ?", orgID)
+	}
+	err := query.Scan(ctx)
 	if err != nil {
 		if err.Error() == "sql: no rows in result set" {
 			return nil, nil
@@ -117,16 +138,21 @@ func (r *SQLRepositoryImpl) FindByID(ctx context.Context, id string) (*Model, er
 	return toDomainModelFromSQL(sm), nil
 }
 
-func (r *SQLRepositoryImpl) FindByIDs(ctx context.Context, ids []string) ([]*Model, error) {
+func (r *SQLRepositoryImpl) FindByIDs(ctx context.Context, ids []string, orgID string) ([]*Model, error) {
 	if len(ids) == 0 {
 		return []*Model{}, nil
 	}
 
 	var sms []*sqlModel
-	err := r.db.NewSelect().
+	query := r.db.NewSelect().
 		Model(&sms).
-		Where("id IN (?)", bun.In(ids)).
-		Scan(ctx)
+		Where("id IN (?)", bun.In(ids))
+
+	if orgID != "" {
+		query = query.Where("org_id = ?", orgID)
+	}
+
+	err := query.Scan(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -146,8 +172,13 @@ func (r *SQLRepositoryImpl) FindAll(
 	active *bool,
 	status *int,
 	tagIds []string,
+	orgID string,
 ) ([]*Model, error) {
 	query := r.db.NewSelect().Model((*sqlModel)(nil))
+
+	if orgID != "" {
+		query = query.Where("org_id = ?", orgID)
+	}
 
 	// If tagIds filtering is requested, use JOIN
 	if len(tagIds) > 0 {
@@ -226,15 +257,20 @@ func (r *SQLRepositoryImpl) FindActivePaginated(ctx context.Context, page int, l
 	return models, nil
 }
 
-func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, monitor *Model) error {
+func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, monitor *Model, orgID string) error {
 	sm := toSQLModel(monitor)
 	sm.UpdatedAt = time.Now()
 
-	result, err := r.db.NewUpdate().
+	query := r.db.NewUpdate().
 		Model(sm).
 		Where("id = ?", id).
-		ExcludeColumn("id", "created_at").
-		Exec(ctx)
+		ExcludeColumn("id", "created_at")
+
+	if orgID != "" {
+		query = query.Where("org_id = ?", orgID)
+	}
+
+	result, err := query.Exec(ctx)
 
 	if err != nil {
 		return err
@@ -252,8 +288,12 @@ func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, monitor *
 	return err
 }
 
-func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, monitor *UpdateModel) error {
+func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, monitor *UpdateModel, orgID string) error {
 	query := r.db.NewUpdate().Model((*sqlModel)(nil)).Where("id = ?", id)
+
+	if orgID != "" {
+		query = query.Where("org_id = ?", orgID)
+	}
 
 	hasUpdates := false
 
@@ -310,6 +350,14 @@ func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, monito
 		query = query.Set("push_token = ?", *monitor.PushToken)
 		hasUpdates = true
 	}
+	if monitor.OrgID != nil {
+		if *monitor.OrgID == "" {
+			query = query.Set("org_id = ?", nil)
+		} else {
+			query = query.Set("org_id = ?", *monitor.OrgID)
+		}
+		hasUpdates = true
+	}
 
 	if !hasUpdates {
 		return nil
@@ -322,8 +370,12 @@ func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, monito
 	return err
 }
 
-func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string) error {
-	_, err := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ?", id).Exec(ctx)
+func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string, orgID string) error {
+	query := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ?", id)
+	if orgID != "" {
+		query = query.Where("org_id = ?", orgID)
+	}
+	_, err := query.Exec(ctx)
 	return err
 }
 

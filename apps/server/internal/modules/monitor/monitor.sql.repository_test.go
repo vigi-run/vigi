@@ -3,9 +3,9 @@ package monitor
 import (
 	"context"
 	"database/sql"
-	"vigi/internal/modules/shared"
 	"testing"
 	"time"
+	"vigi/internal/modules/shared"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -37,7 +37,8 @@ func setupTestDB(t *testing.T) *bun.DB {
 			updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			config TEXT,
 			proxy_id TEXT,
-			push_token TEXT
+			push_token TEXT,
+			org_id TEXT
 		)
 	`)
 	require.NoError(t, err)
@@ -94,7 +95,7 @@ func TestSQLRepositoryImpl_FindAll_JoinAmbiguityFix(t *testing.T) {
 
 	t.Run("FindAll_WithTagsNoAmbiguousColumn", func(t *testing.T) {
 		// This should not fail with "ambiguous column name: created_at" error
-		monitors, err := repo.FindAll(ctx, 0, 10, "", nil, nil, []string{"test-tag"})
+		monitors, err := repo.FindAll(ctx, 0, 10, "", nil, nil, []string{"test-tag"}, "")
 
 		require.NoError(t, err)
 		assert.Len(t, monitors, 1)
@@ -114,7 +115,7 @@ func TestSQLRepositoryImpl_FindAll_JoinAmbiguityFix(t *testing.T) {
 			created2.ID, "test-tag", time.Now().Add(-2*time.Hour))
 		require.NoError(t, err)
 
-		monitors, err := repo.FindAll(ctx, 0, 10, "", nil, nil, []string{"test-tag"})
+		monitors, err := repo.FindAll(ctx, 0, 10, "", nil, nil, []string{"test-tag"}, "")
 
 		require.NoError(t, err)
 		assert.Len(t, monitors, 2)

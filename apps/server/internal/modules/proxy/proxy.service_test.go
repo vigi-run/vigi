@@ -3,13 +3,13 @@ package proxy
 import (
 	"context"
 	"errors"
+	"testing"
+	"time"
 	"vigi/internal/infra"
 	"vigi/internal/modules/events"
 	"vigi/internal/modules/heartbeat"
 	"vigi/internal/modules/monitor"
 	"vigi/internal/modules/shared"
-	"testing"
-	"time"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
@@ -30,40 +30,40 @@ func (m *MockRepository) Create(ctx context.Context, entity *Model) (*Model, err
 	return args.Get(0).(*Model), args.Error(1)
 }
 
-func (m *MockRepository) FindByID(ctx context.Context, id string) (*Model, error) {
-	args := m.Called(ctx, id)
+func (m *MockRepository) FindByID(ctx context.Context, id string, orgID string) (*Model, error) {
+	args := m.Called(ctx, id, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).(*Model), args.Error(1)
 }
 
-func (m *MockRepository) FindAll(ctx context.Context, page int, limit int, q string) ([]*Model, error) {
-	args := m.Called(ctx, page, limit, q)
+func (m *MockRepository) FindAll(ctx context.Context, page int, limit int, q string, orgID string) ([]*Model, error) {
+	args := m.Called(ctx, page, limit, q, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).([]*Model), args.Error(1)
 }
 
-func (m *MockRepository) UpdateFull(ctx context.Context, id string, entity *Model) (*Model, error) {
-	args := m.Called(ctx, id, entity)
+func (m *MockRepository) UpdateFull(ctx context.Context, id string, entity *Model, orgID string) (*Model, error) {
+	args := m.Called(ctx, id, entity, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).(*Model), args.Error(1)
 }
 
-func (m *MockRepository) UpdatePartial(ctx context.Context, id string, entity *UpdateModel) (*Model, error) {
-	args := m.Called(ctx, id, entity)
+func (m *MockRepository) UpdatePartial(ctx context.Context, id string, entity *UpdateModel, orgID string) (*Model, error) {
+	args := m.Called(ctx, id, entity, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).(*Model), args.Error(1)
 }
 
-func (m *MockRepository) Delete(ctx context.Context, id string) error {
-	args := m.Called(ctx, id)
+func (m *MockRepository) Delete(ctx context.Context, id string, orgID string) error {
+	args := m.Called(ctx, id, orgID)
 	return args.Error(0)
 }
 
@@ -80,24 +80,24 @@ func (m *MockMonitorService) Create(ctx context.Context, monitor *monitor.Create
 	return args.Get(0).(*shared.Monitor), args.Error(1)
 }
 
-func (m *MockMonitorService) FindByID(ctx context.Context, id string) (*shared.Monitor, error) {
-	args := m.Called(ctx, id)
+func (m *MockMonitorService) FindByID(ctx context.Context, id string, orgID string) (*shared.Monitor, error) {
+	args := m.Called(ctx, id, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).(*shared.Monitor), args.Error(1)
 }
 
-func (m *MockMonitorService) FindByIDs(ctx context.Context, ids []string) ([]*shared.Monitor, error) {
-	args := m.Called(ctx, ids)
+func (m *MockMonitorService) FindByIDs(ctx context.Context, ids []string, orgID string) ([]*shared.Monitor, error) {
+	args := m.Called(ctx, ids, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).([]*shared.Monitor), args.Error(1)
 }
 
-func (m *MockMonitorService) FindAll(ctx context.Context, page int, limit int, q string, active *bool, status *int, tagIds []string) ([]*shared.Monitor, error) {
-	args := m.Called(ctx, page, limit, q, active, status, tagIds)
+func (m *MockMonitorService) FindAll(ctx context.Context, page int, limit int, q string, active *bool, status *int, tagIds []string, orgID string) ([]*shared.Monitor, error) {
+	args := m.Called(ctx, page, limit, q, active, status, tagIds, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
@@ -120,16 +120,16 @@ func (m *MockMonitorService) UpdateFull(ctx context.Context, id string, monitor 
 	return args.Get(0).(*shared.Monitor), args.Error(1)
 }
 
-func (m *MockMonitorService) UpdatePartial(ctx context.Context, id string, monitor *monitor.PartialUpdateDto, noPublish bool) (*shared.Monitor, error) {
-	args := m.Called(ctx, id, monitor, noPublish)
+func (m *MockMonitorService) UpdatePartial(ctx context.Context, id string, monitor *monitor.PartialUpdateDto, noPublish bool, orgID string) (*shared.Monitor, error) {
+	args := m.Called(ctx, id, monitor, noPublish, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).(*shared.Monitor), args.Error(1)
 }
 
-func (m *MockMonitorService) Delete(ctx context.Context, id string) error {
-	args := m.Called(ctx, id)
+func (m *MockMonitorService) Delete(ctx context.Context, id string, orgID string) error {
+	args := m.Called(ctx, id, orgID)
 	return args.Error(0)
 }
 
@@ -138,8 +138,8 @@ func (m *MockMonitorService) ValidateMonitorConfig(monitorType string, configJSO
 	return args.Error(0)
 }
 
-func (m *MockMonitorService) GetHeartbeats(ctx context.Context, id string, limit, page int, important *bool, reverse bool) ([]*heartbeat.Model, error) {
-	args := m.Called(ctx, id, limit, page, important, reverse)
+func (m *MockMonitorService) GetHeartbeats(ctx context.Context, id string, limit, page int, important *bool, reverse bool, orgID string) ([]*heartbeat.Model, error) {
+	args := m.Called(ctx, id, limit, page, important, reverse, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
@@ -159,16 +159,16 @@ func (m *MockMonitorService) FindByProxyId(ctx context.Context, proxyId string) 
 	return args.Get(0).([]*shared.Monitor), args.Error(1)
 }
 
-func (m *MockMonitorService) GetStatPoints(ctx context.Context, id string, since, until time.Time, granularity string) (*monitor.StatPointsSummaryDto, error) {
-	args := m.Called(ctx, id, since, until, granularity)
+func (m *MockMonitorService) GetStatPoints(ctx context.Context, id string, since, until time.Time, granularity string, orgID string) (*monitor.StatPointsSummaryDto, error) {
+	args := m.Called(ctx, id, since, until, granularity, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
 	return args.Get(0).(*monitor.StatPointsSummaryDto), args.Error(1)
 }
 
-func (m *MockMonitorService) GetUptimeStats(ctx context.Context, id string) (*monitor.CustomUptimeStatsDto, error) {
-	args := m.Called(ctx, id)
+func (m *MockMonitorService) GetUptimeStats(ctx context.Context, id string, orgID string) (*monitor.CustomUptimeStatsDto, error) {
+	args := m.Called(ctx, id, orgID)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
@@ -183,8 +183,8 @@ func (m *MockMonitorService) FindOneByPushToken(ctx context.Context, pushToken s
 	return args.Get(0).(*shared.Monitor), args.Error(1)
 }
 
-func (m *MockMonitorService) ResetMonitorData(ctx context.Context, id string) error {
-	args := m.Called(ctx, id)
+func (m *MockMonitorService) ResetMonitorData(ctx context.Context, id string, orgID string) error {
+	args := m.Called(ctx, id, orgID)
 	return args.Error(0)
 }
 
@@ -396,10 +396,10 @@ func TestServiceImpl_FindByID(t *testing.T) {
 				logger:         logger,
 			}
 
-			mockRepo.On("FindByID", mock.Anything, tt.id).Return(tt.repoResponse, tt.repoError)
+			mockRepo.On("FindByID", mock.Anything, tt.id, "test-org").Return(tt.repoResponse, tt.repoError)
 
 			// Execute
-			result, err := service.FindByID(context.Background(), tt.id)
+			result, err := service.FindByID(context.Background(), tt.id, "test-org")
 
 			// Assert
 			if tt.expectedError {
@@ -502,10 +502,10 @@ func TestServiceImpl_FindAll(t *testing.T) {
 				logger:         logger,
 			}
 
-			mockRepo.On("FindAll", mock.Anything, tt.page, tt.limit, tt.query).Return(tt.repoResponse, tt.repoError)
+			mockRepo.On("FindAll", mock.Anything, tt.page, tt.limit, tt.query, "test-org").Return(tt.repoResponse, tt.repoError)
 
 			// Execute
-			result, err := service.FindAll(context.Background(), tt.page, tt.limit, tt.query)
+			result, err := service.FindAll(context.Background(), tt.page, tt.limit, tt.query, "test-org")
 
 			// Assert
 			if tt.expectedError {
@@ -630,10 +630,10 @@ func TestServiceImpl_UpdateFull(t *testing.T) {
 					model.Auth == expectedModel.Auth &&
 					model.Username == expectedModel.Username &&
 					model.Password == expectedModel.Password
-			})).Return(tt.repoResponse, tt.repoError)
+			}), "test-org").Return(tt.repoResponse, tt.repoError)
 
 			// Execute
-			result, err := service.UpdateFull(context.Background(), tt.id, tt.entity)
+			result, err := service.UpdateFull(context.Background(), tt.id, tt.entity, "test-org")
 
 			// Assert
 			if tt.expectedError {
@@ -784,10 +784,10 @@ func TestServiceImpl_UpdatePartial(t *testing.T) {
 						(model.Username != nil && expectedUpdateModel.Username != nil && *model.Username == *expectedUpdateModel.Username)) &&
 					((model.Password == nil && expectedUpdateModel.Password == nil) ||
 						(model.Password != nil && expectedUpdateModel.Password != nil && *model.Password == *expectedUpdateModel.Password))
-			})).Return(tt.repoResponse, tt.repoError)
+			}), "test-org").Return(tt.repoResponse, tt.repoError)
 
 			// Execute
-			result, err := service.UpdatePartial(context.Background(), tt.id, tt.entity)
+			result, err := service.UpdatePartial(context.Background(), tt.id, tt.entity, "test-org")
 
 			// Assert
 			if tt.expectedError {
@@ -882,10 +882,10 @@ func TestServiceImpl_Delete(t *testing.T) {
 				mockMonitorService.On("RemoveProxyReference", mock.Anything, tt.id).Return(tt.monitorServiceError)
 			}
 
-			mockRepo.On("Delete", mock.Anything, tt.id).Return(tt.repoError)
+			mockRepo.On("Delete", mock.Anything, tt.id, "test-org").Return(tt.repoError)
 
 			// Execute
-			err := service.Delete(context.Background(), tt.id)
+			err := service.Delete(context.Background(), tt.id, "test-org")
 
 			// Assert
 			if tt.expectedError {

@@ -1,0 +1,1 @@
+ALTER TABLE tags ADD COLUMN org_id VARCHAR(255);

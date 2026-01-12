@@ -270,6 +270,8 @@ definitions:
         items:
           type: string
         type: array
+      org_id:
+        type: string
       start_date_time:
         type: string
       start_time:
@@ -357,6 +359,8 @@ definitions:
         type: string
       interval_day:
         type: integer
+      org_id:
+        type: string
       start_date_time:
         type: string
       start_time:
@@ -399,6 +403,8 @@ definitions:
         items:
           type: string
         type: array
+      org_id:
+        type: string
       start_date_time:
         type: string
       start_time:
@@ -468,7 +474,6 @@ definitions:
         type: string
     required:
     - name
-    - notification_ids
     - type
     type: object
   monitor.CustomUptimeStatsDto:
@@ -508,6 +513,9 @@ definitions:
       name:
         description: monitor name
         example: Monitor
+        type: string
+      org_id:
+        description: Organization ID
         type: string
       proxy_id:
         type: string
@@ -618,6 +626,9 @@ definitions:
         items:
           type: string
         type: array
+      org_id:
+        example: 60c72b2f9b1e8b6f1f8e4b1a
+        type: string
       proxy_id:
         example: 6830ad485361f19c598d6d90
         type: string
@@ -707,6 +718,8 @@ definitions:
         type: boolean
       name:
         type: string
+      org_id:
+        type: string
       type:
         type: string
       updated_at:
@@ -725,11 +738,129 @@ definitions:
       type:
         type: string
     type: object
+  organization.AddMemberDto:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/organization.Role'
+        enum:
+        - admin
+        - member
+        example: member
+    required:
+    - email
+    - role
+    type: object
+  organization.CreateOrganizationDto:
+    properties:
+      name:
+        example: My Organization
+        minLength: 3
+        type: string
+      slug:
+        example: my-organization
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
+  organization.Invitation:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      expires_at:
+        type: string
+      id:
+        type: string
+      organization:
+        $ref: '#/definitions/organization.Organization'
+      organization_id:
+        type: string
+      role:
+        $ref: '#/definitions/organization.Role'
+      status:
+        $ref: '#/definitions/organization.InvitationStatus'
+      token:
+        type: string
+    type: object
+  organization.InvitationStatus:
+    enum:
+    - pending
+    - accepted
+    - expired
+    type: string
+    x-enum-varnames:
+    - InvitationStatusPending
+    - InvitationStatusAccepted
+    - InvitationStatusExpired
+  organization.Organization:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      slug:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  organization.OrganizationUser:
+    properties:
+      created_at:
+        type: string
+      organization:
+        $ref: '#/definitions/organization.Organization'
+      organization_id:
+        type: string
+      role:
+        $ref: '#/definitions/organization.Role'
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/organization.User'
+      user_id:
+        type: string
+    type: object
+  organization.Role:
+    enum:
+    - admin
+    - member
+    type: string
+    x-enum-varnames:
+    - RoleAdmin
+    - RoleMember
+  organization.UpdateOrganizationDto:
+    properties:
+      name:
+        example: Updated Organization Name
+        minLength: 3
+        type: string
+      slug:
+        example: updated-slug
+        minLength: 3
+        type: string
+    type: object
+  organization.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+    type: object
   proxy.CreateUpdateDto:
     properties:
       auth:
         type: boolean
       host:
+        type: string
+      org_id:
         type: string
       password:
         type: string
@@ -763,6 +894,8 @@ definitions:
         type: string
       id:
         type: string
+      org_id:
+        type: string
       password:
         type: string
       port:
@@ -779,6 +912,8 @@ definitions:
       auth:
         type: boolean
       host:
+        type: string
+      org_id:
         type: string
       password:
         type: string
@@ -925,6 +1060,8 @@ definitions:
       icon:
         type: string
       id:
+        type: string
+      org_id:
         type: string
       published:
         type: boolean
@@ -1088,6 +1225,8 @@ definitions:
         type: string
       name:
         type: string
+      org_id:
+        type: string
       updated_at:
         type: string
     type: object
@@ -1207,6 +1346,30 @@ definitions:
       data:
         items:
           $ref: '#/definitions/notification_channel.Model'
+        type: array
+      message:
+        type: string
+    required:
+    - data
+    - message
+    type: object
+  utils.ApiResponse-array_organization_Invitation:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/organization.Invitation'
+        type: array
+      message:
+        type: string
+    required:
+    - data
+    - message
+    type: object
+  utils.ApiResponse-array_organization_OrganizationUser:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/organization.OrganizationUser'
         type: array
       message:
         type: string
@@ -1336,6 +1499,26 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/notification_channel.Model'
+      message:
+        type: string
+    required:
+    - data
+    - message
+    type: object
+  utils.ApiResponse-organization_Invitation:
+    properties:
+      data:
+        $ref: '#/definitions/organization.Invitation'
+      message:
+        type: string
+    required:
+    - data
+    - message
+    type: object
+  utils.ApiResponse-organization_Organization:
+    properties:
+      data:
+        $ref: '#/definitions/organization.Organization'
       message:
         type: string
     required:
@@ -2034,6 +2217,65 @@ paths:
       summary: Get server health
       tags:
       - System
+  /invitations/{token}:
+    get:
+      parameters:
+      - description: Invitation Token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-organization_Invitation'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      summary: Get invitation details (public)
+      tags:
+      - Invitations
+  /invitations/{token}/accept:
+    post:
+      parameters:
+      - description: Invitation Token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      summary: Accept invitation
+      tags:
+      - Invitations
   /maintenances:
     get:
       parameters:
@@ -2345,6 +2587,10 @@ paths:
         in: query
         name: tag_ids
         type: string
+      - description: Organization ID
+        in: header
+        name: X-Organization-ID
+        type: string
       produces:
       - application/json
       responses:
@@ -2354,6 +2600,10 @@ paths:
             $ref: '#/definitions/utils.ApiResponse-array_monitor_Model'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "403":
+          description: Forbidden
           schema:
             $ref: '#/definitions/utils.APIError'
         "404":
@@ -2367,6 +2617,7 @@ paths:
       security:
       - JwtAuth: []
       - ApiKeyAuth: []
+      - OrgIdAuth: []
       summary: Get monitors
       tags:
       - Monitors
@@ -2398,6 +2649,7 @@ paths:
       security:
       - JwtAuth: []
       - ApiKeyAuth: []
+      - OrgIdAuth: []
       summary: Create monitor
       tags:
       - Monitors
@@ -2430,6 +2682,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Delete monitor
       tags:
       - Monitors
@@ -2461,6 +2714,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Get monitor by ID
       tags:
       - Monitors
@@ -2500,6 +2754,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Update monitor
       tags:
       - Monitors
@@ -2539,6 +2794,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Update monitor
       tags:
       - Monitors
@@ -2587,6 +2843,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Get paginated heartbeats for a monitor
       tags:
       - Monitors
@@ -2619,6 +2876,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Reset monitor data (heartbeats and stats)
       tags:
       - Monitors
@@ -2664,6 +2922,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Get monitor stat points (ping/up/down) from stats tables
       tags:
       - Monitors
@@ -2696,6 +2955,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Get monitor uptime stats (24h, 30d, 365d)
       tags:
       - Monitors
@@ -2728,6 +2988,7 @@ paths:
             $ref: '#/definitions/utils.APIError'
       security:
       - BearerAuth: []
+      - OrgIdAuth: []
       summary: Get monitor TLS certificate information
       tags:
       - Monitors
@@ -3006,6 +3267,221 @@ paths:
       summary: Test notification channel
       tags:
       - Notification channels
+  /organizations:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Organization object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/organization.CreateOrganizationDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-organization_Organization'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      - OrgIdAuth: []
+      summary: Create organization
+      tags:
+      - Organizations
+  /organizations/{id}:
+    get:
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-organization_Organization'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      - OrgIdAuth: []
+      summary: Get organization by ID
+      tags:
+      - Organizations
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Organization object
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/organization.UpdateOrganizationDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-organization_Organization'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      - OrgIdAuth: []
+      summary: Update organization
+      tags:
+      - Organizations
+  /organizations/{id}/members:
+    get:
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-any'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      summary: List organization members and pending invitations
+      tags:
+      - Organizations
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Organization ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Member details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/organization.AddMemberDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      summary: Add member to organization
+      tags:
+      - Organizations
+  /organizations/slug/{slug}:
+    get:
+      parameters:
+      - description: Organization Slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-organization_Organization'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      summary: Get organization by Slug
+      tags:
+      - Organizations
   /proxies:
     get:
       parameters:
@@ -3797,6 +4273,52 @@ paths:
       summary: Update tag
       tags:
       - Tags
+  /user/invitations:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-array_organization_Invitation'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      summary: Get user pending invitations
+      tags:
+      - Invitations
+  /user/organizations:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-array_organization_OrganizationUser'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      - ApiKeyAuth: []
+      summary: List user organizations
+      tags:
+      - Organizations
   /version:
     get:
       description: Returns the current server version
@@ -3822,5 +4344,10 @@ securityDefinitions:
     description: JWT token authentication (Bearer token format)
     in: header
     name: Authorization
+    type: apiKey
+  OrgIdAuth:
+    description: Organization ID authentication (header format)
+    in: header
+    name: X-Organization-ID
     type: apiKey
 swagger: "2.0"
