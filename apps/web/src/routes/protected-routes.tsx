@@ -29,16 +29,16 @@ import UserInvitationsPage from "@/app/user/invitations/page";
 import OnboardingPage from "@/app/onboarding/page";
 
 export const protectedRoutes = [
-    <Route path="/" element={<RootRedirect />} />,
-    <Route path="/onboarding" element={<OnboardingPage />} />,
-    <Route path="/create-organization" element={<CreateOrganizationPage />} />,
+    <Route key="root" path="/" element={<RootRedirect />} />,
+    <Route key="onboarding" path="/onboarding" element={<OnboardingPage />} />,
+    <Route key="create-organization" path="/create-organization" element={<CreateOrganizationPage />} />,
     // Account routes (Global)
-    <Route path="/account" element={<OrganizationLayout isGlobal={true} />}>
+    <Route key="account" path="/account" element={<OrganizationLayout isGlobal={true} />}>
         <Route path="settings" element={<SettingsPage />} />
         <Route path="security" element={<SecurityPage />} />
         <Route path="invitations" element={<UserInvitationsPage />} />
     </Route>,
-    <Route path="/:slug" element={<OrganizationLayout />}>
+    <Route key="slug" path="/:slug" element={<OrganizationLayout />}>
         <Route index element={<Navigate to="monitors" replace />} />
 
     // Monitor routes
