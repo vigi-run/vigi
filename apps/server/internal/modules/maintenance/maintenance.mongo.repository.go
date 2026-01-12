@@ -2,7 +2,6 @@ package maintenance
 
 import (
 	"context"
-	"fmt"
 	"time"
 	"vigi/internal/config"
 
@@ -286,7 +285,6 @@ func (r *MongoRepositoryImpl) SetActive(ctx context.Context, id string, active b
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("Setting active to", active)
 	now := time.Now().UTC().Format(time.RFC3339)
 	update := bson.M{"$set": bson.M{"active": active, "updated_at": now}}
 	_, err = r.collection.UpdateOne(ctx, bson.M{"_id": objectID, "org_id": orgID}, update)
