@@ -1,27 +1,36 @@
 ---
 import ListItem from "../components/ListItem.astro";
+import { type Lang, defaultLang } from "../i18n/config";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section class="mb-12 px-4">
   <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-8">
-    <h2 class="font-bold text-[32px] leading-[125%] mb-6">Pilha Tecnológica</h2>
+    <h2 class="font-bold text-[32px] leading-[125%] mb-6">{t.techStack.title}</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-      <!-- Runtime & Serviços -->
+      <!-- Runtime & Services -->
       <div class="col-span-1 sm:col-span-2 lg:col-span-3 mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">
 
       </div>
-      <ListItem><strong>Go (Golang)</strong> — Concorrência leve de alto desempenho</ListItem>
-      <ListItem><strong>React + TypeScript</strong> — Painel de administração e páginas de status com segurança de tipo</ListItem>
-      <ListItem><strong>Docker</strong> — Fácil de implantar e executar</ListItem>
+      <ListItem><Fragment set:html={t.techStack.items.go} /></ListItem>
+      <ListItem><Fragment set:html={t.techStack.items.react} /></ListItem>
+      <ListItem><Fragment set:html={t.techStack.items.docker} /></ListItem>
 
-      <!-- Armazenamento de Dados (Selecionável) -->
+      <!-- Data Storage (Selectable) -->
       <div class="col-span-1 sm:col-span-2 lg:col-span-3 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
-        Armazenamento de Dados (Selecionável)
+        {t.techStack.categories.dataStorage}
       </div>
-      <ListItem><strong>PostgreSQL</strong> — Banco de dados relacional para dados estruturados</ListItem>
-      <ListItem><strong>MongoDB</strong> — Armazenamento de documentos flexível</ListItem>
-      <ListItem><strong>SQLite</strong> — Banco de dados de arquivo único para configurações leves/auto-hospedadas</ListItem>
+      <ListItem><Fragment set:html={t.techStack.items.postgresql} /></ListItem>
+      <ListItem><Fragment set:html={t.techStack.items.mongodb} /></ListItem>
+      <ListItem><Fragment set:html={t.techStack.items.sqlite} /></ListItem>
     </div>
   </div>
 </section>

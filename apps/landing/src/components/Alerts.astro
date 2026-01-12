@@ -1,48 +1,57 @@
 ---
 import ListItem from "../components/ListItem.astro";
+import { type Lang, defaultLang } from "../i18n/config";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section class="pb-12 px-4" id="alerts">
   <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-8">
-    <h2 class="font-bold text-[32px] leading-[125%] mb-6">Canais de Alerta</h2>
+    <h2 class="font-bold text-[32px] leading-[125%] mb-6">{t.alerts.title}</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
       <!-- Email & Webhooks -->
       <div class="col-span-full mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">
-        Email & Webhooks
+        {t.alerts.categories.emailWebhooks}
       </div>
-      <ListItem><strong>Email (SMTP)</strong> — Envie alertas através do seu servidor SMTP</ListItem>
-      <ListItem><strong>Webhook</strong> — POST JSON payloads para qualquer endpoint HTTP</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.email} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.webhook} /></ListItem>
 
-      <!-- Chat & Colaboração -->
+      <!-- Chat & Collaboration -->
       <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
-        Chat & Colaboração
+        {t.alerts.categories.chatCollab}
       </div>
-      <ListItem><strong>Telegram</strong> — Mensagens de bot para usuários/canais</ListItem>
-      <ListItem><strong>Slack</strong> — Webhook de entrada para canais</ListItem>
-      <ListItem><strong>Google Chat</strong> — Webhooks de espaço</ListItem>
-      <ListItem><strong>Signal</strong> — Mensagens seguras via bot/integração</ListItem>
-      <ListItem><strong>Mattermost</strong> — Webhook de entrada para canais</ListItem>
-      <ListItem><strong>Matrix</strong> — Envie para salas via token de acesso</ListItem>
-      <ListItem><strong>Discord</strong> — Webhooks de canal</ListItem>
-      <ListItem><strong>WeCom</strong> — Mensagens empresariais para grupos</ListItem>
-      <ListItem><strong>WhatsApp (WAHA)</strong> — Via gateway WAHA</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.telegram} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.slack} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.googleChat} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.signal} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.mattermost} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.matrix} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.discord} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.wecom} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.whatsapp} /></ListItem>
 
-      <!-- On-Call & Incidente -->
+      <!-- On-Call & Incident -->
       <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
-        On-Call & Incidente
+        {t.alerts.categories.onCall}
       </div>
-      <ListItem><strong>PagerDuty</strong> — Acione incidentes e escalonamentos</ListItem>
-      <ListItem><strong>Opsgenie</strong> — Alertas, roteamento e plantão</ListItem>
-      <ListItem><strong>Grafana OnCall</strong> — Integre com agendamentos de plantão</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.pagerduty} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.opsgenie} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.grafana} /></ListItem>
 
-      <!-- Push Móvel & Auto-Hospedado -->
+      <!-- Mobile Push & Self-Hosted -->
       <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
-        Push Móvel & Auto-Hospedado
+        {t.alerts.categories.mobilePush}
       </div>
-      <ListItem><strong>NTFY</strong> — Notificações push pub/sub simples</ListItem>
-      <ListItem><strong>Gotify</strong> — Servidor de push auto-hospedado</ListItem>
-      <ListItem><strong>Pushover</strong> — Push móvel/desktop confiável</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.ntfy} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.gotify} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.pushover} /></ListItem>
     </div>
   </div>
 </section>

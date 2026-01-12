@@ -1,13 +1,16 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
 import BaseBody from "../components/BaseBody.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { useTranslations } from "../i18n/utils";
+import { defaultLang } from "../i18n/config";
+
+const t = useTranslations(defaultLang);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title={t.siteTitle} description={t.siteDescription} />
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
