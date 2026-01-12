@@ -251,12 +251,10 @@ func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, entity
 	}
 
 	if entity.OrgID != nil {
-		query = query.Set("org_id = ?", *entity.OrgID)
-		hasUpdates = true
 	}
 
 	if !hasUpdates {
-		return r.FindByID(ctx, id, "")
+		return r.FindByID(ctx, id, orgID)
 	}
 
 	// Always set updated_at
@@ -291,7 +289,7 @@ func (r *SQLRepositoryImpl) SetActive(ctx context.Context, id string, active boo
 		return nil, err
 	}
 
-	return r.FindByID(ctx, id, "")
+	return r.FindByID(ctx, id, orgID)
 }
 
 // GetMaintenancesByMonitorID returns all active maintenances for a given monitor_id
