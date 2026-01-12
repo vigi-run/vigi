@@ -127,9 +127,9 @@ func (r *MongoRepositoryImpl) FindByID(ctx context.Context, id string, orgID str
 		return nil, err
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 	var mm mongoModel
 	err = r.collection.FindOne(ctx, filter).Decode(&mm)
@@ -156,10 +156,7 @@ func (r *MongoRepositoryImpl) FindAll(ctx context.Context, page int, limit int, 
 		Sort:  bson.D{{Key: "updated_at", Value: -1}}, // Sort by updated_at in descending order
 	}
 
-	filter := bson.M{}
-	if orgID != "" {
-		filter["org_id"] = orgID
-	}
+	filter := bson.M{"org_id": orgID}
 	if q != "" {
 		filter["$or"] = bson.A{
 			bson.M{"title": bson.M{"$regex": q, "$options": "i"}},

@@ -107,9 +107,9 @@ func (r *MongoRepository) FindByID(ctx context.Context, id string, orgID string)
 		return nil, err
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 
 	var mm mongoModel
@@ -145,9 +145,8 @@ func (r *MongoRepository) FindAll(ctx context.Context, page int, limit int, q st
 		Sort:  bson.D{{Key: "created_at", Value: -1}},
 	}
 
-	filter := bson.M{}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"org_id": orgID,
 	}
 
 	if q != "" {
@@ -216,9 +215,9 @@ func (r *MongoRepository) Update(ctx context.Context, id string, statusPage *Upd
 		"$set": updatePayload,
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 
 	_, err = r.collection.UpdateOne(ctx, filter, update)
@@ -231,9 +230,9 @@ func (r *MongoRepository) Delete(ctx context.Context, id string, orgID string) e
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 
 	_, err = r.collection.DeleteOne(ctx, filter)

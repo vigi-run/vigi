@@ -124,10 +124,7 @@ func (r *SQLRepositoryImpl) Create(ctx context.Context, monitor *Model) (*Model,
 
 func (r *SQLRepositoryImpl) FindByID(ctx context.Context, id string, orgID string) (*Model, error) {
 	sm := new(sqlModel)
-	query := r.db.NewSelect().Model(sm).Where("id = ?", id)
-	if orgID != "" {
-		query = query.Where("org_id = ?", orgID)
-	}
+	query := r.db.NewSelect().Model(sm).Where("id = ?", id).Where("org_id = ?", orgID)
 	err := query.Scan(ctx)
 	if err != nil {
 		if err.Error() == "sql: no rows in result set" {
@@ -146,11 +143,8 @@ func (r *SQLRepositoryImpl) FindByIDs(ctx context.Context, ids []string, orgID s
 	var sms []*sqlModel
 	query := r.db.NewSelect().
 		Model(&sms).
-		Where("id IN (?)", bun.In(ids))
-
-	if orgID != "" {
-		query = query.Where("org_id = ?", orgID)
-	}
+		Where("id IN (?)", bun.In(ids)).
+		Where("org_id = ?", orgID)
 
 	err := query.Scan(ctx)
 	if err != nil {
@@ -174,11 +168,7 @@ func (r *SQLRepositoryImpl) FindAll(
 	tagIds []string,
 	orgID string,
 ) ([]*Model, error) {
-	query := r.db.NewSelect().Model((*sqlModel)(nil))
-
-	if orgID != "" {
-		query = query.Where("org_id = ?", orgID)
-	}
+	query := r.db.NewSelect().Model((*sqlModel)(nil)).Where("org_id = ?", orgID)
 
 	// If tagIds filtering is requested, use JOIN
 	if len(tagIds) > 0 {
@@ -264,11 +254,8 @@ func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, monitor *
 	query := r.db.NewUpdate().
 		Model(sm).
 		Where("id = ?", id).
+		Where("org_id = ?", orgID).
 		ExcludeColumn("id", "created_at")
-
-	if orgID != "" {
-		query = query.Where("org_id = ?", orgID)
-	}
 
 	result, err := query.Exec(ctx)
 
@@ -289,11 +276,7 @@ func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, monitor *
 }
 
 func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, monitor *UpdateModel, orgID string) error {
-	query := r.db.NewUpdate().Model((*sqlModel)(nil)).Where("id = ?", id)
-
-	if orgID != "" {
-		query = query.Where("org_id = ?", orgID)
-	}
+	query := r.db.NewUpdate().Model((*sqlModel)(nil)).Where("id = ?", id).Where("org_id = ?", orgID)
 
 	hasUpdates := false
 
@@ -371,10 +354,7 @@ func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, monito
 }
 
 func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string, orgID string) error {
-	query := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ?", id)
-	if orgID != "" {
-		query = query.Where("org_id = ?", orgID)
-	}
+	query := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ?", id).Where("org_id = ?", orgID)
 	_, err := query.Exec(ctx)
 	return err
 }

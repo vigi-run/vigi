@@ -24,6 +24,7 @@ type mongoModel struct {
 	RetryInterval  int                     `bson:"retry_interval"`
 	ResendInterval int                     `bson:"resend_interval"`
 	Active         bool                    `bson:"active"`
+	OrgID          string                  `bson:"org_id"`
 	Status         heartbeat.MonitorStatus `bson:"status"`
 	CreatedAt      time.Time               `bson:"created_at"`
 	UpdatedAt      time.Time               `bson:"updated_at"`
@@ -58,6 +59,7 @@ func toDomainModel(mm *mongoModel) *Model {
 	}
 	return &Model{
 		ID:             mm.ID.Hex(),
+		OrgID:          mm.OrgID,
 		Type:           mm.Type,
 		Name:           mm.Name,
 		Interval:       mm.Interval,
@@ -141,6 +143,7 @@ func (r *MonitorRepositoryImpl) Create(ctx context.Context, monitor *Model) (*Mo
 		RetryInterval:  monitor.RetryInterval,
 		ResendInterval: monitor.ResendInterval,
 		Active:         monitor.Active,
+		OrgID:          monitor.OrgID,
 		Status:         0,
 		CreatedAt:      time.Now().UTC(),
 		UpdatedAt:      time.Now().UTC(),
@@ -163,9 +166,9 @@ func (r *MonitorRepositoryImpl) FindByID(ctx context.Context, id string, orgID s
 		return nil, err
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 	var mm mongoModel
 	err = r.collection.FindOne(ctx, filter).Decode(&mm)
@@ -226,7 +229,9 @@ func (r *MonitorRepositoryImpl) FindAll(
 		}
 
 		// Add additional filters
-		matchStage := bson.M{}
+		matchStage := bson.M{
+			"org_id": orgID,
+		}
 		if q != "" {
 			matchStage["$or"] = bson.A{
 				bson.M{"name": bson.M{"$regex": q, "$options": "i"}},
@@ -278,7 +283,9 @@ func (r *MonitorRepositoryImpl) FindAll(
 			Sort:  bson.D{{Key: "created_at", Value: -1}},
 		}
 
-		filter := bson.M{}
+		filter := bson.M{
+			"org_id": orgID,
+		}
 		if q != "" {
 			filter["$or"] = bson.A{
 				bson.M{"name": bson.M{"$regex": q, "$options": "i"}},
@@ -394,9 +401,9 @@ func (r *MonitorRepositoryImpl) UpdateFull(ctx context.Context, id string, monit
 		return fmt.Errorf("%w: monitor %s", ErrMonitorNotFound, id)
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 	update := bson.M{}
 
@@ -460,9 +467,9 @@ func (r *MonitorRepositoryImpl) UpdatePartial(ctx context.Context, id string, mo
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 	update := bson.M{}
 	if len(set) > 0 {
@@ -487,9 +494,9 @@ func (r *MonitorRepositoryImpl) Delete(ctx context.Context, id string, orgID str
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 	_, err = r.collection.DeleteOne(ctx, filter)
 	return err
@@ -636,9 +643,9 @@ func (r *MonitorRepositoryImpl) FindByIDs(ctx context.Context, ids []string, org
 	}
 
 	// Create filter for the IDs
-	filter := bson.M{"_id": bson.M{"$in": objectIDs}}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    bson.M{"$in": objectIDs},
+		"org_id": orgID,
 	}
 
 	cursor, err := r.collection.Find(ctx, filter)

@@ -79,9 +79,9 @@ func (r *RepositoryImpl) FindByID(ctx context.Context, id string, orgID string) 
 		return nil, err
 	}
 
-	filter := bson.M{"_id": objectID}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
 	}
 	err = r.collection.FindOne(ctx, filter).Decode(&mm)
 	if err != nil {
@@ -101,9 +101,8 @@ func (r *RepositoryImpl) FindAll(ctx context.Context, page int, limit int, q str
 	limit64 := int64(limit)
 
 	// Build filter
-	filter := bson.M{}
-	if orgID != "" {
-		filter["org_id"] = orgID
+	filter := bson.M{
+		"org_id": orgID,
 	}
 
 	if q != "" {
