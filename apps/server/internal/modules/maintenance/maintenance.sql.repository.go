@@ -13,6 +13,7 @@ type sqlModel struct {
 	bun.BaseModel `bun:"table:maintenances,alias:m"`
 
 	ID            string    `bun:"id,pk"`
+	OrgID         string    `bun:"org_id"`
 	Title         string    `bun:"title,notnull"`
 	Description   string    `bun:"description"`
 	Active        bool      `bun:"active,notnull,default:true"`
@@ -45,6 +46,7 @@ func toDomainModelFromSQL(sm *sqlModel) *Model {
 
 	return &Model{
 		ID:            sm.ID,
+		OrgID:         sm.OrgID,
 		Title:         sm.Title,
 		Description:   sm.Description,
 		Active:        sm.Active,
@@ -79,6 +81,7 @@ func (r *SQLRepositoryImpl) Create(ctx context.Context, entity *CreateUpdateDto)
 
 	sm := &sqlModel{
 		ID:            uuid.New().String(),
+		OrgID:         entity.OrgID,
 		Title:         entity.Title,
 		Description:   entity.Description,
 		Active:        entity.Active,
@@ -105,9 +108,10 @@ func (r *SQLRepositoryImpl) Create(ctx context.Context, entity *CreateUpdateDto)
 	return toDomainModelFromSQL(sm), nil
 }
 
-func (r *SQLRepositoryImpl) FindByID(ctx context.Context, id string) (*Model, error) {
+func (r *SQLRepositoryImpl) FindByID(ctx context.Context, id string, orgID string) (*Model, error) {
 	sm := new(sqlModel)
-	err := r.db.NewSelect().Model(sm).Where("id = ?", id).Scan(ctx)
+	query := r.db.NewSelect().Model(sm).Where("id = ?", id).Where("org_id = ?", orgID)
+	err := query.Scan(ctx)
 	if err != nil {
 		if err.Error() == "sql: no rows in result set" {
 			return nil, nil
@@ -117,8 +121,8 @@ func (r *SQLRepositoryImpl) FindByID(ctx context.Context, id string) (*Model, er
 	return toDomainModelFromSQL(sm), nil
 }
 
-func (r *SQLRepositoryImpl) FindAll(ctx context.Context, page int, limit int, q string, strategy string) ([]*Model, error) {
-	query := r.db.NewSelect().Model((*sqlModel)(nil))
+func (r *SQLRepositoryImpl) FindAll(ctx context.Context, page int, limit int, q string, strategy string, orgID string) ([]*Model, error) {
+	query := r.db.NewSelect().Model((*sqlModel)(nil)).Where("org_id = ?", orgID)
 
 	if q != "" {
 		query = query.Where("LOWER(title) LIKE ? OR LOWER(description) LIKE ?", "%"+q+"%", "%"+q+"%")
@@ -145,13 +149,14 @@ func (r *SQLRepositoryImpl) FindAll(ctx context.Context, page int, limit int, q 
 	return models, nil
 }
 
-func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, entity *CreateUpdateDto) (*Model, error) {
+func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, entity *CreateUpdateDto, orgID string) (*Model, error) {
 	// Marshal arrays to JSON strings
 	weekdaysJSON, _ := json.Marshal(entity.Weekdays)
 	daysOfMonthJSON, _ := json.Marshal(entity.DaysOfMonth)
 
 	sm := &sqlModel{
 		ID:            id,
+		OrgID:         entity.OrgID,
 		Title:         entity.Title,
 		Description:   entity.Description,
 		Active:        entity.Active,
@@ -171,7 +176,7 @@ func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, entity *C
 
 	_, err := r.db.NewUpdate().
 		Model(sm).
-		Where("id = ?", id).
+		Where("id = ? AND org_id = ?", id, orgID).
 		OmitZero().
 		Exec(ctx)
 	if err != nil {
@@ -181,8 +186,8 @@ func (r *SQLRepositoryImpl) UpdateFull(ctx context.Context, id string, entity *C
 	return toDomainModelFromSQL(sm), nil
 }
 
-func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, entity *PartialUpdateDto) (*Model, error) {
-	query := r.db.NewUpdate().Model((*sqlModel)(nil)).Where("id = ?", id)
+func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, entity *PartialUpdateDto, orgID string) (*Model, error) {
+	query := r.db.NewUpdate().Model((*sqlModel)(nil)).Where("id = ? AND org_id = ?", id, orgID)
 
 	hasUpdates := false
 
@@ -245,38 +250,46 @@ func (r *SQLRepositoryImpl) UpdatePartial(ctx context.Context, id string, entity
 		hasUpdates = true
 	}
 
+	if entity.OrgID != nil {
+	}
+
 	if !hasUpdates {
-		return r.FindByID(ctx, id)
+		return r.FindByID(ctx, id, orgID)
 	}
 
 	// Always set updated_at
 	query = query.Set("updated_at = ?", time.Now())
 
-	_, err := query.Exec(ctx)
+	res, err := query.Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.FindByID(ctx, id)
+	rowsAffected, _ := res.RowsAffected()
+	if rowsAffected == 0 {
+		return nil, nil // Or specific error "not found or access denied"
+	}
+
+	return r.FindByID(ctx, id, orgID)
 }
 
-func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string) error {
-	_, err := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ?", id).Exec(ctx)
+func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string, orgID string) error {
+	_, err := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ? AND org_id = ?", id, orgID).Exec(ctx)
 	return err
 }
 
-func (r *SQLRepositoryImpl) SetActive(ctx context.Context, id string, active bool) (*Model, error) {
+func (r *SQLRepositoryImpl) SetActive(ctx context.Context, id string, active bool, orgID string) (*Model, error) {
 	_, err := r.db.NewUpdate().
 		Model((*sqlModel)(nil)).
 		Set("active = ?", active).
 		Set("updated_at = ?", time.Now()).
-		Where("id = ?", id).
+		Where("id = ? AND org_id = ?", id, orgID).
 		Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.FindByID(ctx, id)
+	return r.FindByID(ctx, id, orgID)
 }
 
 // GetMaintenancesByMonitorID returns all active maintenances for a given monitor_id

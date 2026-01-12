@@ -1007,6 +1007,100 @@ const docTemplate = `{
                 }
             }
         },
+        "/invitations/{token}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invitations"
+                ],
+                "summary": "Get invitation details (public)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Invitation Token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-organization_Invitation"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/invitations/{token}/accept": {
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invitations"
+                ],
+                "summary": "Accept invitation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Invitation Token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
         "/maintenances": {
             "get": {
                 "security": [
@@ -1463,6 +1557,9 @@ const docTemplate = `{
                     },
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -1510,6 +1607,12 @@ const docTemplate = `{
                         "description": "Comma-separated list of tag IDs to filter by",
                         "name": "tag_ids",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Organization ID",
+                        "name": "X-Organization-ID",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -1521,6 +1624,12 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/utils.APIError"
                         }
@@ -1546,6 +1655,9 @@ const docTemplate = `{
                     },
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "consumes": [
@@ -1644,6 +1756,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -1693,6 +1808,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "consumes": [
@@ -1754,6 +1872,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -1803,6 +1924,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "consumes": [
@@ -1866,6 +1990,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -1941,6 +2068,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -1992,6 +2122,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -2062,6 +2195,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -2113,6 +2249,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "BearerAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
                     }
                 ],
                 "produces": [
@@ -2539,6 +2678,356 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/organizations": {
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Create organization",
+                "parameters": [
+                    {
+                        "description": "Organization object",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/organization.CreateOrganizationDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-organization_Organization"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/organizations/slug/{slug}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organization by Slug",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Organization Slug",
+                        "name": "slug",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-organization_Organization"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/organizations/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organization by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Organization ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-organization_Organization"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    },
+                    {
+                        "OrgIdAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Update organization",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Organization ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Organization object",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/organization.UpdateOrganizationDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-organization_Organization"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/organizations/{id}/members": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "List organization members and pending invitations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Organization ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-any"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Add member to organization",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Organization ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Member details",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/organization.AddMemberDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/utils.APIError"
                         }
@@ -3814,6 +4303,84 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/invitations": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Invitations"
+                ],
+                "summary": "Get user pending invitations",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-array_organization_Invitation"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/organizations": {
+            "get": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    },
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "List user organizations",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-array_organization_OrganizationUser"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
         "/version": {
             "get": {
                 "description": "Returns the current server version",
@@ -4238,6 +4805,9 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "org_id": {
+                    "type": "string"
+                },
                 "start_date_time": {
                     "type": "string"
                 },
@@ -4365,6 +4935,9 @@ const docTemplate = `{
                 "interval_day": {
                     "type": "integer"
                 },
+                "org_id": {
+                    "type": "string"
+                },
                 "start_date_time": {
                     "type": "string"
                 },
@@ -4428,6 +5001,9 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "org_id": {
+                    "type": "string"
+                },
                 "start_date_time": {
                     "type": "string"
                 },
@@ -4455,7 +5031,6 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "name",
-                "notification_ids",
                 "type"
             ],
             "properties": {
@@ -4585,6 +5160,10 @@ const docTemplate = `{
                     "description": "monitor name",
                     "type": "string",
                     "example": "Monitor"
+                },
+                "org_id": {
+                    "description": "Organization ID",
+                    "type": "string"
                 },
                 "proxy_id": {
                     "type": "string"
@@ -4734,6 +5313,10 @@ const docTemplate = `{
                         "6830ad485361f19c598d6d90"
                     ]
                 },
+                "org_id": {
+                    "type": "string",
+                    "example": "60c72b2f9b1e8b6f1f8e4b1a"
+                },
                 "proxy_id": {
                     "type": "string",
                     "example": "6830ad485361f19c598d6d90"
@@ -4868,6 +5451,9 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
+                "org_id": {
+                    "type": "string"
+                },
                 "type": {
                     "type": "string"
                 },
@@ -4896,6 +5482,177 @@ const docTemplate = `{
                 }
             }
         },
+        "organization.AddMemberDto": {
+            "type": "object",
+            "required": [
+                "email",
+                "role"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                },
+                "role": {
+                    "enum": [
+                        "admin",
+                        "member"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/organization.Role"
+                        }
+                    ],
+                    "example": "member"
+                }
+            }
+        },
+        "organization.CreateOrganizationDto": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "example": "My Organization"
+                },
+                "slug": {
+                    "type": "string",
+                    "minLength": 3,
+                    "example": "my-organization"
+                }
+            }
+        },
+        "organization.Invitation": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "expires_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "organization": {
+                    "$ref": "#/definitions/organization.Organization"
+                },
+                "organization_id": {
+                    "type": "string"
+                },
+                "role": {
+                    "$ref": "#/definitions/organization.Role"
+                },
+                "status": {
+                    "$ref": "#/definitions/organization.InvitationStatus"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "organization.InvitationStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "accepted",
+                "expired"
+            ],
+            "x-enum-varnames": [
+                "InvitationStatusPending",
+                "InvitationStatusAccepted",
+                "InvitationStatusExpired"
+            ]
+        },
+        "organization.Organization": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "organization.OrganizationUser": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "organization": {
+                    "$ref": "#/definitions/organization.Organization"
+                },
+                "organization_id": {
+                    "type": "string"
+                },
+                "role": {
+                    "$ref": "#/definitions/organization.Role"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/organization.User"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "organization.Role": {
+            "type": "string",
+            "enum": [
+                "admin",
+                "member"
+            ],
+            "x-enum-varnames": [
+                "RoleAdmin",
+                "RoleMember"
+            ]
+        },
+        "organization.UpdateOrganizationDto": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "example": "Updated Organization Name"
+                },
+                "slug": {
+                    "type": "string",
+                    "minLength": 3,
+                    "example": "updated-slug"
+                }
+            }
+        },
+        "organization.User": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "proxy.CreateUpdateDto": {
             "type": "object",
             "required": [
@@ -4908,6 +5665,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "host": {
+                    "type": "string"
+                },
+                "org_id": {
                     "type": "string"
                 },
                 "password": {
@@ -4949,6 +5709,9 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "org_id": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string"
                 },
@@ -4973,6 +5736,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "host": {
+                    "type": "string"
+                },
+                "org_id": {
                     "type": "string"
                 },
                 "password": {
@@ -5185,6 +5951,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "org_id": {
                     "type": "string"
                 },
                 "published": {
@@ -5429,6 +6198,9 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
+                "org_id": {
+                    "type": "string"
+                },
                 "updated_at": {
                     "type": "string"
                 }
@@ -5609,6 +6381,42 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/notification_channel.Model"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ApiResponse-array_organization_Invitation": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/organization.Invitation"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ApiResponse-array_organization_OrganizationUser": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/organization.OrganizationUser"
                     }
                 },
                 "message": {
@@ -5808,6 +6616,36 @@ const docTemplate = `{
                 }
             }
         },
+        "utils.ApiResponse-organization_Invitation": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/organization.Invitation"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ApiResponse-organization_Organization": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/organization.Organization"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "utils.ApiResponse-proxy_Model": {
             "type": "object",
             "required": [
@@ -5895,6 +6733,12 @@ const docTemplate = `{
             "description": "JWT token authentication (Bearer token format)",
             "type": "apiKey",
             "name": "Authorization",
+            "in": "header"
+        },
+        "OrgIdAuth": {
+            "description": "Organization ID authentication (header format)",
+            "type": "apiKey",
+            "name": "X-Organization-ID",
             "in": "header"
         }
     }

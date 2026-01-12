@@ -3,8 +3,8 @@ package tag
 import (
 	"context"
 	"errors"
-	"vigi/internal/config"
 	"time"
+	"vigi/internal/config"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -14,6 +14,7 @@ import (
 
 type mongoModel struct {
 	ID          primitive.ObjectID `bson:"_id"`
+	OrgID       string             `bson:"org_id"`
 	Name        string             `bson:"name"`
 	Color       string             `bson:"color"`
 	Description *string            `bson:"description,omitempty"`
@@ -24,6 +25,7 @@ type mongoModel struct {
 func toDomainModelFromMongo(mm *mongoModel) *Model {
 	return &Model{
 		ID:          mm.ID.Hex(),
+		OrgID:       mm.OrgID,
 		Name:        mm.Name,
 		Color:       mm.Color,
 		Description: mm.Description,
@@ -42,6 +44,7 @@ func toMongoModel(m *Model) *mongoModel {
 
 	return &mongoModel{
 		ID:          objID,
+		OrgID:       m.OrgID,
 		Name:        m.Name,
 		Color:       m.Color,
 		Description: m.Description,
@@ -87,13 +90,13 @@ func (r *MongoRepositoryImpl) Create(ctx context.Context, entity *Model) (*Model
 	return toDomainModelFromMongo(mm), nil
 }
 
-func (r *MongoRepositoryImpl) FindByID(ctx context.Context, id string) (*Model, error) {
+func (r *MongoRepositoryImpl) FindByID(ctx context.Context, id string, orgID string) (*Model, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, err
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{"_id": objectID, "org_id": orgID}
 	var mm mongoModel
 	err = r.collection.FindOne(ctx, filter).Decode(&mm)
 	if err != nil {
@@ -105,8 +108,8 @@ func (r *MongoRepositoryImpl) FindByID(ctx context.Context, id string) (*Model, 
 	return toDomainModelFromMongo(&mm), nil
 }
 
-func (r *MongoRepositoryImpl) FindByName(ctx context.Context, name string) (*Model, error) {
-	filter := bson.M{"name": name}
+func (r *MongoRepositoryImpl) FindByName(ctx context.Context, name string, orgID string) (*Model, error) {
+	filter := bson.M{"name": name, "org_id": orgID}
 	var mm mongoModel
 	err := r.collection.FindOne(ctx, filter).Decode(&mm)
 	if err != nil {
@@ -118,7 +121,7 @@ func (r *MongoRepositoryImpl) FindByName(ctx context.Context, name string) (*Mod
 	return toDomainModelFromMongo(&mm), nil
 }
 
-func (r *MongoRepositoryImpl) FindAll(ctx context.Context, page int, limit int, q string) ([]*Model, error) {
+func (r *MongoRepositoryImpl) FindAll(ctx context.Context, page int, limit int, q string, orgID string) ([]*Model, error) {
 	var models []*Model
 
 	skip := int64(page * limit)
@@ -130,7 +133,7 @@ func (r *MongoRepositoryImpl) FindAll(ctx context.Context, page int, limit int, 
 		Sort:  bson.D{{Key: "name", Value: 1}},
 	}
 
-	filter := bson.M{}
+	filter := bson.M{"org_id": orgID}
 	if q != "" {
 		filter["name"] = bson.M{"$regex": q, "$options": "i"}
 	}
@@ -161,7 +164,7 @@ func (r *MongoRepositoryImpl) UpdateFull(ctx context.Context, id string, entity 
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{"_id": objectID, "org_id": entity.OrgID}
 	mm := toMongoModel(entity)
 	mm.UpdatedAt = time.Now().UTC()
 
@@ -184,7 +187,7 @@ func (r *MongoRepositoryImpl) UpdatePartial(ctx context.Context, id string, enti
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{"_id": objectID, "org_id": entity.OrgID}
 	update := bson.M{"$set": bson.M{"updated_at": time.Now().UTC()}}
 
 	if entity.Name != nil {
@@ -201,13 +204,13 @@ func (r *MongoRepositoryImpl) UpdatePartial(ctx context.Context, id string, enti
 	return err
 }
 
-func (r *MongoRepositoryImpl) Delete(ctx context.Context, id string) error {
-	objectID, err := primitive.ObjectIDFromHex(id)
+func (r *MongoRepositoryImpl) Delete(ctx context.Context, id string, orgID string) error {
+	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{"_id": objID, "org_id": orgID}
 	_, err = r.collection.DeleteOne(ctx, filter)
 	return err
 }

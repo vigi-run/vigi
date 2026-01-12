@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 	"vigi/internal/config"
 	"vigi/internal/modules/heartbeat"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,6 +24,7 @@ type mongoModel struct {
 	RetryInterval  int                     `bson:"retry_interval"`
 	ResendInterval int                     `bson:"resend_interval"`
 	Active         bool                    `bson:"active"`
+	OrgID          string                  `bson:"org_id"`
 	Status         heartbeat.MonitorStatus `bson:"status"`
 	CreatedAt      time.Time               `bson:"created_at"`
 	UpdatedAt      time.Time               `bson:"updated_at"`
@@ -58,6 +59,7 @@ func toDomainModel(mm *mongoModel) *Model {
 	}
 	return &Model{
 		ID:             mm.ID.Hex(),
+		OrgID:          mm.OrgID,
 		Type:           mm.Type,
 		Name:           mm.Name,
 		Interval:       mm.Interval,
@@ -141,6 +143,7 @@ func (r *MonitorRepositoryImpl) Create(ctx context.Context, monitor *Model) (*Mo
 		RetryInterval:  monitor.RetryInterval,
 		ResendInterval: monitor.ResendInterval,
 		Active:         monitor.Active,
+		OrgID:          monitor.OrgID,
 		Status:         0,
 		CreatedAt:      time.Now().UTC(),
 		UpdatedAt:      time.Now().UTC(),
@@ -157,13 +160,16 @@ func (r *MonitorRepositoryImpl) Create(ctx context.Context, monitor *Model) (*Mo
 	return toDomainModel(mm), nil
 }
 
-func (r *MonitorRepositoryImpl) FindByID(ctx context.Context, id string) (*Model, error) {
+func (r *MonitorRepositoryImpl) FindByID(ctx context.Context, id string, orgID string) (*Model, error) {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return nil, err
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
+	}
 	var mm mongoModel
 	err = r.collection.FindOne(ctx, filter).Decode(&mm)
 	if err != nil {
@@ -183,6 +189,7 @@ func (r *MonitorRepositoryImpl) FindAll(
 	active *bool,
 	status *int,
 	tagIds []string,
+	orgID string,
 ) ([]*Model, error) {
 	var monitors []*Model
 
@@ -222,7 +229,9 @@ func (r *MonitorRepositoryImpl) FindAll(
 		}
 
 		// Add additional filters
-		matchStage := bson.M{}
+		matchStage := bson.M{
+			"org_id": orgID,
+		}
 		if q != "" {
 			matchStage["$or"] = bson.A{
 				bson.M{"name": bson.M{"$regex": q, "$options": "i"}},
@@ -274,7 +283,9 @@ func (r *MonitorRepositoryImpl) FindAll(
 			Sort:  bson.D{{Key: "created_at", Value: -1}},
 		}
 
-		filter := bson.M{}
+		filter := bson.M{
+			"org_id": orgID,
+		}
 		if q != "" {
 			filter["$or"] = bson.A{
 				bson.M{"name": bson.M{"$regex": q, "$options": "i"}},
@@ -375,14 +386,14 @@ func buildSetMapFromUpdateModel(mu *mongoUpdateModel, includeProxyId bool, proxy
 	return set, nil
 }
 
-func (r *MonitorRepositoryImpl) UpdateFull(ctx context.Context, id string, monitor *Model) error {
+func (r *MonitorRepositoryImpl) UpdateFull(ctx context.Context, id string, monitor *Model, orgID string) error {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
 
 	// Fetch existing monitor to preserve created_at
-	existingMonitor, err := r.FindByID(ctx, id)
+	existingMonitor, err := r.FindByID(ctx, id, orgID)
 	if err != nil {
 		return err
 	}
@@ -390,7 +401,10 @@ func (r *MonitorRepositoryImpl) UpdateFull(ctx context.Context, id string, monit
 		return fmt.Errorf("%w: monitor %s", ErrMonitorNotFound, id)
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
+	}
 	update := bson.M{}
 
 	if monitor.ProxyId == "" {
@@ -410,7 +424,7 @@ func (r *MonitorRepositoryImpl) UpdateFull(ctx context.Context, id string, monit
 	return err
 }
 
-func (r *MonitorRepositoryImpl) UpdatePartial(ctx context.Context, id string, monitor *UpdateModel) error {
+func (r *MonitorRepositoryImpl) UpdatePartial(ctx context.Context, id string, monitor *UpdateModel, orgID string) error {
 	var proxyObjectID *primitive.ObjectID
 	unsetProxyId := false
 
@@ -453,7 +467,10 @@ func (r *MonitorRepositoryImpl) UpdatePartial(ctx context.Context, id string, mo
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
+	}
 	update := bson.M{}
 	if len(set) > 0 {
 		update["$set"] = set
@@ -471,13 +488,16 @@ func (r *MonitorRepositoryImpl) UpdatePartial(ctx context.Context, id string, mo
 }
 
 // Delete removes a monitor from the MongoDB collection by its ID.
-func (r *MonitorRepositoryImpl) Delete(ctx context.Context, id string) error {
+func (r *MonitorRepositoryImpl) Delete(ctx context.Context, id string, orgID string) error {
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
 
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{
+		"_id":    objectID,
+		"org_id": orgID,
+	}
 	_, err = r.collection.DeleteOne(ctx, filter)
 	return err
 }
@@ -609,7 +629,7 @@ func (r *MonitorRepositoryImpl) FindOneByPushToken(ctx context.Context, pushToke
 	return toDomainModel(&mm), nil
 }
 
-func (r *MonitorRepositoryImpl) FindByIDs(ctx context.Context, ids []string) ([]*Model, error) {
+func (r *MonitorRepositoryImpl) FindByIDs(ctx context.Context, ids []string, orgID string) ([]*Model, error) {
 	var monitors []*Model
 	var objectIDs []primitive.ObjectID
 
@@ -623,7 +643,10 @@ func (r *MonitorRepositoryImpl) FindByIDs(ctx context.Context, ids []string) ([]
 	}
 
 	// Create filter for the IDs
-	filter := bson.M{"_id": bson.M{"$in": objectIDs}}
+	filter := bson.M{
+		"_id":    bson.M{"$in": objectIDs},
+		"org_id": orgID,
+	}
 
 	cursor, err := r.collection.Find(ctx, filter)
 	if err != nil {
