@@ -146,7 +146,7 @@ const EditMaintenance = () => {
             "YYYY-MM-DDTHH:mm"
         ),
         endDateTime: dayjs(maintenance?.end_date_time).format("YYYY-MM-DDTHH:mm"),
-        active: maintenance?.active || true,
+        active: maintenance?.active ?? true,
         monitors:
             monitorsData?.data
                 ?.map((monitor) => ({
