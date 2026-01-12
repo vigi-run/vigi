@@ -48,6 +48,7 @@ export function LoginForm({
     ...props
 }: React.ComponentPropsWithoutRef<"div">) {
     const { t } = useLocalizedTranslation();
+    const { handleRedirect } = useSmartRedirect();
     const [serverError, setServerError] = React.useState<string | null>(null);
 
     const setTokens = useAuthStore(
