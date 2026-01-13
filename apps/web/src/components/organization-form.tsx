@@ -69,7 +69,7 @@ export function OrganizationForm({
                 body: {
                     name: values.name,
                     slug: values.slug || undefined,
-                    image_url: values.image_url,
+                    image_url: values.image_url || undefined,
                 },
             });
             return data;
@@ -100,7 +100,7 @@ export function OrganizationForm({
             const response = await client.instance.patch(`/organizations/${organizationId}`, {
                 name: values.name,
                 slug: values.slug || undefined,
-                image_url: values.image_url,
+                image_url: values.image_url || undefined,
             });
             return response.data;
         },
