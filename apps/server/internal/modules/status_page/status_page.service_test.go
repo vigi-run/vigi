@@ -227,6 +227,7 @@ func TestServiceImpl_Create(t *testing.T) {
 					Title: "Test Page",
 					OrgID: "org-1",
 				}
+				mr.On("FindBySlug", mock.Anything, "test-slug").Return((*Model)(nil), nil)
 				mr.On("Create", mock.Anything, mock.MatchedBy(func(model *Model) bool {
 					return model.Slug == "test-slug" &&
 						model.Title == "Test Page" &&

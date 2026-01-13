@@ -70,6 +70,48 @@ func (m *MockOrganizationRepository) FindMembership(ctx context.Context, orgID, 
 	return args.Get(0).(*OrganizationUser), args.Error(1)
 }
 
+func (m *MockOrganizationRepository) FindBySlug(ctx context.Context, slug string) (*Organization, error) {
+	args := m.Called(ctx, slug)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*Organization), args.Error(1)
+}
+
+func (m *MockOrganizationRepository) CreateInvitation(ctx context.Context, invitation *Invitation) error {
+	args := m.Called(ctx, invitation)
+	return args.Error(0)
+}
+
+func (m *MockOrganizationRepository) FindInvitations(ctx context.Context, orgID string) ([]*Invitation, error) {
+	args := m.Called(ctx, orgID)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]*Invitation), args.Error(1)
+}
+
+func (m *MockOrganizationRepository) FindInvitationByToken(ctx context.Context, token string) (*Invitation, error) {
+	args := m.Called(ctx, token)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).(*Invitation), args.Error(1)
+}
+
+func (m *MockOrganizationRepository) FindInvitationsByEmail(ctx context.Context, email string) ([]*Invitation, error) {
+	args := m.Called(ctx, email)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]*Invitation), args.Error(1)
+}
+
+func (m *MockOrganizationRepository) UpdateInvitationStatus(ctx context.Context, id string, status InvitationStatus) error {
+	args := m.Called(ctx, id, status)
+	return args.Error(0)
+}
+
 func setupService() (*ServiceImpl, *MockOrganizationRepository) {
 	mockRepo := &MockOrganizationRepository{}
 	logger := zap.NewNop().Sugar()
@@ -93,6 +135,9 @@ func TestOrganizationService_Create(t *testing.T) {
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
 		}
+
+		// Mock FindBySlug to return nil (slug not found = available)
+		mockRepo.On("FindBySlug", ctx, mock.AnythingOfType("string")).Return((*Organization)(nil), nil)
 
 		mockRepo.On("Create", ctx, mock.MatchedBy(func(o *Organization) bool {
 			return o.Name == dto.Name
@@ -118,6 +163,8 @@ func TestOrganizationService_Create(t *testing.T) {
 
 		expectedOrg := &Organization{ID: "org123", Name: "Fail Org"}
 
+		// Mock FindBySlug to return nil (slug not found = available)
+		mockRepo.On("FindBySlug", ctx, mock.AnythingOfType("string")).Return((*Organization)(nil), nil)
 		mockRepo.On("Create", ctx, mock.Anything).Return(expectedOrg, nil)
 		mockRepo.On("AddMember", ctx, mock.Anything).Return(assert.AnError)
 		mockRepo.On("Delete", ctx, expectedOrg.ID).Return(nil)
