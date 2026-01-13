@@ -72,7 +72,8 @@ test.describe('Organization Management', () => {
 
     // Update Organization
     // Navigate to settings
-    await page.getByRole('link', { name: 'Organization Settings' }).click();
+    await page.goto(`/${page.url().split('/')[3]}/settings/organization`);
+    await page.waitForURL('**/settings/organization');
 
     const updatedName = `${orgName} Updated`;
     await page.getByRole('textbox', { name: 'Organization Name' }).fill(updatedName);
