@@ -1,3 +1,5 @@
+// Package executor implements health check executors.
+// Updated to fix issue #237 (hang/duplicate key) and include PR #212 improvements.
 package executor
 
 import (
