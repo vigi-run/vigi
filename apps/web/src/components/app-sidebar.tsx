@@ -127,8 +127,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 {user && (
                     <NavUser
                         user={{
-                            name: user.email!,
+                            name: user.name || user.email!, // Use name if available
                             email: user.email!,
+                            avatar: user.imageUrl, // Pass avatar url
                         }}
                     />
                 )}

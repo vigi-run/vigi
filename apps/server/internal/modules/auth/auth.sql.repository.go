@@ -13,6 +13,8 @@ type sqlModel struct {
 
 	ID             string    `bun:"id,pk"`
 	Email          string    `bun:"email,unique,notnull"`
+	Name           string    `bun:"name"`
+	ImageURL       string    `bun:"image_url"`
 	Password       string    `bun:"password,notnull"`
 	Active         bool      `bun:"active,notnull,default:true"`
 	TwoFASecret    string    `bun:"twofa_secret"`
@@ -26,6 +28,8 @@ func toDomainModelFromSQL(sm *sqlModel) *Model {
 	return &Model{
 		ID:             sm.ID,
 		Email:          sm.Email,
+		Name:           sm.Name,
+		ImageURL:       sm.ImageURL,
 		Password:       sm.Password,
 		Active:         sm.Active,
 		TwoFASecret:    sm.TwoFASecret,
@@ -40,6 +44,8 @@ func toSQLModel(m *Model) *sqlModel {
 	return &sqlModel{
 		ID:             m.ID,
 		Email:          m.Email,
+		Name:           m.Name,
+		ImageURL:       m.ImageURL,
 		Password:       m.Password,
 		Active:         m.Active,
 		TwoFASecret:    m.TwoFASecret,
@@ -62,6 +68,8 @@ func (r *SQLRepositoryImpl) Create(ctx context.Context, user *Model) (*Model, er
 	sm := &sqlModel{
 		ID:             uuid.New().String(),
 		Email:          user.Email,
+		Name:           user.Name,
+		ImageURL:       user.ImageURL,
 		Password:       user.Password,
 		Active:         user.Active,
 		TwoFASecret:    user.TwoFASecret,
@@ -116,6 +124,14 @@ func (r *SQLRepositoryImpl) Update(ctx context.Context, id string, entity *Updat
 
 	if entity.Email != nil {
 		query = query.Set("email = ?", *entity.Email)
+		hasUpdates = true
+	}
+	if entity.Name != nil {
+		query = query.Set("name = ?", *entity.Name)
+		hasUpdates = true
+	}
+	if entity.ImageURL != nil {
+		query = query.Set("image_url = ?", *entity.ImageURL)
 		hasUpdates = true
 	}
 	if entity.Password != nil {

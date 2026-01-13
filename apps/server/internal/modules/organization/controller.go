@@ -273,7 +273,7 @@ func (c *OrganizationController) FindMembers(ctx *gin.Context) {
 			dto.User = &UserResponseDto{
 				ID:    member.User.ID,
 				Email: member.User.Email,
-				Name:  "",
+				Name:  member.User.Name,
 			}
 		}
 		response = append(response, dto)

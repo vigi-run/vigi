@@ -37,4 +37,5 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, controller *Controller) {
 	auth.POST("/2fa/verify", controller.VerifyTwoFA)
 	auth.POST("/2fa/disable", controller.DisableTwoFA)
 	auth.PUT("/password", controller.UpdatePassword)
+	auth.PUT("/profile", controller.UpdateProfile)
 }

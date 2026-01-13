@@ -34,6 +34,7 @@ export default function OrganizationSettingsPage() {
                             initialValues={{
                                 name: currentOrganization.name || "",
                                 slug: currentOrganization.slug || "",
+                                image_url: currentOrganization.image_url || "",
                             }}
                             organizationId={currentOrganization.id}
                             onSuccess={() => {

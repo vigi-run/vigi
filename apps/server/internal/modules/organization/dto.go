@@ -1,13 +1,15 @@
 package organization
 
 type CreateOrganizationDto struct {
-	Name string `json:"name" validate:"required,min=3" example:"My Organization"`
-	Slug string `json:"slug" validate:"omitempty,min=3" example:"my-organization"`
+	Name     string `json:"name" validate:"required,min=3" example:"My Organization"`
+	Slug     string `json:"slug" validate:"omitempty,min=3" example:"my-organization"`
+	ImageURL string `json:"image_url" validate:"omitempty,url"`
 }
 
 type UpdateOrganizationDto struct {
-	Name *string `json:"name" validate:"min=3" example:"Updated Organization Name"`
-	Slug *string `json:"slug" validate:"omitempty,min=3" example:"updated-slug"`
+	Name     *string `json:"name" validate:"min=3" example:"Updated Organization Name"`
+	Slug     *string `json:"slug" validate:"omitempty,min=3" example:"updated-slug"`
+	ImageURL *string `json:"image_url" validate:"omitempty,url"`
 }
 
 type AddMemberDto struct {

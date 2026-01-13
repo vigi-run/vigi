@@ -66,6 +66,15 @@ TZ="America/New_York"
 # - Access token expiration: 15 minutes
 # - Refresh token expiration: 720 hours (30 days)
 # - Secret keys are automatically generated securely
+
+# S3 Storage Configuration (Optional)
+# If not configured, file uploads will not be available.
+# S3_ENDPOINT=https://s3.amazonaws.com
+# S3_ACCESS_KEY=your-access-key
+# S3_SECRET_KEY=your-secret-key
+# S3_BUCKET=your-bucket-name
+# S3_REGION=us-east-1
+# S3_DISABLE_SSL=false
 ```
 :::info JWT Settings
 JWT settings (access/refresh token expiration times and secret keys) are now automatically managed in the database. Default secure settings are initialized on first startup, and secret keys are generated automatically.

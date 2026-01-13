@@ -46,6 +46,14 @@ type Config struct {
 	BruteforceLockout     time.Duration `env:"BRUTEFORCE_LOCKOUT" default:"1m"`
 
 	ServiceName string `env:"SERVICE_NAME" validate:"required,min=1" default:"vigi:api"`
+
+	// S3 Configuration
+	S3Endpoint   string `env:"S3_ENDPOINT"`
+	S3Bucket     string `env:"S3_BUCKET"`
+	S3Region     string `env:"S3_REGION" default:"us-east-1"`
+	S3AccessKey  string `env:"S3_ACCESS_KEY"`
+	S3SecretKey  string `env:"S3_SECRET_KEY"`
+	S3DisableSSL bool   `env:"S3_DISABLE_SSL" default:"false"`
 }
 
 // LoadAndValidate loads and validates the API service configuration
@@ -125,5 +133,11 @@ func (c *Config) ToInternalConfig() *config.Config {
 		BruteforceWindow:      c.BruteforceWindow,
 		BruteforceLockout:     c.BruteforceLockout,
 		ServiceName:           c.ServiceName,
+		S3Endpoint:            c.S3Endpoint,
+		S3Bucket:              c.S3Bucket,
+		S3Region:              c.S3Region,
+		S3AccessKey:           c.S3AccessKey,
+		S3SecretKey:           c.S3SecretKey,
+		S3DisableSSL:          c.S3DisableSSL,
 	}
 }

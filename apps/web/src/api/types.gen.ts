@@ -64,6 +64,8 @@ export type AuthModel = {
     createdAt?: string;
     email?: string;
     id?: string;
+    imageUrl?: string;
+    name?: string;
     twofa_status?: boolean;
     updatedAt?: string;
 };
@@ -74,6 +76,7 @@ export type AuthRefreshTokenDto = {
 
 export type AuthRegisterDto = {
     email: string;
+    name: string;
     password: string;
 };
 
@@ -120,6 +123,11 @@ export type AuthTwoFaVerifyResponseDto = {
 export type AuthUpdatePasswordDto = {
     currentPassword: string;
     newPassword: string;
+};
+
+export type AuthUpdateProfileDto = {
+    image_url?: string;
+    name: string;
 };
 
 export type HeartbeatModel = {
@@ -382,6 +390,7 @@ export type OrganizationAddMemberDto = {
 };
 
 export type OrganizationCreateOrganizationDto = {
+    image_url?: string;
     name: string;
     slug?: string;
 };
@@ -403,6 +412,7 @@ export type OrganizationInvitationStatus = 'pending' | 'accepted' | 'expired';
 export type OrganizationOrganization = {
     created_at?: string;
     id?: string;
+    image_url?: string;
     name?: string;
     slug?: string;
     updated_at?: string;
@@ -421,6 +431,7 @@ export type OrganizationOrganizationUser = {
 export type OrganizationRole = 'admin' | 'member';
 
 export type OrganizationUpdateOrganizationDto = {
+    image_url?: string;
     name?: string;
     slug?: string;
 };
@@ -428,6 +439,7 @@ export type OrganizationUpdateOrganizationDto = {
 export type OrganizationUser = {
     email?: string;
     id?: string;
+    name?: string;
 };
 
 export type ProxyCreateUpdateDto = {
@@ -587,6 +599,28 @@ export type StatusPageUpdateStatusPageDto = {
     slug?: string;
     theme?: string;
     title?: string;
+};
+
+export type StoragePresignedUrlRequestDto = {
+    contentType: string;
+    filename: string;
+    /**
+     * To organize files in folder structure
+     */
+    type: 'user' | 'organization';
+};
+
+export type StoragePresignedUrlResponseDto = {
+    key?: string;
+    /**
+     * This might vary based on your S3 setup (CDN, public bucket, etc.)
+     */
+    publicUrl?: string;
+    uploadUrl?: string;
+};
+
+export type StorageStorageConfigResponseDto = {
+    enabled?: boolean;
 };
 
 export type TagCreateUpdateDto = {
@@ -758,6 +792,16 @@ export type UtilsApiResponseStatusPageModel = {
 
 export type UtilsApiResponseStatusPageStatusPageWithMonitorsResponseDto = {
     data: StatusPageStatusPageWithMonitorsResponseDto;
+    message: string;
+};
+
+export type UtilsApiResponseStoragePresignedUrlResponseDto = {
+    data: StoragePresignedUrlResponseDto;
+    message: string;
+};
+
+export type UtilsApiResponseStorageStorageConfigResponseDto = {
+    data: StorageStorageConfigResponseDto;
     message: string;
 };
 
@@ -1113,6 +1157,42 @@ export type PutAuthPasswordResponses = {
 };
 
 export type PutAuthPasswordResponse = PutAuthPasswordResponses[keyof PutAuthPasswordResponses];
+
+export type PutAuthProfileData = {
+    /**
+     * Profile update data
+     */
+    body: AuthUpdateProfileDto;
+    path?: never;
+    query?: never;
+    url: '/auth/profile';
+};
+
+export type PutAuthProfileErrors = {
+    /**
+     * Bad Request
+     */
+    400: UtilsApiError;
+    /**
+     * Unauthorized
+     */
+    401: UtilsApiError;
+    /**
+     * Internal Server Error
+     */
+    500: UtilsApiError;
+};
+
+export type PutAuthProfileError = PutAuthProfileErrors[keyof PutAuthProfileErrors];
+
+export type PutAuthProfileResponses = {
+    /**
+     * OK
+     */
+    200: UtilsApiResponseAny;
+};
+
+export type PutAuthProfileResponse = PutAuthProfileResponses[keyof PutAuthProfileResponses];
 
 export type PostAuthRefreshData = {
     /**
@@ -3546,6 +3626,54 @@ export type PatchStatusPagesByIdResponses = {
 };
 
 export type PatchStatusPagesByIdResponse = PatchStatusPagesByIdResponses[keyof PatchStatusPagesByIdResponses];
+
+export type GetStorageConfigData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/storage/config';
+};
+
+export type GetStorageConfigResponses = {
+    /**
+     * OK
+     */
+    200: UtilsApiResponseStorageStorageConfigResponseDto;
+};
+
+export type GetStorageConfigResponse = GetStorageConfigResponses[keyof GetStorageConfigResponses];
+
+export type PostStoragePresignedUrlData = {
+    /**
+     * Request data
+     */
+    body: StoragePresignedUrlRequestDto;
+    path?: never;
+    query?: never;
+    url: '/storage/presigned-url';
+};
+
+export type PostStoragePresignedUrlErrors = {
+    /**
+     * Bad Request
+     */
+    400: UtilsApiError;
+    /**
+     * Internal Server Error
+     */
+    500: UtilsApiError;
+};
+
+export type PostStoragePresignedUrlError = PostStoragePresignedUrlErrors[keyof PostStoragePresignedUrlErrors];
+
+export type PostStoragePresignedUrlResponses = {
+    /**
+     * OK
+     */
+    200: UtilsApiResponseStoragePresignedUrlResponseDto;
+};
+
+export type PostStoragePresignedUrlResponse = PostStoragePresignedUrlResponses[keyof PostStoragePresignedUrlResponses];
 
 export type GetTagsData = {
     body?: never;

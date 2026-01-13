@@ -18,6 +18,7 @@ import { client } from "@/api/client.gen";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useOrganizationStore } from "@/store/organization";
+import { ImageUpload } from "@/components/image-upload";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const organizationSchema = (t: (key: string, options?: any) => string) => z.object({
@@ -28,6 +29,7 @@ const organizationSchema = (t: (key: string, options?: any) => string) => z.obje
         .regex(/^[a-z0-9-]+$/, t("organization.validation.slug_format"))
         .optional()
         .or(z.literal("")),
+    image_url: z.string().optional(),
 });
 
 export type OrganizationFormValues = z.infer<ReturnType<typeof organizationSchema>>;
@@ -57,6 +59,7 @@ export function OrganizationForm({
         defaultValues: initialValues || {
             name: "",
             slug: "",
+            image_url: "",
         },
     });
 
@@ -66,6 +69,7 @@ export function OrganizationForm({
                 body: {
                     name: values.name,
                     slug: values.slug || undefined,
+                    image_url: values.image_url,
                 },
             });
             return data;
@@ -96,12 +100,17 @@ export function OrganizationForm({
             const response = await client.instance.patch(`/organizations/${organizationId}`, {
                 name: values.name,
                 slug: values.slug || undefined,
+                image_url: values.image_url,
             });
             return response.data;
         },
         onSuccess: (data) => {
             toast.success(t("organization.update_success"));
             queryClient.invalidateQueries({ queryKey: ["organizations", organizationId] });
+
+            // Should also update the current organization in store if it's the one we modified
+            // For now relying on invalidation or parent callback
+
             if (onSuccess) onSuccess(data);
         },
         onError: handleMutationError,
@@ -134,6 +143,25 @@ export function OrganizationForm({
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                    control={form.control}
+                    name="image_url"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{t("organization.logo_label") || "Logo"}</FormLabel>
+                            <FormControl>
+                                <ImageUpload
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    type="organization"
+                                    fallback={form.getValues("name")?.charAt(0).toUpperCase() || "O"}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
                 <FormField
                     control={form.control}
                     name="name"

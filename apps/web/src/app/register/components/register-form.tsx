@@ -32,9 +32,11 @@ import { useAuthStore } from "@/store/auth";
 import type { AuthModel } from "@/api/types.gen";
 import { Link } from "react-router-dom";
 import { useLocalizedTranslation } from "@/hooks/useTranslation";
+import { useSmartRedirect } from "@/hooks/use-smart-redirect";
 
 const createFormSchema = (t: (key: string) => string) => z
   .object({
+    name: z.string().min(3, t("forms.validation.name_min_length") || "Name must be at least 3 characters"),
     email: z.string().email(t("forms.validation.email_invalid")),
     password: z.string().min(8, t("forms.validation.password_min_length")),
     confirmPassword: z
@@ -53,6 +55,7 @@ export function RegisterForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const { t } = useLocalizedTranslation();
+  const { handleRedirect } = useSmartRedirect();
   const [serverError, setServerError] = React.useState<string | null>(null);
   const setTokens = useAuthStore(
     (state: {
@@ -68,6 +71,7 @@ export function RegisterForm({
         setTokens(response.data.accessToken, response.data.refreshToken);
         setUser(response.data.user ?? null);
         toast.success(t("messages.register_success"));
+        handleRedirect();
       } else {
         toast.error(t("messages.register_no_tokens"));
       }
@@ -92,6 +96,7 @@ export function RegisterForm({
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -116,6 +121,24 @@ export function RegisterForm({
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("forms.labels.name")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={t("forms.placeholders.name")}
+                        type="text"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="email"

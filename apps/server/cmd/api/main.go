@@ -37,6 +37,7 @@ import (
 	"vigi/internal/modules/setting"
 	"vigi/internal/modules/stats"
 	"vigi/internal/modules/status_page"
+	"vigi/internal/modules/storage"
 	"vigi/internal/modules/tag"
 	"vigi/internal/modules/websocket"
 	"vigi/internal/utils"
@@ -128,7 +129,9 @@ func main() {
 	queue.RegisterDependencies(container, internalCfg)
 	api_key.RegisterDependencies(container, internalCfg)
 	organization.RegisterDependencies(container, internalCfg)
+	organization.RegisterDependencies(container, internalCfg)
 	middleware.RegisterDependencies(container)
+	storage.RegisterDependencies(container)
 
 	// Start the event healthcheck listener
 	err = container.Invoke(func(listener *healthcheck.EventListener, eventBus events.EventBus) {

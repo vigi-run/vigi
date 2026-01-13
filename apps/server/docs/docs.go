@@ -518,6 +518,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/profile": {
+            "put": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Update user profile",
+                "parameters": [
+                    {
+                        "description": "Profile update data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.UpdateProfileDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-any"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/refresh": {
             "post": {
                 "consumes": [
@@ -3963,6 +4019,75 @@ const docTemplate = `{
                 }
             }
         },
+        "/storage/config": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Storage"
+                ],
+                "summary": "Get storage configuration",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-storage_StorageConfigResponseDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/storage/presigned-url": {
+            "post": {
+                "security": [
+                    {
+                        "JwtAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Storage"
+                ],
+                "summary": "Get presigned URL for file upload",
+                "parameters": [
+                    {
+                        "description": "Request data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/storage.PresignedURLRequestDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-storage_PresignedURLResponseDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.APIError"
+                        }
+                    }
+                }
+            }
+        },
         "/tags": {
             "get": {
                 "security": [
@@ -4587,6 +4712,12 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "imageUrl": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
                 "twofa_status": {
                     "type": "boolean"
                 },
@@ -4610,10 +4741,14 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "email",
+                "name",
                 "password"
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 },
                 "password": {
@@ -4705,6 +4840,21 @@ const docTemplate = `{
                 },
                 "newPassword": {
                     "type": "string"
+                }
+            }
+        },
+        "auth.UpdateProfileDto": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "image_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 3
                 }
             }
         },
@@ -5513,6 +5663,9 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
+                "image_url": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string",
                     "minLength": 3,
@@ -5579,6 +5732,9 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "image_url": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -5630,6 +5786,9 @@ const docTemplate = `{
         "organization.UpdateOrganizationDto": {
             "type": "object",
             "properties": {
+                "image_url": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string",
                     "minLength": 3,
@@ -5649,6 +5808,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -6154,6 +6316,53 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "storage.PresignedURLRequestDto": {
+            "type": "object",
+            "required": [
+                "contentType",
+                "filename",
+                "type"
+            ],
+            "properties": {
+                "contentType": {
+                    "type": "string"
+                },
+                "filename": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "To organize files in folder structure",
+                    "type": "string",
+                    "enum": [
+                        "user",
+                        "organization"
+                    ]
+                }
+            }
+        },
+        "storage.PresignedURLResponseDto": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "publicUrl": {
+                    "description": "This might vary based on your S3 setup (CDN, public bucket, etc.)",
+                    "type": "string"
+                },
+                "uploadUrl": {
+                    "type": "string"
+                }
+            }
+        },
+        "storage.StorageConfigResponseDto": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
                 }
             }
         },
@@ -6700,6 +6909,36 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/status_page.StatusPageWithMonitorsResponseDTO"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ApiResponse-storage_PresignedURLResponseDto": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/storage.PresignedURLResponseDto"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ApiResponse-storage_StorageConfigResponseDto": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/storage.StorageConfigResponseDto"
                 },
                 "message": {
                     "type": "string"
