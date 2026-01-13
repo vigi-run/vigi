@@ -20,43 +20,65 @@ import EditStatusPage from "@/app/status-pages/edit/page";
 import TagsPage from "@/app/tags/page";
 import NewTag from "@/app/tags/new/page";
 import EditTag from "@/app/tags/edit/page";
+import { OrganizationLayout } from "@/components/organization-layout";
+import CreateOrganizationPage from "@/app/create-organization/page";
+import OrganizationSettingsPage from "@/app/organization/settings/page";
+import OrganizationMembersPage from "@/app/organization/members/page";
+import { RootRedirect } from "@/components/root-redirect";
+import UserInvitationsPage from "@/app/user/invitations/page";
+import OnboardingPage from "@/app/onboarding/page";
 
 export const protectedRoutes = [
-  // Monitor routes
-  <Route path="/monitors" element={<MonitorsPage />} />,
-  <Route path="/monitors/:id" element={<MonitorPage />} />,
-  <Route path="/monitors/new" element={<NewMonitor />} />,
-  <Route path="/monitors/:id/edit" element={<EditMonitor />} />,
+    <Route key="root" path="/" element={<RootRedirect />} />,
+    <Route key="onboarding" path="/onboarding" element={<OnboardingPage />} />,
+    <Route key="create-organization" path="/create-organization" element={<CreateOrganizationPage />} />,
+    // Account routes (Global)
+    <Route key="account" path="/account" element={<OrganizationLayout isGlobal={true} />}>
+        <Route path="settings" element={<SettingsPage />} />
+        <Route path="security" element={<SecurityPage />} />
+        <Route path="invitations" element={<UserInvitationsPage />} />
+    </Route>,
+    <Route key="slug" path="/:slug" element={<OrganizationLayout />}>
+        <Route index element={<Navigate to="monitors" replace />} />
 
-  // Status page routes
-  <Route path="/status-pages" element={<StatusPagesPage />} />,
-  <Route path="/status-pages/new" element={<NewStatusPage />} />,
-  <Route path="/status-pages/:id/edit" element={<EditStatusPage />} />,
+    // Monitor routes
+        <Route path="monitors" element={<MonitorsPage />} />
+        <Route path="monitors/:id" element={<MonitorPage />} />
+        <Route path="monitors/new" element={<NewMonitor />} />
+        <Route path="monitors/:id/edit" element={<EditMonitor />} />
 
-  // Proxy routes
-  <Route path="/proxies" element={<ProxiesPage />} />,
-  <Route path="/proxies/new" element={<NewProxy />} />,
-  <Route path="/proxies/:id/edit" element={<EditProxy />} />,
+    // Status page routes
+        <Route path="status-pages" element={<StatusPagesPage />} />
+        <Route path="status-pages/new" element={<NewStatusPage />} />
+        <Route path="status-pages/:id/edit" element={<EditStatusPage />} />
 
-  // Notification channel routes
-  <Route path="/notification-channels" element={<NotificationChannelsPage />} />,
-  <Route path="/notification-channels/new" element={<NewNotificationChannel />} />,
-  <Route path="/notification-channels/:id/edit" element={<EditNotificationChannel />} />,
+    // Proxy routes
+        <Route path="proxies" element={<ProxiesPage />} />
+        <Route path="proxies/new" element={<NewProxy />} />
+        <Route path="proxies/:id/edit" element={<EditProxy />} />
 
-  // Maintenance routes
-  <Route path="/maintenances" element={<MaintenancePage />} />,
-  <Route path="/maintenances/new" element={<NewMaintenance />} />,
-  <Route path="/maintenances/:id/edit" element={<EditMaintenance />} />,
+    // Notification channel routes
+        <Route path="notification-channels" element={<NotificationChannelsPage />} />
+        <Route path="notification-channels/new" element={<NewNotificationChannel />} />
+        <Route path="notification-channels/:id/edit" element={<EditNotificationChannel />} />
 
-  // Settings and security
-  <Route path="/settings" element={<SettingsPage />} />,
-  <Route path="/security" element={<SecurityPage />} />,
+    // Maintenance routes
+        <Route path="maintenances" element={<MaintenancePage />} />
+        <Route path="maintenances/new" element={<NewMaintenance />} />
+        <Route path="maintenances/:id/edit" element={<EditMaintenance />} />
 
-  // Tag routes
-  <Route path="/tags" element={<TagsPage />} />,
-  <Route path="/tags/new" element={<NewTag />} />,
-  <Route path="/tags/:id/edit" element={<EditTag />} />,
+    // Organization routes
+        <Route path="settings/organization" element={<OrganizationSettingsPage />} />
+        <Route path="settings/members" element={<OrganizationMembersPage />} />
 
-  // Default redirect
-  <Route path="*" element={<Navigate to="/monitors" replace />} />
+
+
+    // Tag routes
+        <Route path="tags" element={<TagsPage />} />
+        <Route path="tags/new" element={<NewTag />} />
+        <Route path="tags/:id/edit" element={<EditTag />} />
+
+    // Default redirect
+        <Route path="*" element={<Navigate to="monitors" replace />} />
+    </Route>
 ]; 

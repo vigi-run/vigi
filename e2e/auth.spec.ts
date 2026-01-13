@@ -1,11 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 test('Register new user', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('i18nextLng', 'en-US');
+  });
   await page.goto('/register');
 
   // Fill email field
+  const email = `test-${Date.now()}@test.com`;
   await page.getByRole('textbox', { name: 'Email' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill('test@test.com');
+  await page.getByRole('textbox', { name: 'Email' }).fill(email);
 
   // Get the password field container and locate the input and toggle button
   const passwordContainer = page.locator('div:has(> label:text("Password"))').first();
@@ -31,6 +35,14 @@ test('Register new user', async ({ page }) => {
 
   // Submit the form
   await page.getByRole('button', { name: 'Create' }).click();
+
+  // Wait for redirect to create organization page
+  await expect(page).toHaveURL(/.*\/create-organization/);
+
+  // Create organization
+  await page.getByRole('textbox', { name: 'Organization Name' }).fill('Test Org');
+  // Slug is optional/generated
+  await page.getByRole('button', { name: 'Create Organization' }).click();
 
   // Wait for redirect to monitors page
   await page.waitForURL('**/monitors', { timeout: 10000 });

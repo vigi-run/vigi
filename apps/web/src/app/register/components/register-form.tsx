@@ -88,7 +88,7 @@ export function RegisterForm({
   });
 
   const formSchema = React.useMemo(() => createFormSchema(t), [t]);
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
