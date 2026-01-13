@@ -5,9 +5,9 @@ description: "Get proxy by ID"
 sidebar_label: "Get proxy by ID"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVU1P20AQ/SvWnEAyCq3oxTcjKApIbQT0Q4qiamJPkiWOd5kdB1LL/x2N7YRQO0LqjVPina83b2bfluCQcUVC7CEal5CST9g4MTaHCEZsnzfB8AJCMPrtUBYQQo4rgghMCiEwPRaGKYVIuKAQfLKgFUJUgmycenlhk8+hqibq7J3NPXm1fz491Z+3Fb/fQAiJzYVyUSs6l5kE1Tp48OpS7pVwbB2xmCZhitJzioUs9uBMrc0Ic6hCSJhQKL1AoR68ISysl16DSXuPHXr/ZPmA0fJ+MpMLzYlrC1uxic16wwqXKsa4H0jhiZthdOkOtyd2+kCJqPuKvMf5Ae/XQY4bJl/9J51clUac9Q3wHNPglh4L8vL/kzwMNAQvKIV/v4dtjl3EwS7Oul18sxJ8tUWefowevvRNYpiLbkcW3BGviYNLZssfoR9NSEnBRja1Jp0TMnFc3+PxRHVEcK5yVeuTwpuE//R+RRK4WrymrX6tSBY2hQjmpItZK1kEA9dkGJQmrRRWTVUjhQVn6oHODNafQMtuUd0pRQ0rsTM3tIlbjXkLIh4NgyVtAlUgyqUlOjhyyz+BY5qZ52BmeYVyvNXXBWFK/Kqwv0/i0fDkhjaw4wnrgkr69ZP0173+dR+IXVLeqdww2Rrfqa25LZu/dWi3vspgPrNaXRcKE10oFR0jmfr9NHMTxKMhhKCMNsgaIfSywnrV2krdYb3pZ7dUQs8ycBmaWr3r8ZTtIMfQDhJCiEyqC9Go9xjKcoqefnBWVXr8WBDrWk1CWCMbnCpaffiM1/8pRDPMPHUw7G4NHN22G30c7L2PvRi3nOU6wDVmhX5BCEvaNO9nNdF3pmFeUTSGOEnIyV5I557qNu42+uryHqrqBfcOqbY=
+api: eJzVVU1P40AM/SuRTyAFlV2xl9yCYFFBWipgP6SqQm7ipkPTzOBxgG6V/75ykpZCUiHtjVObscd+tt88r8Eh45KE2EM0XkNKPmHjxNgCIhixfVkFwzMIwei3Q5lDCAUuCSIwKYTA9FgaphQi4ZJC8MmclgjRGmTl1MsLmyKDqpqos3e28OTV/vX4WH/eZry+ghASWwgVolZ0LjcJqnXw4NVlvZPCsXXEYpqAKUrPKZYy34EztTYnLKAKIWFCofQMhXrwhjC3XnoNJu09tpzd7zE59P7Z8h6j5d08phDKiGsLW7GJzXuvlS5V+HE/xtITN3PqTiLcnNjpAyWi7kvyHrM93q8zHjdNfvWfdGJVeuOkb7anmAY39FiSl/8f8n6gIXhBKf3HNWxibG/sreKkW8UPK8F3Wxbp56jhW98khoUoO/LglviJODhntvwZ6tGAlJRsZFXL1SkhE8f1Ex9PVGIEM1WyWroU3iR8V/sFSeBqXZu20rYkmdsUIshIiVmLXAQD10QYrE1aKay6VY1KlpyrBzozePoCmnaD6lZb1HQlduaKVnErP29BxKNhsKBVoOJEhbSNDg7c4j5wTDPzEswsL1EON9I7J0yJX8X3z1E8Gh5d0Qq2fcI6oTb98ln6817+vgvELqjoZG462Ro/yK2xLZu/9dW+/NecDdN+BNecYdFeDYZnHRxNro+r341zVI/xHQrV6WJmFYHSGhOltUqfkVz9fpnMBPFoCCHoXBt0jRx7WWJN+DZblzJvatpSW+hFBi5HU6+XmiTrlk5jaOkEIUQmVVo262UM6/UUPf3kvKr0+LEkVnJPQnhCNjhVtLqZjdf/KUQzzD11MGzfLhzctO/qMNhZ4L0YNz0rlEZPmJf6BSEsaNUs+Gqii7DpvqJoDHGSkJOdKx210DexfVcX53dQVf8Aw8Hgfw==
 sidebar_class_name: "get api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/proxies/{id}"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,22 +49,23 @@ Get proxy by ID
 <ParamsDetails
   parameters={[{"description":"Proxy ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{"properties":{"auth":{"type":"boolean"},"createdDate":{"type":"string"},"host":{"type":"string"},"id":{"type":"string"},"password":{"type":"string"},"port":{"type":"integer"},"protocol":{"type":"string"},"updatedAt":{"type":"string"},"username":{"type":"string"}},"type":"object"},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
+  responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{"properties":{"auth":{"type":"boolean"},"createdDate":{"type":"string"},"host":{"type":"string"},"id":{"type":"string"},"org_id":{"type":"string"},"password":{"type":"string"},"port":{"type":"integer"},"protocol":{"type":"string"},"updatedAt":{"type":"string"},"username":{"type":"string"}},"type":"object"},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

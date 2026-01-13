@@ -5,9 +5,9 @@ description: "Get monitor uptime stats (24h, 30d, 365d)"
 sidebar_label: "Get monitor uptime stats (24h, 30d, 365d)"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVdtO20AQ/ZXVPIG0KCmEVvJbUCkKqC0CepGiqNrYk3iJvbvsjtOmlv+9Gl8CaYxQ+8ZTnLmemTMzW4JTXuVI6ANE0xISDLHXjrQ1EMFHazRZLybvQYJmiVOUggSjcoQIdAISPD4U2mMCEfkCJYQ4xVxBVAJtHFsF8tosoapmbBycNQED64+HQ/7Zzfn5CiTE1hAaYq1yLtOxYu3gPrBJ+SSF89ahJ90ETBT1SN8lT8CYIp+jh0rC8SjtlZ8M++1P3p72KSrZSez8HmNi0xxDUEvs68HTfk0bwI/2s71YFXuM+vp0phJxgw8FBvr/hj0PVEIgRUV4uYYuxtbj2SpG+1V8siQ+2MIkr6OG0z4mJobQG5WJW/Rr9OLce+tfQz0cEOPCa9rUy3+GyqMfF5RCNJ3xupJa8l3oDkEdZ7f4CySRt2eicKRzFJwyiIPjUSrFyTCRgjfnsB5zSm0CESyRZ7a+JREMWvcwKHVSDWrvQROK8dc9bY5T4TO2V04P1m+A8XXwb7mXTfvGTl/hpinib6bG1xOxwo1QBaVoqGVEHLjVD+E8LvQvsbA+V3TY3bsUVYL+8eJ9PxpfT46ucAPbhqo6IbNz+ZP6815+uxNkV2j2Mjctb5Uv5ObY1uvftet+/ordFpaz8+SpmCePr5OmjO2+6qUW4+sJSOCONsgYtrOBclXPZJvpX0jdqXQ7l4S/aOAypQ1nqIkrW8Kn0BEOEqL6CamDg4SW9ZmE1AZi07Kcq4BffFZVLH4o0POsziSslddqzpXxs6UDfycQLVQWcA/VdhXh4KZdk0Ox87r14u46bJjutcoK/gcSVrhpXr9qVsmOJ8bRKMZxjI6euOytP8/udhsuzu+gqv4AYO+PSw==
+api: eJzVVdtO20AQ/ZXVPIG0KCmEVvJbEBQF1IKAXqQoqjb2JF4Se5fdcUpq7b9XYzshIY5Q+8ZTnLmemTkzW4JVTmVI6DxEwxIS9LHTlrTJIYIvJtdknBicgwTNEqsoBQm5yhAi0AlIcPhUaIcJROQKlODjFDMFUQm0tGzlyel8CiGM2Nhbk3v0rD/udvlnO+fNNUiITU6YE2uVtXMdK9Z2Hj2blBsprDMWHek6YKKoRfop2QCTF9kYHQQJx720VX7Sbbc/+XjapghyJTHjR4yJTTP0Xk2xrQeb/RrWgF/sRzuxAnv02vp0phJxh08Fevr/hu0HKsGTosK/XcMqxtpjbxW93Sq+GhKfTZEn76OG07ZJDHJCl6u5uEe3QCcunDPuPdTDATEunKZltfxnqBy6fkEpRMNRkCXcuOkgWQs4iJryoVhdhirwdjcukUTW3I3Cks5QMAYvDo57qRQn3UQKXqXDiveUmgQimCKTuDouEXQad98pdRI6lXenDsUFVU2ur1Xh5myvrO4sPgDjW9Vzz82t+9m3+hqXdRGvR9e/HYgZLoUqKMWcmhGJAzv7JazDiX4WE+MyRYerA5iiStC9nMCfR/3bwdE1LmHdYVUl5HFd/ab2vFc/HgSZGeY7mesZNMo3cnNs4/SfyrUt/8b4ds6sm6q8cRWD8x0cda63q9+Mc1S9E69QBHadGEbAC6FiXgg+mprmbPddT7Xo3w5AAs+1RsfgrfGUqWpVmmz/Qq2tatfrQvhMHTtXOucMFX3KhnZDWNEOJETVy1YFBwkN90YSUuOJTctyrDx+c/MQWPxUoOMVGklYKKfVmCvj11R7/k4gmqi5xx1U6wsBB3fN9h6KrUe3FfeqwzmTbqHmBf8DCTNc1o9yGAW5mhXjqBX9OEZLGy47V4k3aL2TlxcPIEE17HmZ6qzievPB0VvhtDGjhjGruLnHrSxr3oSwtq9Vez3WlGyq5ypCCH8BQM/+ew==
 sidebar_class_name: "get api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/monitors/{id}/stats/uptime"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Get monitor uptime stats (24h, 30d, 365d)
 <ParamsDetails
   parameters={[{"description":"Monitor ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Get monitor uptime stats (24h, 30d, 365d)
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{"properties":{"7d":{"type":"number"},"24h":{"type":"number"},"30d":{"type":"number"},"365d":{"type":"number"}},"type":"object"},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

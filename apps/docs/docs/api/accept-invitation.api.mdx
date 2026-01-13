@@ -1,12 +1,12 @@
 ---
-id: update-user-password
-title: "Update user password"
-description: "Update user password"
-sidebar_label: "Update user password"
+id: accept-invitation
+title: "Accept invitation"
+description: "Accept invitation"
+sidebar_label: "Accept invitation"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVslu2zAQ/RViTi2gwEnRXnRzmhycHGJkaQsYRkFLE5mxRDIkFUcV+O/FkJLjNS56y00gZ3tv3gzVgsHnGq07V3kDaQuZkg6lo0+udSky7oSSgyerJJ3ZbI4Vp68cbWaEpltI4UHn3OGYW7tUJr9wignLaos5e1SG1XQrZEEnhunOChLQRmk0TqANuWtjULo+Ch25RiOkYJ0RsgCfgMTlO/c+CXiEwRzSyU7ATfdp0rur2RNmDjz5b+LqjSMEZDl3HNaTOFNjyGq1kjbi+HJ6usvQzTUk/87uJjEha9r6BCq0lhd4HHpXaG+/D6tP4Ou+Ss95zm6jKv6/5MOFJmAdd7U9jqGPsfI4iOJsjyIlr91cGfEH848B49u+ZoykQyN5ye7QvKBhl8Yo8xHwUEDMaiNcA+mkhaulG9ZuDulk6smBF5aChbPp9tjFdbKzLip0c5VDCromaWpO8WBAjR6smdlAlQ1pa1MGEy0GL2dAmfuq7oiiyMpQi2tsYnnbDRiOR2yBDaMkKF1HNPukF7+ZNvgoXmnFVdx9hgQEecyR50g9krwiUn6dDMejk2tsYMUTDwmJ9BUt23mvft4zpxYodzKfIzdoussjuYfdDATXfflvTDHK91dwYwouO1c2utipI+Y6jn49zsnoYrcKnwDp9vbtJbp85ZUuce+j0Mty6y1YE7KQj6p/y3jm4uZ0wlFA+CEKwYbjESRAIolQyUsr6yoepqcr/YAKN1haDYvDVzfQJReSggXZtZ1CJ0DUBcG+PT1zZR1dte2MW3wwpfd0/FyjoYGZJvDCjeAzKnoy9UlPLIl6gQ2k8D2ugJN7KoDMyzqyurUOfNJ7DLMMtXvXdro2ZeOHe0hg1v0ZVConF8OX9ADyJdGWgAo8hCkKZy2UXBZ12DEQQ1J/eaewt84vwjx0HwSqv5LNWoHb+o04FkG7B1zaNurK+5V9vDrosZJstKYOTr33fwGcHybO
-sidebar_class_name: "put api-method"
+api: eJzVVclu2zAQ/RVhTgmgwEnRXnRTkB6UHGxkaQsYRkFLY4uxTDHkyI0r8N+LoRY7kYwAveVkmbO9mXmPrEELI7ZIaCxE8xoytKmRmmSpIIJE7SQJ/hM8lhtUEILkcy0ohxCU2CJEQK3J4EslDWYQkakwBJvmuBUQ1UB7zY6WjFRrcG7BzlaXyqJl+5fLS/55W3x6ByGkpSJUxFahdSFTj2bybNmlPiqhTanRkGwSZoL41IWwRWvFGsdQHCOeNyEH/0XY+ZfLZ0wJnOOIr2NIr0UW3ONLhZb+H/JpoCFYElTZj3vocvQRJ7u4GnbxpERFeWnkX8w+RxvfxpaRKEKjRBE8oNmhCb4bU5rP0A8nxLQykvZeird/KK4oh2i+cGENsZZ3uO9POIVYs2iPVOozvx1HnKaoKZC9j+c45WXGOi49Y72cI5gcnOyk9qp2E+HjGbofZ3NLVKZgf6HlZHcFjKVD/sBjbCZ3DPj9kuJZEmxwHzDjUFG7jOBMb34H2uBKvgar0mwFnXdXTo4iQ3O4dH5dxLPk4g730M9S+IK8mH507+ve/nwMfGODytcoDJrW+EHtuNVJN89B/alZJ9k4gqlZC9WGBsnNAEdT6+Puj/NcJDdDFI5DVyUjYOqLlJoLkSQV7PdDrmUQzxIIgffaoGPwTIqt8KLo+h3h0JuuegEQvtJEF0IqzuRpUrf0msMRvSCEqHs2WoYtQsiZjtEc6nopLD6Zwjk+fqnQsCQWIeyEkWLJ+Pmtkpa/M4hWorA4wNQrHs7uWzWeByNP2ij2bpqKCbYTRcX/IIQN7vsnzy1c2K2GATW2uFNMFzW4blgwvQZn04dHnkLLlsMWN57b7QenH4X0nosNho3n4YmQum444lzv35hORvT0a7ylb925fxnM07Q=
+sidebar_class_name: "post api-method"
 info_path: api/vigi-api
 custom_edit_url: null
 ---
@@ -22,13 +22,13 @@ import Heading from "@theme/Heading";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Update user password"}
+  children={"Accept invitation"}
 >
 </Heading>
 
 <MethodEndpoint
-  method={"put"}
-  path={"/auth/password"}
+  method={"post"}
+  path={"/invitations/{token}/accept"}
   context={"endpoint"}
 >
   
@@ -36,7 +36,7 @@ import Heading from "@theme/Heading";
 
 
 
-Update user password
+Accept invitation
 
 <Heading
   id={"request"}
@@ -47,14 +47,14 @@ Update user password
 </Heading>
 
 <ParamsDetails
-  parameters={undefined}
+  parameters={[{"description":"Invitation Token","in":"path","name":"token","required":true,"schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"description":"UpdatePasswordDto is used for updating user password","properties":{"currentPassword":{"type":"string"},"newPassword":{"type":"string"}},"required":["currentPassword","newPassword"],"type":"object"}}},"description":"Password update data","required":true}}
+  body={undefined}
 >
   
 </RequestSchema>

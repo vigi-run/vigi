@@ -5,9 +5,9 @@ description: "Delete maintenance"
 sidebar_label: "Delete maintenance"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVdtu2zAM/RWBTy2gIt3QvfgtRTIgzS5F212AIBhYm4nV2JIi0Vkzw/8+0E7SdElRYG99si1eziF5KNfgMWBJTCFCMqkho5gG49k4Cwl8RmOZLNqU1GgAGoyceuQcNFgsCRIwGWgItKxMoAwSDhVpiGlOJUJSA6+9eEUOxs6haabiHL2zkaLY35+fy+M57tcxaEidYLNY0fvCpCjW3kMUl3oPwgfnKbDpEmbIctpoKClGnNMxFvuMJ13Ik/9Ub/3d/QOlDE0jERfHmF5ipm5oWVHk/6f8MlENkZGr+HoN2xy7iBeruDis4otj9dFVNnsbNXw4NomRZQoWC3VLYUVBDUNw4S3UIwkprYLhdbuCl4SBQr/iHJLJVBaGcS7bub+Oba7nDRhQQUyqfHJqNc25yyCBrLWC7rY3gd6eX+zVJmuEZtu67iaoQiFu6E1v9Q6ExpblrbSs61LfmzGtO67/DqR/PVILWiusOCfLm8arE7/4pXygmXlUMxdK5NPtxZITZhSerpafZ/3r0dmY1rDrG7aAMoSr33wc9+rHnWK3IHuA3HV2Y3wFW3K7YP60oYf4jYTNnKCLwDDl7s5hw4X4fTdzo/rXI9AgHe2YCW3vIpfYSm+DdHRuz0ra6YzpkXu+QGMlVTuhejPQCewPFDQkJhON5C6yWOv6HiN9C0XTyPGyoiBym2pYYTB4L6zl/jdR3jNIZlhEOiCy2yY4udko/VQd/CaO0t120Mo4V1hU8gUaFrTufiPNtNHbOQiXztBPU/K8F3KwxaLNnc4Hw0/DuyE0zV+G8Vle
+api: eJzVVU1P20AQ/SurOYFkFFrRi29BSSVDWxDQDymKqsGexEvs3WV3nJJa/u/V2ElIiBFSb5zi7Hy8N7PzZmtw6LEkJh8gntSQUUi9dqytgRi+ojZMBk1KKhlBBFpOHXIOERgsCWLQGUTg6bHSnjKI2VcUQUhzKhHiGnjlxCuw12YOTTMV5+CsCRTE/vH0VH72ca8uIYLUCjaLFZ0rdIpiHTwEcal3IJy3jjzrLmGGLKdNBCWFgHPqY7HLeNKFPPtPo42/vX+glKFpJOKsj+k5ZuqGHisK/P+UXycaQWDkKrxdwybHNuLVKs4Oq/hmWX22lcneRw2f+m4iMUzeYKFuyS/Jq7H31r+HeiQhpZXXvGoleE7oyQ8rziGeTEUwjHNR564c21z7DRhRQUyqfHZqZ5pzm0EMWWuFqFNvDIMdvzCoddYIzbZ13SaofCFu6PRg+QGExoblrbSs69LQ6UtadVxfXsjwOlELWimsOCfD68arI7f4rZynmX5SM+tL5OPNYskJM/LPq+XXyfA6ObmkFWz7hi2gXMLFH+7Hvfh5p9guyBwgd51dG9/AltzW679taB/+lZ8nWT+DKz9Hsw5VyeiAR4f1dvW7eU7a/fuCRSOhMysMZMwx5W7zseZC/H7ouVbD6wQikHvt2Al5ZwOX2ApgjdY7PXtlbaed6YkHrkBtJFU7J/V6rCawO1YQQawzmdTcBhZrXd9joO++aBo5fqzIy9BPI1ii13gvrOUV0kG+M4hnWAQ6ILLVNBzdrPV2rA4eq166mw4aGaolFpX8gwgWtOoes2baRJu7EC6dYZim5Hgn5GCXiEK2ahuNv4zvxtA0/wC8eIb2
 sidebar_class_name: "delete api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/maintenances/{id}"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Delete maintenance
 <ParamsDetails
   parameters={[{"description":"Maintenance ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Delete maintenance
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

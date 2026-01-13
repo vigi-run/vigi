@@ -5,9 +5,9 @@ description: "Enable 2FA (TOTP) for user"
 sidebar_label: "Enable 2FA (TOTP) for user"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVlU1v2zAMhv+KwFMLqEgXbBff3K0F0h4aNOk2IAgGxWYSNbakSnJTz/B/Hyh/NE3SdodddjMkkXz58pFcgcXHAp2/0GkJUQWJVh6Vp09hTCYT4aVWgwenFa25ZI25oK8UXWKloV2IYLrVV/EEfWHumnzfvGbSscJhyrxmbRU2vIqZo2PAwVht0HqJjvJhLmRGH740CBE4b6VaQc3BCOe22qZHNmse9EuLKUSzNsdOxJx3EXrxgImHmkJeS+8ldSJhN6m3BYYqzmjlGqnD8/NDB25vgP8L95o6B/bRcsq20q9fPGRSLfWBkcbqJ+mkVlKt7q08aqnDxKI/buiBYTWHz8c6vhApu+st++vWX6vN0TmxwuMqvfCF+3jsXY4+4tjYaw5fjnUxUh6tEhmboH1Cyy6t1fZ/6KcZY2GlLyGaVXC99XHh1xDN5jUFiJWjZGFtvg/9pRKLDANKJ9Pb6fiULbUl3Kj1HP1apxCB0WG0RlBaGIjCrwfDpRh0N9gFy1woX9gsnDFy8PQJSEGnbkJWNe7ERt5g2cjcH0Q8HrENloyqoPKt4ezEbH4xY3Epn0ljLvwpcJAUsUaRBsFK5GTOz7N4PDq7wRJ6v0QoSOb39uzXvf4xZV5vUB1UvkBh0babH9Sm3NrK3yH0sH7Ngci5e3lsL59FbjLcefo6HHZfvB16wmVvX2iREJh0WaWnHPBdriSLxyPgQBNpOguPp3Y+FwHZVum7o39lTc+px2c/MJmQilKGSVctFTMg14DDcCkCEUTGnMOa0IlmUFUL4fDeZnVNy48FWsJ1zuFJWElKArC8M5RQ2mAJEXxtLuDZlDTQ8axoHN27jDXvIuIkQePfPTvfoXt8O5kCh0X758t1SjFWbOkHILZkIAcdvAjwhrUKMqFWRbji0OSk4YoWrZexbwKG7Qd11W2pckfhPjZNI5uA7BshVdVAVdf9+WbrzYie1eY0TXFe1/Uf82y75A==
+api: eJzVVU1v2zAM/SsCTyugIF2wXXxL1xZIe0jQpNuAIBgUm0nU2JIqyU0zw/99oGynbuK2O+yymyDx4/HxkSrA4mOOzl/oZA9RAbFWHpWnozAmlbHwUqv+g9OK7ly8wUzQKUEXW2noFSKY7fT1cIo+N3dVvEuvmXQsd5gwr1mdhQ2uh8yRGXAwVhu0XqKjeJgJmdLB7w1CBM5bqdZQcjDCuZ22ScdjyQN+aTGBaF7HaHkseOOhlw8YeyjJ5TX0A6QGJLSDeptjyOKMVq6COjg/P2VgfAv8X7BX5Tmhj64TtpN+88Ihk2qlT4g0Vj9JJ7WSan1vZSelDmOLvpvQE8JKDl+6Kr4QCbs7UPbXpb9Gm6FzYo3dKL3wufu47U2Mg0dX20sOX7uqGCmPVomUTdE+oWVX1mr7P9RTtTG30u8hmhdws/PD3G8gmi9KchBrR8HC3eJY9FdKLFMMUvo0G88mZ2ylLcmNSs/Qb3QCERgdWmsEhYW+yP2mP1iJfjPBLlDmQvrcpsHGyP7TZyAEDbopUVWxMzTyFvcVzONGDCcjtsU9oyyofE04+2S2v5ixuJLPhDET/gw4SPLYoEgCYCUyIudnbzgZ9W5xDwe+REhI5B/oOc5782PGvN6iOsl8gcKirR8/yE2xtZW/g2tX/rFdj5JuBGO7Fqp2ZaPLExxVro+rb8fpjS5PUZQcSL93Lyv/6llkJsXWAm5E2d67LQ2HlVP/EyKm8aCVIT3FgO9yLdlwMgIOpIuqurDCtfOZCINTo31XgK/oOUyLx2ffN6mQikIGvRW1NudAnAGHwUoEXZI+Fxw2JOBoDkWxFA7vbVqWdP2Yo6WhWXB4ElYSkjA2vCGVBL3FPUTwrVoDvRlhIPM0rxg9WgklbzyGcYzGv2u7aM3YZDydAYdl/f9mOiEfK3b0DYkdEchBBy7CCIW7AlKh1nlYNFDFpOaKWl4vbd+GYagPVFXzpPYthMfirQrZBuG+4VIUlajK8mBfPb3pcdBrZU1dXJRl+Qcpq+l8
 sidebar_class_name: "post api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/auth/2fa/setup"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Enable 2FA (TOTP) for user
 <ParamsDetails
   parameters={undefined}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"content":{"application/json":{"schema":{"description":"TwoFASetupRequestDto is used to request 2FA setup","properties":{"email":{"type":"string"},"password":{"type":"string"}},"required":["email","password"],"type":"object"}}},"description":"2FA setup request","required":true}}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Enable 2FA (TOTP) for user
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"description":"TwoFASetupResponseDto is used to respond with 2FA setup info","properties":{"provisioningUri":{"type":"string"},"secret":{"type":"string"}},"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

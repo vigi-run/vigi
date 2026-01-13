@@ -5,9 +5,9 @@ description: "Get all API keys"
 sidebar_label: "Get API keys"
 hide_title: true
 hide_table_of_contents: true
-api: eJydVF1r21AM/StGTxu4pBvsxW8ZjNKWsUK7DwghqLaa3Ma591ZXzuIZ//ehayfNh7PCnmyupCPp6EgNFBRyNl6Ms5DBFUmCZZmM766TJdUBUmAK3tlAAbIGPl5e6ucw6NstpJA7K2RFreh9aXJU6+g5qEsDIV/QCvXPs/PEYjrAAiW+GqFVODXnTChUzDACS+0JMgjCxs6hTaEwwZdYz5ZUn5b1FcOSCm0jeXKc9L6QnsLQxhumcC6LKQafSwwyqwINW1e4mVUB5zTLXWX3gY0VmhOrk8UVDUZXvvhX328Atzq1l8qw1jbZJ/GQsthaX8VBzsMM0x1l7vGZctEK+gdkxjq2S0EjBqo9KiYO/NX/FLvViE9DOru2QmyxTO6J18TJF2bH/y+98yWnEASlCm93s8XYRQz2o4CUV2ykhmzSwM1vGVeygGwybTUA50HB0JuLuHRT5UcWroAM5qTj8KjuMNq5KKKSECJgxWVvHa0/gGJu891r812/Y29uqe4SH1Pb73uClSzISk9h8s4vZ4lnejIb3aEVynsVjUYsCAvirXoy+HUxvru+uKW9BcOYUOncNXyc9+bnQyJuSfYk82dCJu6Nb+RWbMfmTww9za8rbJ9cvCfOCuYqFdWwkVL9fpi50YsHKSijXWVatndBVhhF1GfS+7h3Gw+aaV6FOHRH+6KENjLyJRobF1kH1/TjPVTAwgXRt6Z5xEDfuWxbfX6piFVF0xTWyAYftYXJtE23rKge4j2EcZ6TV/Wssaw6Qo62o91X2tWXB0gB+zm9cthdiv5H0bcmW+9hH8+gK2EZ538mpGm6CbXtzr8znY3YDb7zVg6nbdv+BRWrTmI=
+api: eJydVF1r21AM/StGTxs4tBvsJW8ZLSUto4V2HxBCUG3VuY1z762unMUz/u9DtpPmw1lgTzZX0tGRdKQKUgoJGy/GWRjCDUmEeR6NHsbRgsoAMTAF72ygAMMKPl9e6mc/6P4OYkicFbKiVvQ+Nwmq9eI1qEsFIZnTEvXPs/PEYlrAFKV5NULLcGxOmFAonWEDLKUnGEIQNjaDOobUBJ9jOVtQeUzrG4YFpVpG9OI46nwhPoahtTdM4VQWk/Y+5xhkVgTqty5xPSsCZjRLXGF3gY0VyojVyeKSeqMLn/6r7jPAtU7trTCs3Ca7TdxvWVNax2Iv536G6bZl7vmVElEG3QMyY9mUS0EjetgekGkG/u5/jF1rxJc+nY2tEFvMo0fiFXF0zez4/6V3mnIMQVCKcL6aDcY2orceBaSkYCMlDCcV3P6WUSFzGE6mtQZgFhQMvRk0SzfV/sjcpTCEjHQcHtUdLrYuiqhNCA1gwXlnvVh9AsXc5HvU4tt6R97cUdkmPmxtt+8RFjInK10Low9+MYs804tZ6w4tUT6qaDRiTpgSb9QzhF+D0cN4cEc7C4ZNQm3ntuDDvLc/nyJxC7JHmb8SMnFnPJNbsR2bP01oX/57zsZpP4N7ztB2odH46ohHm+t89bs4g/HVMQs9JPbFNVfNWcFEBaubZCRXvx8mM3p3IQada8tOyXsXZImNlLtseqV3LvReQdX7OvRd846U0FoufI7GNudE5VN1ItvX4dwF0beqesZA3zmva31+K4hVy9MYVsgGn7WEybSON51RVTZXGUZJQl41vMK8aBtysKP1rt5vrp8gBuxm9d7D9l51P4q+MdlyB/tQCS2FRaOCEyFV1U6orrf+relkxHb4rbf2cFrX9V/Yu3v6
 sidebar_class_name: "get api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/api-keys"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -41,14 +41,14 @@ Get all API keys
 <ParamsDetails
   parameters={undefined}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -56,7 +56,8 @@ Get all API keys
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{"items":{"properties":{"created_at":{"type":"string"},"display_key":{"description":"Masked key for display","type":"string"},"expires_at":{"type":"string"},"id":{"type":"string"},"last_used":{"type":"string"},"max_usage_count":{"type":"integer"},"name":{"type":"string"},"updated_at":{"type":"string"},"usage_count":{"type":"integer"}},"required":["created_at","display_key","id","name","updated_at","usage_count"],"type":"object"},"type":"array"},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

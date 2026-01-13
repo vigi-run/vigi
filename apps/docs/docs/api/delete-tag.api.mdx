@@ -5,9 +5,9 @@ description: "Delete tag"
 sidebar_label: "Delete tag"
 hide_title: true
 hide_table_of_contents: true
-api: eJzVVU1P20AQ/SurOYG0KLSiF9+CkkqBqkVAP6QoqgZ7Ei9xdpfdcUpq7X9HYyeBNEFIvXGyvfPx3rydGTfgMeCCmEKEbNxAQTEPxrNxFjK4xZkaDUCDkS+PXIIGiwuCDEwBGgI91CZQARmHmjTEvKQFQtYAr7x4RQ7GziCliThH72ykKPaPp6fy2MX7dgkacmeZLIsVva9MjmLt3UdxaV5A+OA8BTZdwgJZTpOGBcWIMzrE4iXjcRfy7D/RG393d085Q0oScXaI6TkW6poeaor8/5RfJ6ohMnId365hk2Mb8WoVZ/tVfHWsPrvaFu+jhk+HbmJkmYLFSt1QWFJQwxBceA/1SELK62B41Y7eOWGg0K+5hGw8kYFhnMlUyhi2OXYLH1BFTIpx1vYwl66ADIr2FHQ3rRn0JEmvMUUSOq1E3aTXoRIzetNbfgCB27C5EWk6NfreXNKq4/Sv8P2rkZrTSmHNJVleC6yO/Py38oGm5lFNXVggH28WSElYUHheIb9O+lejk0tawVYfbAFF7Is/fBj34uetYjcnu4fcKbg2voEtuV0wf9vQffwkYVMn6NJImHO3W9hwJX4/zMyo/tUINIiiHTOh7V3kBbYttkbauaedUrZ9xPTIPV+hsZKivZlmfYHjrgs0ZKaQHihdZDltmjuM9D1UKcnxQ01B2miiYYnB4J2wlH1uorwXkE2xirRHYDslcHS97uBjtV37B+ltlLJybUusavkCDXNadb+FNEl6o7dw6Az9PCfPL0L2plJ6cNvHg+GX4e0QUnoCzPtCbQ==
+api: eJzVVU1P20AQ/SurOYG0KLSiF9+CkkqGqiCgH1IUVYM9sZc43mV3nJJa/u9o7CQkxAipN062d77ejN+brcGhxwUx+QDRpIaUQuKNY2NLiOAOMxWPQIORL4ecg4YSFwQRmBQ0eHqsjKcUIvYVaQhJTguEqAZeOfEK7E2ZQdNMxTk4WwYKYv98eiqP/XpXl6AhsSVTyWJF5wqToFgHD0Fc6p0SzltHnk2XMEWW00bDgkLAjPpQ7CKedCEv/lO98bf3D5QwNI1EnPUhPcdU3dBjRYH/H/LbQDUERq7C+z1scmwj3uzi7LCL75bVV1uV6cfo4Uvfn4hLJl9ioW7JL8mrsffWf4R+JCEllTe8aqV3TujJDyvOIZpMRTCMmahSZNjm2G98RAUxKcas5TDnNoUI0vYUdKfWCAaSZFCbtBE47Yg6pVe+EDM6M1h+Aim3QXMro+mmMXTmklYdpteDH17Hak4rhRXnVPJ6wOrIzf8o52lmntTM+gXy8WaB5IQp+ZcV8vtkeB2fXNIKtvPBtqAM++Iv99e9+HWn2M6pPKjcTXBtfKe25Lbe/GtD++pf+SxO+xFc+QzLdaiKRwc4ulrvd7+b56Tds69QNBI6s4JA6IwJdxuODRfi99NkRg2vY9Ag/7VDJ+CdDbzAlujrants2Wtny2amJx64Ak0pKVp+1GsaTTouaohMKkzMbWA5ret7DPTDF00jx48VeSHzVMMSvcF7QSm3ignynkI0wyLQAYCtVuHoZq2jY7W9fHrhbSZVCnmWWFTyBRrmtOoup2ba6M3MBUNnGCYJOd4JOdgNooStmkbjb+O7MTTNM971cAU=
 sidebar_class_name: "delete api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/tags/{id}"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Delete tag
 <ParamsDetails
   parameters={[{"description":"Tag ID","in":"path","name":"id","required":true,"schema":{"type":"string"}}]}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={undefined}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Delete tag
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"data":{},"message":{"type":"string"}},"required":["data","message"],"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"404":{"description":"Not Found","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      
