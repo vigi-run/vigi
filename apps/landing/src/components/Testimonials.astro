@@ -12,7 +12,7 @@ const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section class="bg-zinc-100 px-4" id="testimonials">
+<section class="section-subtle py-16 px-4" id="testimonials">
   <div class="max-w-screen-lg mx-auto py-12 px-4 sm:px-8 flex flex-col items-center">
     <SectionName>{t.testimonials.sectionName}</SectionName>
     <SectionTitle
@@ -20,7 +20,7 @@ const t = useTranslations(lang);
     >
 
     <div
-      class="border border-[#ECB22E] bg-[#FFDF95] px-4 py-2 rounded-full font-semibold leading-[24px] flex items-center gap-2 mb-8"
+      class="border border-[#eab308]/30 bg-[#eab308]/10 px-5 py-2 rounded-full font-semibold leading-[24px] flex items-center gap-2 mb-10 text-[#fef08a]"
     >
       <svg viewBox="0 0 16 16" aria-hidden="true" width="16" height="16"
         ><path
@@ -34,19 +34,19 @@ const t = useTranslations(lang);
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
       <div class="space-y-4">
         <div
-          class="border border-zinc-200 bg-white p-6 text-lg leading-[145%] rounded-2xl"
+          class="card-testimonial p-6 text-lg leading-[145%] text-white/80"
         >
           "{t.testimonials.quotes[0]}"
         </div>
 
         <div
-          class="border border-zinc-200 bg-white p-6 text-lg leading-[145%] rounded-2xl"
+          class="card-testimonial p-6 text-lg leading-[145%] text-white/80"
         >
           "{t.testimonials.quotes[1]}"
         </div>
 
         <div
-          class="border border-zinc-200 bg-white p-6 text-lg leading-[145%] rounded-2xl"
+          class="card-testimonial p-6 text-lg leading-[145%] text-white/80"
         >
           "{t.testimonials.quotes[1]}"
         </div>
@@ -54,19 +54,19 @@ const t = useTranslations(lang);
 
       <div class="space-y-4">
         <div
-          class="border border-zinc-200 bg-white p-6 text-lg leading-[145%] rounded-2xl"
+          class="card-testimonial p-6 text-lg leading-[145%] text-white/80"
         >
           "{t.testimonials.quotes[2]}"
         </div>
 
         <div
-          class="border border-zinc-200 bg-white p-6 text-lg leading-[145%] rounded-2xl"
+          class="card-testimonial p-6 text-lg leading-[145%] text-white/80"
         >
           "{t.testimonials.quotes[1]}"
         </div>
 
         <div
-          class="border border-zinc-200 bg-white p-6 text-lg leading-[145%] rounded-2xl"
+          class="card-testimonial p-6 text-lg leading-[145%] text-white/80"
         >
           "{t.testimonials.quotes[0]}"
         </div>

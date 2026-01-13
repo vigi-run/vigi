@@ -11,20 +11,20 @@ const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section class="pb-12 px-4" id="alerts">
-  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-8">
-    <h2 class="font-bold text-[32px] leading-[125%] mb-6">{t.alerts.title}</h2>
+<section class="py-8 px-4" id="alerts">
+  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-6 sm:px-8">
+    <h2 class="font-bold text-2xl sm:text-[32px] leading-[125%] mb-8 text-white">{t.alerts.title}</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
       <!-- Email & Webhooks -->
-      <div class="col-span-full mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-2 text-xs font-semibold uppercase tracking-wider text-white/40">
         {t.alerts.categories.emailWebhooks}
       </div>
       <ListItem><Fragment set:html={t.alerts.items.email} /></ListItem>
       <ListItem><Fragment set:html={t.alerts.items.webhook} /></ListItem>
 
       <!-- Chat & Collaboration -->
-      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
         {t.alerts.categories.chatCollab}
       </div>
       <ListItem><Fragment set:html={t.alerts.items.telegram} /></ListItem>
@@ -38,7 +38,7 @@ const t = useTranslations(lang);
       <ListItem><Fragment set:html={t.alerts.items.whatsapp} /></ListItem>
 
       <!-- On-Call & Incident -->
-      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
         {t.alerts.categories.onCall}
       </div>
       <ListItem><Fragment set:html={t.alerts.items.pagerduty} /></ListItem>
@@ -46,7 +46,7 @@ const t = useTranslations(lang);
       <ListItem><Fragment set:html={t.alerts.items.grafana} /></ListItem>
 
       <!-- Mobile Push & Self-Hosted -->
-      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
         {t.alerts.categories.mobilePush}
       </div>
       <ListItem><Fragment set:html={t.alerts.items.ntfy} /></ListItem>

@@ -10,34 +10,34 @@ interface Props {
 const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
 ---
-<section class="mb-12 px-4" id="monitors">
-  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-8">
-    <h2 class="font-bold text-[32px] leading-[125%] mb-6">{t.monitors.title}</h2>
+<section class="py-16 px-4" id="monitors">
+  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-6 sm:px-8">
+    <h2 class="font-bold text-2xl sm:text-[32px] leading-[125%] mb-8 text-white">{t.monitors.title}</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
       <!-- Web & Network -->
-      <div class="col-span-1 sm:col-span-2 mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.webNetwork}</div>
+      <div class="col-span-1 sm:col-span-2 mt-2 text-xs font-semibold uppercase tracking-wider text-white/40">{t.monitors.categories.webNetwork}</div>
       <ListItem><Fragment set:html={t.monitors.items.http} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.tcp} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.ping} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.dns} /></ListItem>
 
       <!-- Application & Infrastructure -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.appInfra}</div>
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">{t.monitors.categories.appInfra}</div>
       <ListItem><Fragment set:html={t.monitors.items.push} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.docker} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.grpc} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.snmp} /></ListItem>
 
       <!-- Databases & Caches -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.databases}</div>
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">{t.monitors.categories.databases}</div>
       <ListItem><Fragment set:html={t.monitors.items.postgresql} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.mssql} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.mongodb} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.redis} /></ListItem>
 
       <!-- Messaging & Streaming -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.messaging}</div>
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">{t.monitors.categories.messaging}</div>
       <ListItem><Fragment set:html={t.monitors.items.mqtt} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.rabbitmq} /></ListItem>
       <ListItem><Fragment set:html={t.monitors.items.kafka} /></ListItem>

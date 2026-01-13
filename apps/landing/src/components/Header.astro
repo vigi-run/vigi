@@ -15,7 +15,7 @@ const basePath = lang === defaultLang ? "" : `/${lang}`;
 
 <header class="sticky top-4 sm:top-8 z-50 px-4">
   <nav
-    class="flex justify-between items-center py-2 px-3 border-b border-gray-200 rounded-full max-w-screen-lg mx-auto shadow mt-4 sm:mt-8 relative glass bg-white/60 backdrop-blur"
+    class="flex justify-between items-center py-2 px-4 sm:px-6 rounded-full max-w-screen-lg mx-auto mt-4 sm:mt-8 glass-header"
   >
     <a href={basePath || "/"} class="flex gap-2 items-center z-10">
       <img src="/logo-mascot.webp" alt="Vigi mascot" class="w-10 h-10 sm:w-12 sm:h-12" />
@@ -31,7 +31,7 @@ const basePath = lang === defaultLang ? "" : `/${lang}`;
 
     <div class="flex gap-2 sm:gap-3 items-center z-10">
       <LanguageSwitcher currentLang={lang} />
-      <a href="https://github.com/vigi-run/vigi" target="_blank" class="hidden sm:inline-flex">
+      <a href="https://github.com/vigi-run/vigi" target="_blank" class="hidden sm:inline-flex text-white/70 hover:text-white transition-colors">
         <span class="sr-only">{t.nav.goToGithub}</span>
         <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
           ><path
@@ -42,7 +42,7 @@ const basePath = lang === defaultLang ? "" : `/${lang}`;
       </a>
       <a
         href="https://github.com/vigi-run/vigi?tab=readme-ov-file#quick-start-docker--sqlite"
-        class="bg-black text-white px-4 py-2 sm:py-3 rounded-full hover:bg-gray-800"
+        class="btn-primary text-sm sm:text-base"
       >
         {t.nav.getStarted}
       </a>

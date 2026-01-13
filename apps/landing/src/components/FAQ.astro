@@ -13,14 +13,14 @@ const { lang = defaultLang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section class="">
+<section class="py-16 px-4">
   <div class="max-w-screen-lg mx-auto py-12 pb-6 flex flex-col items-center">
     <SectionName>{t.faq.sectionName}</SectionName>
     <SectionTitle
       >{t.faq.title} <span class="text-gradient">{t.faq.titleHighlight}</span></SectionTitle
     >
 
-    <div class="border border-[#F4F4F5] bg-[#FBFBFB] rounded-[32px] p-4 w-full">
+    <div class="card-faq p-4 sm:p-6 w-full">
       {t.faq.items.map((item) => (
         <FAQItem question={item.question} answer={item.answer} />
       ))}
