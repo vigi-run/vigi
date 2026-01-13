@@ -48,9 +48,12 @@ export function OrganizationSwitcher() {
                             size="lg"
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                         >
-                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                {/* Replaced Logo with Initials or Icon */}
-                                <span className="font-bold">{currentOrganization.name?.substring(0, 1).toUpperCase()}</span>
+                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground overflow-hidden">
+                                {currentOrganization.image_url ? (
+                                    <img src={currentOrganization.image_url} alt={currentOrganization.name || ''} className="h-full w-full object-cover" />
+                                ) : (
+                                    <span className="font-bold">{currentOrganization.name?.substring(0, 1).toUpperCase()}</span>
+                                )}
                             </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-semibold">
@@ -84,8 +87,12 @@ export function OrganizationSwitcher() {
                                     onClick={() => handleOrgChange(org.slug!)}
                                     className="gap-2 p-2"
                                 >
-                                    <div className="flex size-6 items-center justify-center rounded-sm border">
-                                        {org.name?.substring(0, 1).toUpperCase()}
+                                    <div className="flex size-6 items-center justify-center rounded-sm border overflow-hidden">
+                                        {org.image_url ? (
+                                            <img src={org.image_url} alt={org.name || ''} className="h-full w-full object-cover" />
+                                        ) : (
+                                            org.name?.substring(0, 1).toUpperCase()
+                                        )}
                                     </div>
                                     {org.name}
                                     {currentOrganization.id === org.id && <Check className="ml-auto h-4 w-4" />}
