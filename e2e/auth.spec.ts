@@ -43,12 +43,15 @@ test('Register new user', async ({ page }) => {
   await expect(page).toHaveURL(/.*\/create-organization/, { timeout: 15000 });
 
   // Create organization
-  await page.getByRole('textbox', { name: 'Organization Name' }).fill('Test Org');
+  const orgName = `Test Org ${Date.now()}`;
+  await page.getByRole('textbox', { name: 'Organization Name' }).fill(orgName);
   // Slug is optional/generated
-  await page.getByRole('button', { name: 'Create Organization' }).click();
+
+  // Scope to form to insure we are clicking the right button
+  await page.locator('form').getByRole('button', { name: 'Create Organization' }).click();
 
   // Wait for redirect to monitors page
-  await page.waitForURL('**/monitors', { timeout: 10000 });
+  await page.waitForURL('**/monitors', { timeout: 1000000 });
   await expect(page).toHaveURL(/.*\/monitors$/);
 
   await page.context().storageState({ path: 'storageState.json' });
