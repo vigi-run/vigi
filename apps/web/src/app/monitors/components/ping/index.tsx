@@ -3,29 +3,30 @@ import { TypographyH4 } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Intervals, {
-  intervalsDefaultValues,
-  intervalsSchema,
+    intervalsDefaultValues,
+    intervalsSchema,
 } from "../shared/intervals";
 import General, {
-  generalDefaultValues,
-  generalSchema,
+    generalDefaultValues,
+    generalSchema,
 } from "../shared/general";
 import Notifications, {
-  notificationsDefaultValues,
-  notificationsSchema,
+    notificationsDefaultValues,
+    notificationsSchema,
 } from "../shared/notifications";
 import Tags, {
-  tagsDefaultValues,
-  tagsSchema,
+    tagsDefaultValues,
+    tagsSchema,
 } from "../shared/tags";
 import { useMonitorFormContext } from "../../context/monitor-form-context";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
@@ -34,214 +35,294 @@ import { useEffect } from "react";
 import { useLocalizedTranslation } from "@/hooks/useTranslation";
 
 interface PingConfig {
-  host: string;
-  packet_size: number;
+    host: string;
+    packet_size: number;
+    count: number;
+    per_request_timeout: number;
 }
 
 export const pingSchema = z
-  .object({
-    type: z.literal("ping"),
-    host: z.string().min(1, "Host is required"),
-    packet_size: z
-      .number()
-      .min(0, "Data size must be at least 0 bytes")
-      .max(65507, "Data size must be at most 65507 bytes")
-      .optional(),
-  })
-  .merge(generalSchema)
-  .merge(intervalsSchema)
-  .merge(notificationsSchema)
-  .merge(tagsSchema);
+    .object({
+        type: z.literal("ping"),
+        host: z.string().min(1, "Host is required"),
+        packet_size: z
+            .number()
+            .min(0, "Data size must be at least 0 bytes")
+            .max(65507, "Data size must be at most 65507 bytes")
+            .optional(),
+        count: z
+            .number()
+            .min(1, "Must allow at least 1 packet")
+            .max(10, "Maximum 10 packets allowed")
+            .optional(),
+        per_request_timeout: z
+            .number()
+            .min(1, "Must be at least 1 second")
+            .max(10, "Maximum 10 seconds per ping")
+            .optional(),
+    })
+    .merge(generalSchema)
+    .merge(intervalsSchema)
+    .merge(notificationsSchema)
+    .merge(tagsSchema);
 
 export type PingForm = z.infer<typeof pingSchema>;
 
 export const pingDefaultValues: PingForm = {
-  type: "ping",
-  host: "example.com",
-  packet_size: 32,
-  ...generalDefaultValues,
-  ...intervalsDefaultValues,
-  ...notificationsDefaultValues,
-  ...tagsDefaultValues,
+    type: "ping",
+    host: "example.com",
+    packet_size: 32,
+    count: 1,
+    per_request_timeout: 2,
+    ...generalDefaultValues,
+    ...intervalsDefaultValues,
+    ...notificationsDefaultValues,
+    ...tagsDefaultValues,
 };
 
 export const deserialize = (data: MonitorMonitorResponseDto): PingForm => {
-  let config: PingConfig = {
-    host: "example.com",
-    packet_size: 32,
-  };
+    let config: PingConfig = {
+        host: "example.com",
+        packet_size: 32,
+        count: 1,
+        per_request_timeout: 2,
+    };
 
-  if (data.config) {
-    try {
-      const parsedConfig = JSON.parse(data.config);
-      config = {
-        host: parsedConfig.host || "example.com",
-        packet_size: parsedConfig.packet_size ?? 32,
-      };
-    } catch (error) {
-      console.error("Failed to parse ping monitor config:", error);
+    if (data.config) {
+        try {
+            const parsedConfig = JSON.parse(data.config);
+            config = {
+                host: parsedConfig.host || "example.com",
+                packet_size: parsedConfig.packet_size ?? 32,
+                count: parsedConfig.count ?? 1,
+                per_request_timeout: parsedConfig.per_request_timeout ?? 2,
+            };
+        } catch (error) {
+            console.error("Failed to parse ping monitor config:", error);
+        }
     }
-  }
 
-  return {
-    type: "ping",
-    name: data.name || "My Ping Monitor",
-    host: config.host,
-    packet_size: config.packet_size,
-    interval: data.interval || 60,
-    timeout: data.timeout || 16,
-    max_retries: data.max_retries ?? 3,
-    retry_interval: data.retry_interval || 60,
-    resend_interval: data.resend_interval ?? 10,
-    notification_ids: data.notification_ids || [],
-    tag_ids: data.tag_ids || [],
-  };
+    return {
+        type: "ping",
+        name: data.name || "My Ping Monitor",
+        host: config.host,
+        packet_size: config.packet_size,
+        count: config.count,
+        per_request_timeout: config.per_request_timeout,
+        interval: data.interval || 60,
+        timeout: data.timeout || 16,
+        max_retries: data.max_retries ?? 3,
+        retry_interval: data.retry_interval || 60,
+        resend_interval: data.resend_interval ?? 10,
+        notification_ids: data.notification_ids || [],
+        tag_ids: data.tag_ids || [],
+    };
 };
 
 export const serialize = (formData: PingForm): MonitorCreateUpdateDto => {
-  const config: PingConfig = {
-    host: formData.host,
-    packet_size: formData.packet_size ?? 32,
-  };
+    const config: PingConfig = {
+        host: formData.host,
+        packet_size: formData.packet_size ?? 32,
+        count: formData.count ?? 1,
+        per_request_timeout: formData.per_request_timeout ?? 2,
+    };
 
-  return {
-    type: "ping",
-    name: formData.name,
-    interval: formData.interval,
-    max_retries: formData.max_retries,
-    retry_interval: formData.retry_interval,
-    notification_ids: formData.notification_ids,
-    resend_interval: formData.resend_interval,
-    timeout: formData.timeout,
-    config: JSON.stringify(config),
-    tag_ids: formData.tag_ids,
-  };
+    return {
+        type: "ping",
+        name: formData.name,
+        interval: formData.interval,
+        max_retries: formData.max_retries,
+        retry_interval: formData.retry_interval,
+        notification_ids: formData.notification_ids,
+        resend_interval: formData.resend_interval,
+        timeout: formData.timeout,
+        config: JSON.stringify(config),
+        tag_ids: formData.tag_ids,
+    };
 };
 
 const PingForm = () => {
-  const { t } = useLocalizedTranslation();
-  const {
-    form,
-    setNotifierSheetOpen,
-    isPending,
-    mode,
-    createMonitorMutation,
-    editMonitorMutation,
-    monitorId,
-    monitor,
-  } = useMonitorFormContext();
+    const { t } = useLocalizedTranslation();
+    const {
+        form,
+        setNotifierSheetOpen,
+        isPending,
+        mode,
+        createMonitorMutation,
+        editMonitorMutation,
+        monitorId,
+        monitor,
+    } = useMonitorFormContext();
 
-  const onSubmit = (data: PingForm) => {
-    const payload = serialize(data);
+    const onSubmit = (data: PingForm) => {
+        const payload = serialize(data);
 
-    if (mode === "create") {
-      createMonitorMutation.mutate({
-        body: {
-          ...payload,
-          active: true,
-        },
-      });
-    } else {
-      editMonitorMutation.mutate({
-        path: { id: monitorId! },
-        body: {
-          ...payload,
-          active: monitor?.data?.active,
-        },
-      });
-    }
-  };
+        if (mode === "create") {
+            createMonitorMutation.mutate({
+                body: {
+                    ...payload,
+                    active: true,
+                },
+            });
+        } else {
+            editMonitorMutation.mutate({
+                path: { id: monitorId! },
+                body: {
+                    ...payload,
+                    active: monitor?.data?.active,
+                },
+            });
+        }
+    };
 
-  useEffect(() => {
-    if (mode === "create") {
-      // Preserve the current name when resetting form
-      const currentName = form.getValues("name");
-      form.reset({
-        ...pingDefaultValues,
-        name: currentName || pingDefaultValues.name,
-      });
-    }
-  }, [mode, form]);
+    useEffect(() => {
+        if (mode === "create") {
+            // Preserve the current name when resetting form
+            const currentName = form.getValues("name");
+            form.reset({
+                ...pingDefaultValues,
+                name: currentName || pingDefaultValues.name,
+            });
+        }
+    }, [mode, form]);
 
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => onSubmit(data as PingForm))}
-        className="space-y-6 max-w-[600px]"
-      >
-        <Card>
-          <CardContent className="space-y-4">
-            <General />
-          </CardContent>
-        </Card>
+    return (
+        <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit((data) => onSubmit(data as PingForm))}
+                className="space-y-6 max-w-[600px]"
+            >
+                <Card>
+                    <CardContent className="space-y-4">
+                        <General />
+                    </CardContent>
+                </Card>
 
-        <Card>
-          <CardContent className="space-y-4">
-            <TypographyH4>{t("monitors.form.ping.title")}</TypographyH4>
-            <FormField
-              control={form.control}
-              name="host"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("monitors.form.ping.host")}</FormLabel>
-                  <FormControl>
-                    <Input placeholder="example.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <Card>
+                    <CardContent className="space-y-4">
+                        <TypographyH4>{t("monitors.form.ping.title")}</TypographyH4>
+                        <FormField
+                            control={form.control}
+                            name="host"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{t("monitors.form.ping.host")}</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="example.com" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-            <FormField
-              control={form.control}
-              name="packet_size"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("monitors.form.ping.data_size")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="32"
-                      min="0"
-                      max="65507"
-                      {...field}
-                      onChange={(e) =>
-                        field.onChange(parseInt(e.target.value, 10) || 0)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-        </Card>
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="count"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t("monitors.form.ping.count")}</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                placeholder="1"
+                                                min="1"
+                                                max="10"
+                                                {...field}
+                                                onChange={(e) =>
+                                                    field.onChange(parseInt(e.target.value, 10) || 1)
+                                                }
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            {t("monitors.form.ping.count_description")}
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-        <Card>
-          <CardContent className="space-y-4">
-            <Tags />
-          </CardContent>
-        </Card>
+                            <FormField
+                                control={form.control}
+                                name="per_request_timeout"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            {t("monitors.form.ping.per_request_timeout")}
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                placeholder="2"
+                                                min="1"
+                                                max="10"
+                                                {...field}
+                                                onChange={(e) =>
+                                                    field.onChange(parseInt(e.target.value, 10) || 1)
+                                                }
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            {t("monitors.form.ping.per_request_timeout_description")}
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
 
-        <Card>
-          <CardContent className="space-y-4">
-            <Notifications onNewNotifier={() => setNotifierSheetOpen(true)} />
-          </CardContent>
-        </Card>
+                        <FormField
+                            control={form.control}
+                            name="packet_size"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{t("monitors.form.ping.data_size")}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="32"
+                                            min="0"
+                                            max="65507"
+                                            {...field}
+                                            onChange={(e) =>
+                                                field.onChange(parseInt(e.target.value, 10) || 0)
+                                            }
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </CardContent>
+                </Card>
 
-        <Card>
-          <CardContent className="space-y-4">
-            <Intervals />
-          </CardContent>
-        </Card>
+                <Card>
+                    <CardContent className="space-y-4">
+                        <Tags />
+                    </CardContent>
+                </Card>
 
-        <Button type="submit">
-          {isPending && <Loader2 className="animate-spin" />}
-          {mode === "create" ? t("monitors.form.buttons.create") : t("monitors.form.buttons.update")}
-        </Button>
-      </form>
-    </Form>
-  );
+                <Card>
+                    <CardContent className="space-y-4">
+                        <Notifications onNewNotifier={() => setNotifierSheetOpen(true)} />
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardContent className="space-y-4">
+                        <Intervals />
+                    </CardContent>
+                </Card>
+
+                <Button type="submit">
+                    {isPending && <Loader2 className="animate-spin" />}
+                    {mode === "create"
+                        ? t("monitors.form.buttons.create")
+                        : t("monitors.form.buttons.update")}
+                </Button>
+            </form>
+        </Form>
+    );
 };
 
 export default PingForm;

@@ -2,10 +2,11 @@ package healthcheck
 
 import (
 	"context"
+	"fmt"
+	"time"
 	"vigi/internal/modules/healthcheck/executor"
 	"vigi/internal/modules/proxy"
 	"vigi/internal/modules/shared"
-	"time"
 )
 
 // isImportantForNotification and isImportantBeat have been moved to the ingester
@@ -59,7 +60,34 @@ func (s *HealthCheckSupervisor) HandleMonitorTick(
 	defer cCancel()
 
 	// Execute the health check
-	result := exec.Execute(callCtx, m, proxyModel)
+	// Execute the health check with strict timeout enforcement
+	resultCh := make(chan *executor.Result, 1)
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				s.logger.Errorf("Panic in monitor execution %s: %v", m.Name, r)
+				// Don't write to channel on panic to avoid complex state, let timeout handle it or handle explicitly
+			}
+		}()
+		resultCh <- exec.Execute(callCtx, m, proxyModel)
+	}()
+
+	var result *executor.Result
+	select {
+	case res := <-resultCh:
+		result = res
+	case <-callCtx.Done():
+		s.logger.Warnf("Monitor execution timed out (enforced): %s", m.Name)
+		// Return a timeout result
+		now := time.Now().UTC()
+		result = &executor.Result{
+			Status:    shared.MonitorStatusDown,
+			Message:   fmt.Sprintf("Timeout enforced by supervisor (%ds)", m.Timeout),
+			StartTime: now,
+			EndTime:   now,
+		}
+	}
+
 	if result == nil {
 		return nil
 	}
