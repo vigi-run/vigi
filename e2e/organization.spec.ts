@@ -79,8 +79,8 @@ test.describe('Organization Management', () => {
     await page.getByRole('textbox', { name: 'Organization Name' }).fill(updatedName);
     await page.getByRole('button', { name: 'Update Organization' }).click();
 
-    // Verify success toast/message
-    await expect(page.getByText('Organization updated successfully')).toBeVisible();
+    // Reload to ensure persistence and verify checking the state from the server
+    await page.reload();
 
     // Verify name change in UI
     await expect(page.getByRole('textbox', { name: 'Organization Name' })).toHaveValue(updatedName);

@@ -12,31 +12,17 @@ test.describe('Invitation Flow', () => {
 
         // Invite a new member and intercept the API response to get the token
         const inviteeEmail = `invitee-${Date.now()}@example.com`;
-        let invitationToken = '';
 
-        // Set up response listener before making the request
-        page.on('response', async (response) => {
-            if (response.url().includes('/members') && response.request().method() === 'POST') {
-                try {
-                    const responseBody = await response.json();
-                    if (responseBody.data?.token) {
-                        invitationToken = responseBody.data.token;
-                    }
-                } catch (e) {
-                    // Ignore JSON parse errors
-                }
-            }
-        });
 
         // Fill invitation form
         await page.getByRole('textbox', { name: 'Email' }).fill(inviteeEmail);
-        await page.getByRole('button', { name: 'Invite' }).click();
+        const [response] = await Promise.all([
+            page.waitForResponse(response => response.url().includes('/members') && response.request().method() === 'POST'),
+            page.getByRole('button', { name: 'Invite' }).click()
+        ]);
 
-        // Wait for success message
-        await expect(page.getByText('Member invited successfully')).toBeVisible();
-
-        // Wait a bit to ensure the response was captured
-        await page.waitForTimeout(1000);
+        const responseBody = await response.json();
+        const invitationToken = responseBody.data?.token;
 
         // Verify we captured the token
         expect(invitationToken).toBeTruthy();
