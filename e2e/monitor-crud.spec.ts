@@ -111,8 +111,27 @@ async function deleteMonitor(page: any, monitorName: string) {
 
 test.describe('Monitor CRUD Operations', () => {
     test.beforeEach(async ({ page }) => {
+        // Get the access token from localStorage
+        const token = await page.evaluate(() => {
+            const storage = localStorage.getItem('auth-storage');
+            if (storage) {
+                try {
+                    const parsed = JSON.parse(storage);
+                    return parsed.state?.accessToken;
+                } catch (e) {
+                    console.error('Failed to parse auth-storage', e);
+                    return null;
+                }
+            }
+            return null;
+        });
+
         // Fetch user organizations
-        const response = await page.request.get('/api/v1/user/organizations');
+        const response = await page.request.get('/api/v1/user/organizations', {
+            headers: token ? {
+                'Authorization': `Bearer ${token}`
+            } : undefined
+        });
         expect(response.ok()).toBeTruthy();
         const json = await response.json();
 
