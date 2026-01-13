@@ -33,89 +33,103 @@ import faqItems from "../data/faq";
     />
   </head>
 
-  <body>
+  <body class="bg-[#050508]">
     <BaseBody />
 
     <Header />
-    <main class="">
-      <section
-        class="relative px-4 sm:px-8 pt-16 sm:pt-24 lg:pt-28 m-4 sm:m-8 rounded-3xl"
-      >
-        <div
-          class="absolute top-0 left-0 bg-gradient w-full h-[600px] md:h-[700px] rounded-3xl -z-10"
-        >
-        </div>
-        <h1
-          class="text-3xl sm:text-5xl font-bold text-center max-w-[1100px] mx-auto leading-[122%] text-zinc-950 px-2"
-        >
-          <span class="text-gradient">Código Aberto</span> & <span class="text-gradient">Auto-Hospedado</span> monitoramento de tempo de atividade para <span class="text-gradient">pequenas equipes</span> para detectar interrupções antes que os usuários o façam
-        </h1>
-
-        <p
-          class="text-lg sm:text-xl text-center text-zinc-950 max-w-[678px] mx-auto my-6 px-3"
-        >
-          Monitoramento de tempo de atividade de nível de engenharia que você possui e controla. Sem dependências de nuvem, sem aprisionamento de fornecedor.
-        </p>
-
-        <!-- Open Source & Self-Hosted labels -->
-        <div class="flex flex-wrap items-center justify-center gap-2 mb-6 text-md text-zinc-800">
-          <span>🔓 100% Código Aberto</span>
-          <span class="opacity-50">•</span>
-          <span>🏠 Somente Auto-Hospedado (por enquanto)</span>
-        </div>
-
-        <div
-          class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 mt-2"
-        >
-          <a
-            href="https://demo.vigi.run"
-            class="bg-white text-[#353535] px-4 py-2 rounded-full hover:bg-white/80 font-semibold w-full sm:w-auto text-center"
-            target="_blank"
+    <main>
+      <!-- Hero Section with Animated Gradient -->
+      <section class="hero-gradient relative px-4 sm:px-8 pt-20 sm:pt-28 lg:pt-32 pb-16 sm:pb-24">
+        <!-- Extra floating orb -->
+        <div class="orb-accent"></div>
+        
+        <div class="relative z-10 max-w-[1100px] mx-auto">
+          <h1
+            class="text-3xl sm:text-5xl lg:text-6xl font-bold text-center leading-[1.2] text-white px-2 animate-fade-in-up"
           >
-            Experimente a Demo
-          </a>
-          <a
-            href="https://github.com/vigi-run/vigi?tab=readme-ov-file#quick-start-docker--sqlite"
-            class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 font-semibold w-full sm:w-auto text-center"
-            target="_blank"
+            <span class="text-gradient text-glow">Código Aberto</span> &amp; <span class="text-gradient text-glow">Auto-Hospedado</span>
+            <br class="hidden sm:block" />
+            monitoramento de tempo de atividade para
+            <br class="hidden sm:block" />
+            <span class="text-gradient text-glow">pequenas equipes</span>
+          </h1>
+
+          <p
+            class="text-lg sm:text-xl text-center text-white/70 max-w-[700px] mx-auto my-8 px-3 animate-fade-in-up animate-delay-100"
           >
-            Início Rápido
-          </a>
-          <a
-            href="https://github.com/vigi-run/vigi"
-            class="bg-white text-[#353535] px-4 py-2 rounded-full hover:bg-white/80 font-semibold w-full sm:w-auto text-center"
-            target="_blank"
-            rel="noopener noreferrer"
+            Monitoramento de tempo de atividade de nível de engenharia que você possui e controla. Sem dependências de nuvem, sem aprisionamento de fornecedor.
+          </p>
+
+          <!-- Open Source & Self-Hosted labels -->
+          <div class="flex flex-wrap items-center justify-center gap-3 mb-8 text-sm sm:text-base text-white/60 animate-fade-in-up animate-delay-200">
+            <span class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+              🔓 100% Código Aberto
+            </span>
+            <span class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+              🏠 Somente Auto-Hospedado (por enquanto)
+            </span>
+          </div>
+
+          <!-- CTA Buttons -->
+          <div
+            class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 animate-fade-in-up animate-delay-300"
           >
-            <span>⭐</span>
-            <span>Marcar com Estrela no GitHub</span>
-            <span id="github-stars" class="opacity-70 ml-1 text-gradient"
-            ></span>
-          </a>
+            <a
+              href="https://demo.vigi.run"
+              class="btn-secondary text-center"
+              target="_blank"
+            >
+              Experimente a Demo
+            </a>
+            <a
+              href="https://github.com/vigi-run/vigi?tab=readme-ov-file#quick-start-docker--sqlite"
+              class="btn-primary text-center"
+              target="_blank"
+            >
+              Início Rápido
+            </a>
+            <a
+              href="https://github.com/vigi-run/vigi"
+              class="btn-secondary text-center flex items-center justify-center gap-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>⭐</span>
+              <span>Marcar com Estrela no GitHub</span>
+              <span id="github-stars" class="text-gradient font-semibold"></span>
+            </a>
+          </div>
         </div>
 
-        <!-- Mobile image -->
-        <div class="mt-8 md:hidden">
-          <img
-            src="/demo.webp"
-            alt="Vigi"
-            class="w-full max-w-[800px] mx-auto rounded-xl"
-          />
-        </div>
+        <!-- Demo Image Section -->
+        <div class="relative z-10 mt-12 sm:mt-16 max-w-[1200px] mx-auto animate-fade-in-up animate-delay-400">
+          <!-- Mobile image -->
+          <div class="md:hidden">
+            <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/50">
+              <img
+                src="/demo.webp"
+                alt="Vigi"
+                class="w-full"
+              />
+            </div>
+          </div>
 
-        <!-- Desktop image with mascot -->
-        <div class="hidden md:flex justify-center">
-          <div class="relative">
-            <img
-              src="/demo.webp"
-              alt="Vigi"
-              class="w-full max-w-[1056px] mx-auto"
-            />
-            <img
-              src="/meerkat.webp"
-              alt="Meerkat mascot"
-              class="absolute -bottom-[100px] -right-[180px] w-[280px] lg:w-[400px] z-10"
-            />
+          <!-- Desktop image with mascot -->
+          <div class="hidden md:flex justify-center">
+            <div class="relative">
+              <div class="rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-black/50">
+                <img
+                  src="/demo.webp"
+                  alt="Vigi"
+                  class="w-full max-w-[1056px]"
+                />
+              </div>
+              <img
+                src="/meerkat.webp"
+                alt="Meerkat mascot"
+                class="absolute -bottom-[80px] -right-[140px] w-[240px] lg:w-[320px] z-10 drop-shadow-2xl"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -127,11 +141,11 @@ import faqItems from "../data/faq";
       <FAQ />
 
       <!-- SEO Content Section -->
-      <section class="max-w-screen-lg mx-auto px-4 sm:px-8 py-4">
+      <section class="max-w-screen-lg mx-auto px-4 sm:px-8 py-8">
         <div class="flex justify-center mb-4">
           <button
             id="seo-toggle"
-            class="text-zinc-600 hover:text-zinc-900 font-semibold px-4 py-2 rounded-full border border-zinc-300 hover:border-zinc-400 transition-colors"
+            class="text-white/50 hover:text-white/80 font-semibold px-6 py-2 rounded-full border border-white/10 hover:border-white/20 transition-all duration-200 bg-white/5"
             aria-expanded="false"
             aria-controls="seo-content"
           >
@@ -141,9 +155,9 @@ import faqItems from "../data/faq";
         </div>
         <div
           id="seo-content"
-          class="seo-content-hidden prose prose-zinc max-w-none text-zinc-600 text-sm sm:text-base leading-relaxed"
+          class="seo-content-hidden prose prose-invert max-w-none text-white/60 text-sm sm:text-base leading-relaxed"
         >
-          <h2 class="text-2xl font-bold text-zinc-900 mb-4">Monitor de tempo de atividade auto-hospedado para controle de disponibilidade de serviço</h2>
+          <h2 class="text-2xl font-bold text-white mb-4">Monitor de tempo de atividade auto-hospedado para controle de disponibilidade de serviço</h2>
 
           <p class="mb-4">
             Um monitor de tempo de atividade auto-hospedado é a base de uma infraestrutura estável e previsível. Quando sites, APIs ou serviços internos ficam indisponíveis, é importante saber disso imediatamente, não pelos usuários. Nosso serviço permite que você acompanhe a disponibilidade e a operacionalidade da infraestrutura em tempo real, totalmente dentro do seu ambiente e sob seu controle.
@@ -157,15 +171,12 @@ import faqItems from "../data/faq";
             Nosso monitor de tempo de atividade auto-hospedado é adequado tanto para pequenas equipes quanto para projetos em crescimento com arquitetura distribuída. O sistema escala facilmente, não o vincula a provedores de terceiros e fornece uma compreensão transparente do estado dos serviços a qualquer momento.
           </p>
 
-
-
-          <h3 class="text-xl font-semibold text-zinc-900 mt-6 mb-3">Capacidades do monitor de tempo de atividade auto-hospedado</h3>
+          <h3 class="text-xl font-semibold text-white mt-6 mb-3">Capacidades do monitor de tempo de atividade auto-hospedado</h3>
           <p class="mb-4">
             A plataforma suporta uma ampla gama de verificações necessárias para o monitoramento de disponibilidade moderno. Você pode rastrear sites HTTP e HTTPS, endpoints de API, portas TCP, ping ICMP, consultas DNS, verificações de Webhook no modo push, bancos de dados e corretores de mensagens. O monitoramento de contêineres Docker, serviços gRPC e serviços SNMP também é suportado, o que permite controlar tanto o perímetro externo quanto os componentes internos da infraestrutura.
           </p>
           <p class="mb-4">
             Quando ocorrem problemas, o serviço envia instantaneamente notificações através de canais convenientes: Telegram, Slack, Email, WhatsApp, Discord, Webhook e outros. As notificações podem ser configuradas de forma flexível, separadas por níveis de gravidade e adaptadas aos processos da equipe para que as respostas sejam rápidas e sem ruído desnecessário.
-
           </p>
           <p class="mb-4">
             Para transparência de disponibilidade, são fornecidas páginas de status. Elas podem ser públicas para clientes ou privadas para uso interno e exibir o estado atual dos serviços em um formato claro e visual. Isso ajuda a reduzir o número de solicitações de suporte e aumentar a confiança no serviço.
@@ -238,50 +249,3 @@ import faqItems from "../data/faq";
     </script>
   </body>
 </html>
-
-<style>
-  /* SEO content visibility - hidden by default but always in DOM for SEO */
-  .seo-content-hidden {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-  }
-
-  .seo-content-visible {
-    max-height: 5000px;
-    overflow: visible;
-    transition: max-height 0.5s ease-in;
-  }
-
-  /* Ensure content is readable by search engines even when hidden */
-  .seo-content-hidden * {
-    position: relative;
-    visibility: visible;
-  }
-</style>
-
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="0"
-  height="0"
-  style="position:absolute; overflow:hidden"
->
-  <defs>
-    <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%">
-      <feTurbulence
-        type="fractalNoise"
-        baseFrequency="0.008 0.008"
-        numOctaves="2"
-        seed="92"
-        result="noise"></feTurbulence>
-      <feGaussianBlur in="noise" stdDeviation="2" result="blurred"
-      ></feGaussianBlur>
-      <feDisplacementMap
-        in="SourceGraphic"
-        in2="blurred"
-        scale="12"
-        xChannelSelector="R"
-        yChannelSelector="G"></feDisplacementMap>
-    </filter>
-  </defs>
-</svg>

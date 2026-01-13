@@ -1,41 +1,52 @@
 @import "tailwindcss";
 
+/* ========================================
+   DARK THEME SAAS LANDING PAGE
+   ======================================== */
+
 :root {
-  /* Inner shadow */
-  --shadow-offset: 0;
-  --shadow-blur: 20px;
-  --shadow-spread: -5px;
-  --shadow-color: rgba(255, 255, 255, 0.7);
-
-  /* Painted glass */
-  --tint-color: 255, 255, 255;
-  --tint-opacity: 0.4;
-
-  /* Background frost */
-  --frost-blur: 1px;
-
-  /* SVG noise/distortion */
-  --noise-frequency: 0.001;
-  --distortion-strength: 1;
-
-  /* Outer shadow blur */
-  --outer-shadow-blur: 24px;
-
-  --shadow-color: #ffffff;
-  --shadow-blur: 12px;
-  --shadow-spread: -9px;
-  --tint-color: 255, 255, 255;
-  --tint-opacity: 0.03;
-  --frost-blur: 6px;
+  /* Primary Color - Teal (matching dashboard) */
+  --primary: oklch(0.72 0.13 195);
+  --primary-hex: #4BB8C8;
+  --primary-light: #67e8f9;
+  --primary-dark: #0d9488;
+  
+  /* Background Colors */
+  --bg-primary: #050508;
+  --bg-secondary: #0a0a10;
+  --bg-card: rgba(255, 255, 255, 0.02);
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  
+  /* Border Colors */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 20px;
+  
+  /* Glow Effects */
+  --glow-primary: rgba(75, 184, 200, 0.3);
+  --glow-intense: rgba(75, 184, 200, 0.5);
+  
+  /* Anchor offset */
+  --anchor-offset: 120px;
 }
-
-:root { --anchor-offset: 120px; }
 
 /* Any element you can jump to (has an id) gets an offset */
 [id] { scroll-margin-top: var(--anchor-offset); }
 
-/* Optional: smooth scrolling */
+/* Smooth scrolling */
 html { scroll-behavior: smooth; }
+
+/* ========================================
+   FONTS
+   ======================================== */
 
 @font-face {
   font-family: "Geist";
@@ -44,6 +55,7 @@ html { scroll-behavior: smooth; }
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: "Geist";
   src: url("/fonts/geist-bold.woff2") format("woff2");
@@ -59,19 +71,251 @@ html { scroll-behavior: smooth; }
   font-style: normal;
   font-display: swap;
 }
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
 body {
   font-family: "Geist", sans-serif;
   margin: 0;
   padding: 0;
-  /* text-align: left; */
-  /* background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7; */
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
 }
+
+/* ========================================
+   ANIMATED MESH GRADIENT BACKGROUND
+   ======================================== */
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    filter: blur(80px);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(100px);
+  }
+}
+
+.hero-gradient {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    #0c1a20 25%,
+    #071215 50%,
+    #0a1a1f 75%,
+    var(--bg-primary) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 20s ease infinite;
+  overflow: hidden;
+}
+
+.hero-gradient::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--glow-primary) 0%, transparent 70%);
+  animation: float 15s ease-in-out infinite, pulse-glow 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero-gradient::after {
+  content: "";
+  position: absolute;
+  bottom: 20%;
+  right: 15%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(103, 232, 249, 0.2) 0%, transparent 70%);
+  animation: float 18s ease-in-out infinite reverse, pulse-glow 10s ease-in-out infinite 2s;
+  pointer-events: none;
+}
+
+/* Extra floating orb */
+.orb-accent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.25) 0%, transparent 70%);
+  animation: float 12s ease-in-out infinite 1s, pulse-glow 6s ease-in-out infinite 1s;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========================================
+   TEXT GRADIENT (Teal)
+   ======================================== */
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-hex), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-glow {
+  text-shadow: 0 0 40px var(--glow-primary);
+}
+
+/* ========================================
+   GLASSMORPHISM CARDS
+   ======================================== */
+
+.card {
+  background: var(--glass-bg);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  border-color: rgba(75, 184, 200, 0.2);
+  box-shadow: 0 0 30px rgba(75, 184, 200, 0.1);
+  transform: translateY(-2px);
+}
+
+/* FAQ Card variant */
+.card-faq {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+}
+
+/* Testimonial Card */
+.card-testimonial {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.card-testimonial:hover {
+  border-color: var(--border-default);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ========================================
+   GLASS HEADER
+   ======================================== */
+
+.glass-header {
+  background: rgba(10, 10, 16, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-hex));
+  color: var(--bg-primary);
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(75, 184, 200, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(75, 184, 200, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-default);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-hex);
+}
+
+/* ========================================
+   LIST ITEM GRADIENT (Teal)
+   ======================================== */
+
+.list-item-bg {
+  background: linear-gradient(
+    135deg,
+    var(--primary-dark) 0%,
+    var(--primary-hex) 100%
+  );
+}
+
+/* ========================================
+   FOOTER GRADIENT
+   ======================================== */
+
+.footer-gradient {
+  background: linear-gradient(
+    180deg,
+    var(--bg-primary) 0%,
+    rgba(13, 148, 136, 0.05) 50%,
+    var(--bg-secondary) 100%
+  );
+}
+
+/* ========================================
+   SECTION BACKGROUNDS
+   ======================================== */
+
+.section-dark {
+  background: var(--bg-secondary);
+}
+
+.section-subtle {
+  background: rgba(75, 184, 200, 0.02);
+}
+
+/* ========================================
+   SCREEN READER ONLY
+   ======================================== */
 
 .sr-only {
   border: 0;
@@ -81,70 +325,53 @@ body {
   height: 1px;
   width: 1px;
   overflow: hidden;
-  /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
   clip: rect(1px 1px 1px 1px);
-  /* maybe deprecated but we need to support legacy browsers */
   clip: rect(1px, 1px, 1px, 1px);
-  /* modern browsers, clip-path works inwards from each corner */
   clip-path: inset(50%);
-  /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
   white-space: nowrap;
 }
 
-.bg-gradient {
-  background-image: url("/hero-section-bg.webp");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+/* ========================================
+   SEO CONTENT TOGGLE
+   ======================================== */
+
+.seo-content-hidden {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
 }
 
-.text-gradient {
-  background: radial-gradient(#5e25bf, #9c6cee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.seo-content-visible {
+  max-height: 5000px;
+  overflow: visible;
+  transition: max-height 0.5s ease-in;
 }
 
-.glass {
-  /* position: relative; */
-  /* position: absolute;
-  width: 300px;
-  height: 200px;
-  border-radius: 28px;
-  cursor: move;
-  touch-action: none; */
-  /* enable pointer dragging on touch */
-  /* isolation: isolate; */
-  /* box-shadow: 0px 6px var(--outer-shadow-blur) rgba(0, 0, 0, 0.2); */
+.seo-content-hidden * {
+  position: relative;
+  visibility: visible;
 }
 
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: 28px;
-  box-shadow: inset var(--shadow-offset) var(--shadow-offset) var(--shadow-blur)
-    var(--shadow-spread) var(--shadow-color);
-  background-color: rgba(var(--tint-color), var(--tint-opacity));
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.glass::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: 28px;
-  backdrop-filter: blur(var(--frost-blur));
-  filter: url(#glass-distortion);
-  isolation: isolate;
-  -webkit-backdrop-filter: blur(var(--frost-blur));
-  -webkit-filter: url("#glass-distortion");
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
 }
 
-.card {
-  background-color: #FDFDFD;
-  border-radius: 32px;
-  border: 1px solid #EAEAEA;
-  /* padding: 16px; */
-  gap: 20px;
-}
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }

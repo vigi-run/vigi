@@ -2,47 +2,49 @@
 import ListItem from "../components/ListItem.astro";
 ---
 
-<section class="pb-12 px-4" id="alerts">
-  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-8">
-    <h2 class="font-bold text-[32px] leading-[125%] mb-6">Canais de Alerta</h2>
+<section class="py-8 px-4" id="alerts">
+  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-6 sm:px-8">
+    <h2 class="font-bold text-2xl sm:text-[32px] leading-[125%] mb-8 text-white">
+      <span class="text-gradient">Canais</span> de Alerta
+    </h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
       <!-- Email & Webhooks -->
-      <div class="col-span-full mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-2 text-xs font-semibold uppercase tracking-wider text-white/40">
         Email & Webhooks
       </div>
-      <ListItem><strong>Email (SMTP)</strong> — Envie alertas através do seu servidor SMTP</ListItem>
-      <ListItem><strong>Webhook</strong> — POST JSON payloads para qualquer endpoint HTTP</ListItem>
+      <ListItem><strong class="text-white">Email (SMTP)</strong> — Envie alertas através do seu servidor SMTP</ListItem>
+      <ListItem><strong class="text-white">Webhook</strong> — POST JSON payloads para qualquer endpoint HTTP</ListItem>
 
       <!-- Chat & Colaboração -->
-      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
         Chat & Colaboração
       </div>
-      <ListItem><strong>Telegram</strong> — Mensagens de bot para usuários/canais</ListItem>
-      <ListItem><strong>Slack</strong> — Webhook de entrada para canais</ListItem>
-      <ListItem><strong>Google Chat</strong> — Webhooks de espaço</ListItem>
-      <ListItem><strong>Signal</strong> — Mensagens seguras via bot/integração</ListItem>
-      <ListItem><strong>Mattermost</strong> — Webhook de entrada para canais</ListItem>
-      <ListItem><strong>Matrix</strong> — Envie para salas via token de acesso</ListItem>
-      <ListItem><strong>Discord</strong> — Webhooks de canal</ListItem>
-      <ListItem><strong>WeCom</strong> — Mensagens empresariais para grupos</ListItem>
-      <ListItem><strong>WhatsApp (WAHA)</strong> — Via gateway WAHA</ListItem>
+      <ListItem><strong class="text-white">Telegram</strong> — Mensagens de bot para usuários/canais</ListItem>
+      <ListItem><strong class="text-white">Slack</strong> — Webhook de entrada para canais</ListItem>
+      <ListItem><strong class="text-white">Google Chat</strong> — Webhooks de espaço</ListItem>
+      <ListItem><strong class="text-white">Signal</strong> — Mensagens seguras via bot/integração</ListItem>
+      <ListItem><strong class="text-white">Mattermost</strong> — Webhook de entrada para canais</ListItem>
+      <ListItem><strong class="text-white">Matrix</strong> — Envie para salas via token de acesso</ListItem>
+      <ListItem><strong class="text-white">Discord</strong> — Webhooks de canal</ListItem>
+      <ListItem><strong class="text-white">WeCom</strong> — Mensagens empresariais para grupos</ListItem>
+      <ListItem><strong class="text-white">WhatsApp (WAHA)</strong> — Via gateway WAHA</ListItem>
 
       <!-- On-Call & Incidente -->
-      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
         On-Call & Incidente
       </div>
-      <ListItem><strong>PagerDuty</strong> — Acione incidentes e escalonamentos</ListItem>
-      <ListItem><strong>Opsgenie</strong> — Alertas, roteamento e plantão</ListItem>
-      <ListItem><strong>Grafana OnCall</strong> — Integre com agendamentos de plantão</ListItem>
+      <ListItem><strong class="text-white">PagerDuty</strong> — Acione incidentes e escalonamentos</ListItem>
+      <ListItem><strong class="text-white">Opsgenie</strong> — Alertas, roteamento e plantão</ListItem>
+      <ListItem><strong class="text-white">Grafana OnCall</strong> — Integre com agendamentos de plantão</ListItem>
 
       <!-- Push Móvel & Auto-Hospedado -->
-      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">
+      <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
         Push Móvel & Auto-Hospedado
       </div>
-      <ListItem><strong>NTFY</strong> — Notificações push pub/sub simples</ListItem>
-      <ListItem><strong>Gotify</strong> — Servidor de push auto-hospedado</ListItem>
-      <ListItem><strong>Pushover</strong> — Push móvel/desktop confiável</ListItem>
+      <ListItem><strong class="text-white">NTFY</strong> — Notificações push pub/sub simples</ListItem>
+      <ListItem><strong class="text-white">Gotify</strong> — Servidor de push auto-hospedado</ListItem>
+      <ListItem><strong class="text-white">Pushover</strong> — Push móvel/desktop confiável</ListItem>
     </div>
   </div>
 </section>

@@ -1,37 +1,39 @@
 ---
 import ListItem from "./ListItem.astro";
 ---
-<section class="mb-12 px-4" id="monitors">
-  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-8">
-    <h2 class="font-bold text-[32px] leading-[125%] mb-6">Monitores Disponíveis</h2>
+<section class="py-16 px-4" id="monitors">
+  <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-6 sm:px-8">
+    <h2 class="font-bold text-2xl sm:text-[32px] leading-[125%] mb-8 text-white">
+      <span class="text-gradient">Monitores</span> Disponíveis
+    </h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
       <!-- Web & Rede -->
-      <div class="col-span-1 sm:col-span-2 mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">Web & Rede</div>
-      <ListItem><strong>HTTP/HTTPS</strong> — Monitore sites, APIs e serviços web</ListItem>
-      <ListItem><strong>TCP</strong> — Verifique a conectividade e disponibilidade de portas TCP</ListItem>
-      <ListItem><strong>Ping (ICMP)</strong> — Meça a alcançabilidade e a latência de ida e volta</ListItem>
-      <ListItem><strong>DNS</strong> — Verifique as respostas de consulta e os tempos de resolução</ListItem>
+      <div class="col-span-1 sm:col-span-2 mt-2 text-xs font-semibold uppercase tracking-wider text-white/40">Web & Rede</div>
+      <ListItem><strong class="text-white">HTTP/HTTPS</strong> — Monitore sites, APIs e serviços web</ListItem>
+      <ListItem><strong class="text-white">TCP</strong> — Verifique a conectividade e disponibilidade de portas TCP</ListItem>
+      <ListItem><strong class="text-white">Ping (ICMP)</strong> — Meça a alcançabilidade e a latência de ida e volta</ListItem>
+      <ListItem><strong class="text-white">DNS</strong> — Verifique as respostas de consulta e os tempos de resolução</ListItem>
 
       <!-- Aplicação & Infraestrutura -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">Aplicação & Infraestrutura</div>
-      <ListItem><strong>Push (webhook de entrada)</strong> — Aceite heartbeats de trabalhos e serviços</ListItem>
-      <ListItem><strong>Contêiner Docker</strong> — Acompanhe o status e a saúde do contêiner</ListItem>
-      <ListItem><strong>gRPC</strong> — Execute verificações de saúde/serviço gRPC e latência</ListItem>
-      <ListItem><strong>SNMP</strong> — Consulte a disponibilidade de dispositivos e OIDs chave</ListItem>
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">Aplicação & Infraestrutura</div>
+      <ListItem><strong class="text-white">Push (webhook de entrada)</strong> — Aceite heartbeats de trabalhos e serviços</ListItem>
+      <ListItem><strong class="text-white">Contêiner Docker</strong> — Acompanhe o status e a saúde do contêiner</ListItem>
+      <ListItem><strong class="text-white">gRPC</strong> — Execute verificações de saúde/serviço gRPC e latência</ListItem>
+      <ListItem><strong class="text-white">SNMP</strong> — Consulte a disponibilidade de dispositivos e OIDs chave</ListItem>
 
       <!-- Bancos de Dados & Caches -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">Bancos de Dados & Caches</div>
-      <ListItem><strong>PostgreSQL</strong> — Conecte e execute uma consulta leve</ListItem>
-      <ListItem><strong>Microsoft SQL Server</strong> — Conecte e execute uma consulta leve</ListItem>
-      <ListItem><strong>MongoDB</strong> — Ping/handshake e leitura simples</ListItem>
-      <ListItem><strong>Redis</strong> — PING/latência e saúde básica</ListItem>
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">Bancos de Dados & Caches</div>
+      <ListItem><strong class="text-white">PostgreSQL</strong> — Conecte e execute uma consulta leve</ListItem>
+      <ListItem><strong class="text-white">Microsoft SQL Server</strong> — Conecte e execute uma consulta leve</ListItem>
+      <ListItem><strong class="text-white">MongoDB</strong> — Ping/handshake e leitura simples</ListItem>
+      <ListItem><strong class="text-white">Redis</strong> — PING/latência e saúde básica</ListItem>
 
       <!-- Mensagens & Streaming -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">Mensagens & Streaming</div>
-      <ListItem><strong>Broker MQTT</strong> — Teste de fumaça de conexão/inscrição/publicação</ListItem>
-      <ListItem><strong>RabbitMQ</strong> — Conexão e saúde da fila</ListItem>
-      <ListItem><strong>Produtor Kafka</strong> — Produza uma mensagem de teste para um tópico</ListItem>
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">Mensagens & Streaming</div>
+      <ListItem><strong class="text-white">Broker MQTT</strong> — Teste de fumaça de conexão/inscrição/publicação</ListItem>
+      <ListItem><strong class="text-white">RabbitMQ</strong> — Conexão e saúde da fila</ListItem>
+      <ListItem><strong class="text-white">Produtor Kafka</strong> — Produza uma mensagem de teste para um tópico</ListItem>
     </div>
   </div>
 </section>

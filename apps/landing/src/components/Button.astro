@@ -1,7 +1,15 @@
 ---
-const { href, children } = Astro.props;
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
 ---
 
-<a href={href} class="bg-black px-4 py-2 rounded-full text-white font-semibold leading-[24px]">
+<a
+  href={href}
+  target="_blank"
+  class="btn-primary inline-block text-center"
+>
   <slot />
 </a>
