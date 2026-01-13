@@ -1,37 +1,46 @@
 ---
 import ListItem from "./ListItem.astro";
+import { type Lang, defaultLang } from "../i18n/config";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 ---
 <section class="mb-12 px-4" id="monitors">
   <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-8">
-    <h2 class="font-bold text-[32px] leading-[125%] mb-6">Monitores Disponíveis</h2>
+    <h2 class="font-bold text-[32px] leading-[125%] mb-6">{t.monitors.title}</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-      <!-- Web & Rede -->
-      <div class="col-span-1 sm:col-span-2 mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">Web & Rede</div>
-      <ListItem><strong>HTTP/HTTPS</strong> — Monitore sites, APIs e serviços web</ListItem>
-      <ListItem><strong>TCP</strong> — Verifique a conectividade e disponibilidade de portas TCP</ListItem>
-      <ListItem><strong>Ping (ICMP)</strong> — Meça a alcançabilidade e a latência de ida e volta</ListItem>
-      <ListItem><strong>DNS</strong> — Verifique as respostas de consulta e os tempos de resolução</ListItem>
+      <!-- Web & Network -->
+      <div class="col-span-1 sm:col-span-2 mt-2 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.webNetwork}</div>
+      <ListItem><Fragment set:html={t.monitors.items.http} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.tcp} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.ping} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.dns} /></ListItem>
 
-      <!-- Aplicação & Infraestrutura -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">Aplicação & Infraestrutura</div>
-      <ListItem><strong>Push (webhook de entrada)</strong> — Aceite heartbeats de trabalhos e serviços</ListItem>
-      <ListItem><strong>Contêiner Docker</strong> — Acompanhe o status e a saúde do contêiner</ListItem>
-      <ListItem><strong>gRPC</strong> — Execute verificações de saúde/serviço gRPC e latência</ListItem>
-      <ListItem><strong>SNMP</strong> — Consulte a disponibilidade de dispositivos e OIDs chave</ListItem>
+      <!-- Application & Infrastructure -->
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.appInfra}</div>
+      <ListItem><Fragment set:html={t.monitors.items.push} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.docker} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.grpc} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.snmp} /></ListItem>
 
-      <!-- Bancos de Dados & Caches -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">Bancos de Dados & Caches</div>
-      <ListItem><strong>PostgreSQL</strong> — Conecte e execute uma consulta leve</ListItem>
-      <ListItem><strong>Microsoft SQL Server</strong> — Conecte e execute uma consulta leve</ListItem>
-      <ListItem><strong>MongoDB</strong> — Ping/handshake e leitura simples</ListItem>
-      <ListItem><strong>Redis</strong> — PING/latência e saúde básica</ListItem>
+      <!-- Databases & Caches -->
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.databases}</div>
+      <ListItem><Fragment set:html={t.monitors.items.postgresql} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.mssql} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.mongodb} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.redis} /></ListItem>
 
-      <!-- Mensagens & Streaming -->
-      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">Mensagens & Streaming</div>
-      <ListItem><strong>Broker MQTT</strong> — Teste de fumaça de conexão/inscrição/publicação</ListItem>
-      <ListItem><strong>RabbitMQ</strong> — Conexão e saúde da fila</ListItem>
-      <ListItem><strong>Produtor Kafka</strong> — Produza uma mensagem de teste para um tópico</ListItem>
+      <!-- Messaging & Streaming -->
+      <div class="col-span-1 sm:col-span-2 mt-6 text-xs font-semibold uppercase tracking-wider opacity-70">{t.monitors.categories.messaging}</div>
+      <ListItem><Fragment set:html={t.monitors.items.mqtt} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.rabbitmq} /></ListItem>
+      <ListItem><Fragment set:html={t.monitors.items.kafka} /></ListItem>
     </div>
   </div>
 </section>

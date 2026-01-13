@@ -1,5 +1,15 @@
 ---
 import Button from "./Button.astro";
+import { type Lang, defaultLang } from "../i18n/config";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const basePath = lang === defaultLang ? "" : `/${lang}`;
 const today = new Date();
 ---
 
@@ -8,11 +18,10 @@ const today = new Date();
     <div
       class="text-center text-2xl sm:text-[40px] font-semibold leading-[135%] mt-12 sm:mt-[84px] mx-4 sm:mx-[112px] mb-[28px]"
     >
-      Implante rapidamente, acompanhe verificações em tempo real, publique páginas de status e receba
-      alertas apenas quando realmente importa
+      {t.footer.cta}
     </div>
     <div class="flex justify-center">
-      <Button href="https://github.com/vigi-run/vigi?tab=readme-ov-file#quick-start-docker--sqlite">Comece Agora</Button>
+      <Button href="https://github.com/vigi-run/vigi?tab=readme-ov-file#quick-start-docker--sqlite">{t.footer.ctaButton}</Button>
     </div>
     <div
       class="flex flex-col sm:flex-row gap-6 sm:gap-0 font-semibold leading-[135%] text-[#373737] justify-between w-full items-center sm:items-end mt-8"
@@ -20,16 +29,16 @@ const today = new Date();
       <nav>
         <ul class="flex flex-wrap justify-center gap-4">
           <li>
-            <a href="/#monitors">Monitores</a>
+            <a href={`${basePath}/#monitors`}>{t.nav.monitors}</a>
           </li>
           <li>
-            <a href="/#alerts">Alertas</a>
+            <a href={`${basePath}/#alerts`}>{t.nav.alerts}</a>
           </li>
           <li>
-            <a href="/#testimonials">Depoimentos</a>
+            <a href={`${basePath}/#testimonials`}>{t.nav.testimonials}</a>
           </li>
           <li>
-            <a href="https://docs.vigi.run" target="_blank">Docs</a>
+            <a href="https://docs.vigi.run" target="_blank">{t.nav.docs}</a>
           </li>
         </ul>
       </nav>
@@ -37,7 +46,7 @@ const today = new Date();
       <div class="flex items-center gap-4">
         <div class="flex justify-center gap-6">
           <a href="https://github.com/vigi-run/vigi" target="_blank">
-            <span class="sr-only">Ir para o repositório do Vigi no GitHub</span>
+            <span class="sr-only">{t.footer.goToGithub}</span>
             <svg viewBox="0 0 16 16" aria-hidden="true" width="21" height="21"
               ><path
                 fill="currentColor"
@@ -46,7 +55,7 @@ const today = new Date();
             >
           </a>
           <a href="https://discord.gg/Xuv8b5AhPF" target="_blank">
-            <span class="sr-only">Go to Vigi's Discord</span>
+            <span class="sr-only">{t.footer.goToDiscord}</span>
             <svg
               width="21"
               height="21"
@@ -74,13 +83,13 @@ const today = new Date();
     class="max-w-screen-lg mx-auto p-6 sm:p-8 leading-[135%] font-semibold text-[#AFAFAF] flex flex-col sm:flex-row gap-4 sm:gap-0 items-center justify-between"
   >
     <div>
-      &copy; {today.getFullYear()} Vigi. Todos os direitos reservados.
+      &copy; {today.getFullYear()} {t.footer.copyright}
     </div>
 
-    <a href="/privacy-policy">Política de Privacidade</a>
-    <a href="/terms-and-conditions">Termos e Condições</a>
+    <a href={`${basePath}/privacy-policy`}>{t.footer.privacyPolicy}</a>
+    <a href={`${basePath}/terms-and-conditions`}>{t.footer.termsConditions}</a>
 
-    <div class="text-center">Feito com 💜 pela equipe Vigi</div>
+    <div class="text-center">{t.footer.madeWith}</div>
   </div>
 </section>
 

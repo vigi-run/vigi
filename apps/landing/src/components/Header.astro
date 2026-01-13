@@ -1,26 +1,38 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { type Lang, defaultLang, getPathWithLang } from "../i18n/config";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+const basePath = lang === defaultLang ? "" : `/${lang}`;
 ---
 
 <header class="sticky top-4 sm:top-8 z-50 px-4">
   <nav
     class="flex justify-between items-center py-2 px-3 border-b border-gray-200 rounded-full max-w-screen-lg mx-auto shadow mt-4 sm:mt-8 relative glass bg-white/60 backdrop-blur"
   >
-    <a href="/" class="flex gap-2 items-center z-10">
+    <a href={basePath || "/"} class="flex gap-2 items-center z-10">
       <img src="/logo-mascot.webp" alt="Vigi mascot" class="w-10 h-10 sm:w-12 sm:h-12" />
       <h2 class="text-base sm:text-lg font-bold text-gradient">Vigi</h2>
     </a>
 
     <div class="hidden md:flex gap-4 z-10">
-      <HeaderLink href="/#monitors">Monitores</HeaderLink>
-      <HeaderLink href="/#alerts">Alertas</HeaderLink>
-      <HeaderLink href="/#testimonials">Depoimentos</HeaderLink>
-      <HeaderLink href="https://docs.vigi.run" target="_blank">Docs</HeaderLink>
+      <HeaderLink href={`${basePath}/#monitors`}>{t.nav.monitors}</HeaderLink>
+      <HeaderLink href={`${basePath}/#alerts`}>{t.nav.alerts}</HeaderLink>
+      <HeaderLink href={`${basePath}/#testimonials`}>{t.nav.testimonials}</HeaderLink>
+      <HeaderLink href="https://docs.vigi.run" target="_blank">{t.nav.docs}</HeaderLink>
     </div>
 
-    <div class="flex gap-3 sm:gap-4 items-center z-10">
+    <div class="flex gap-2 sm:gap-3 items-center z-10">
+      <LanguageSwitcher currentLang={lang} />
       <a href="https://github.com/vigi-run/vigi" target="_blank" class="hidden sm:inline-flex">
-        <span class="sr-only">Ir para o repositório do Vigi no GitHub</span>
+        <span class="sr-only">{t.nav.goToGithub}</span>
         <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
           ><path
             fill="currentColor"
@@ -32,7 +44,7 @@ import HeaderLink from "./HeaderLink.astro";
         href="https://github.com/vigi-run/vigi?tab=readme-ov-file#quick-start-docker--sqlite"
         class="bg-black text-white px-4 py-2 sm:py-3 rounded-full hover:bg-gray-800"
       >
-        Comece agora
+        {t.nav.getStarted}
       </a>
     </div>
   </nav>
