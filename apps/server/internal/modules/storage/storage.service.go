@@ -34,10 +34,15 @@ func NewService(
 		cfg:    cfg,
 	}
 
+	s.logger.Infof("S3 Config: Endpoint=%s, Bucket=%s, Region=%s, AccessKeyLen=%d, SecretKeyLen=%d, DisableSSL=%v",
+		s.cfg.S3Endpoint, s.cfg.S3Bucket, s.cfg.S3Region, len(s.cfg.S3AccessKey), len(s.cfg.S3SecretKey), s.cfg.S3DisableSSL)
+
 	if s.IsS3Enabled() {
 		if err := s.initS3Client(); err != nil {
 			return nil, err
 		}
+	} else {
+		s.logger.Warn("S3 is NOT enabled")
 	}
 
 	return s, nil
