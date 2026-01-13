@@ -1,2 +1,0 @@
-ALTER TABLE proxies DROP CONSTRAINT IF EXISTS fk_proxies_org_id;
-ALTER TABLE proxies DROP COLUMN IF EXISTS org_id;
