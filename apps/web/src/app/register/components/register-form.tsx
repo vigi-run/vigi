@@ -32,6 +32,7 @@ import { useAuthStore } from "@/store/auth";
 import type { AuthModel } from "@/api/types.gen";
 import { Link } from "react-router-dom";
 import { useLocalizedTranslation } from "@/hooks/useTranslation";
+import { useSmartRedirect } from "@/hooks/use-smart-redirect";
 
 const createFormSchema = (t: (key: string) => string) => z
   .object({
@@ -54,6 +55,7 @@ export function RegisterForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const { t } = useLocalizedTranslation();
+  const { handleRedirect } = useSmartRedirect();
   const [serverError, setServerError] = React.useState<string | null>(null);
   const setTokens = useAuthStore(
     (state: {
@@ -69,6 +71,7 @@ export function RegisterForm({
         setTokens(response.data.accessToken, response.data.refreshToken);
         setUser(response.data.user ?? null);
         toast.success(t("messages.register_success"));
+        handleRedirect();
       } else {
         toast.error(t("messages.register_no_tokens"));
       }
