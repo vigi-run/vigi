@@ -111,29 +111,18 @@ async function deleteMonitor(page: any, monitorName: string) {
 
 test.describe('Monitor CRUD Operations', () => {
     test.beforeEach(async ({ page }) => {
-        // Try to fetch user organizations and set the X-Organization-ID header if available
-        try {
-            const response = await page.request.get('/api/v1/user/organizations');
+        // Fetch user organizations
+        const response = await page.request.get('/api/v1/user/organizations');
+        expect(response.ok()).toBeTruthy();
+        const json = await response.json();
 
-            if (response.ok()) {
-                const json = await response.json();
-
-                // Check if we have any organizations
-                if (json.data && json.data.length > 0) {
-                    const orgId = json.data[0].organization_id;
-                    // Set default header for all requests in this page context
-                    await page.setExtraHTTPHeaders({
-                        'X-Organization-ID': orgId
-                    });
-                } else {
-                    console.warn('No organizations found for user, tests may fail');
-                }
-            } else {
-                console.warn(`Failed to fetch organizations: ${response.status()}, tests may fail`);
-            }
-        } catch (error) {
-            console.error('Error fetching organizations:', error);
-            // Continue anyway - tests will fail with clearer errors if org is needed
+        // Check if we have any organizations
+        if (json.data && json.data.length > 0) {
+            const orgId = json.data[0].organization_id;
+            // Set default header for all requests in this page context
+            await page.setExtraHTTPHeaders({
+                'X-Organization-ID': orgId
+            });
         }
     });
     test('HTTP Monitor CRUD', async ({ page }) => {

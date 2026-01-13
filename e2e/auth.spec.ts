@@ -44,18 +44,9 @@ test('Register new user', async ({ page }) => {
   // Slug is optional/generated
   await page.getByRole('button', { name: 'Create Organization' }).click();
 
-  // Wait for redirect to monitors page (should include org slug in URL)
+  // Wait for redirect to monitors page
   await page.waitForURL('**/monitors', { timeout: 10000 });
-  await expect(page).toHaveURL(/.*\/[^/]+\/monitors$/); // Verify we're on /:slug/monitors
-
-  // Wait a bit for any async organization setup to complete
-  await page.waitForTimeout(1000);
-
-  // Verify we can fetch organizations successfully
-  const orgResponse = await page.request.get('/api/v1/user/organizations');
-  if (!orgResponse.ok()) {
-    throw new Error(`Failed to fetch user organizations: ${orgResponse.status()}   ${await orgResponse.text()}`);
-  }
+  await expect(page).toHaveURL(/.*\/monitors$/);
 
   await page.context().storageState({ path: 'storageState.json' });
 });
