@@ -71,6 +71,14 @@ type Config struct {
 	EnableSingleAdmin bool `env:"ENABLE_SINGLE_ADMIN" default:"false"`
 
 	ServiceName string `env:"SERVICE_NAME" validate:"required,min=1" default:"vigi:api"`
+
+	// S3 Configuration
+	S3Endpoint   string `env:"S3_ENDPOINT"`
+	S3Bucket     string `env:"S3_BUCKET"`
+	S3Region     string `env:"S3_REGION" default:"us-east-1"`
+	S3AccessKey  string `env:"S3_ACCESS_KEY"`
+	S3SecretKey  string `env:"S3_SECRET_KEY"`
+	S3DisableSSL bool   `env:"S3_DISABLE_SSL" default:"false"`
 }
 
 var validate = validator.New()

@@ -16,6 +16,7 @@ type Service interface {
 	Login(ctx context.Context, dto LoginDto) (*LoginResponse, error)
 	RefreshToken(ctx context.Context, refreshToken string) (*LoginResponse, error)
 	UpdatePassword(ctx context.Context, userId string, dto UpdatePasswordDto) error
+	UpdateProfile(ctx context.Context, userId string, dto UpdateProfileDto) error
 
 	// 2FA methods
 	SetupTwoFA(ctx context.Context, userId, password string) (secret string, provisioningURI string, err error)
@@ -70,6 +71,7 @@ func (s *ServiceImpl) Register(ctx context.Context, dto RegisterDto) (*LoginResp
 	// Create new admin
 	user := &Model{
 		Email:     dto.Email,
+		Name:      dto.Name,
 		Password:  string(hashedPassword),
 		Active:    true,
 		CreatedAt: time.Now().UTC(),
@@ -211,6 +213,20 @@ func (s *ServiceImpl) UpdatePassword(ctx context.Context, userId string, dto Upd
 	err = s.repo.Update(ctx, userId, updateModel)
 	if err != nil {
 		return errors.New("failed to update password")
+	}
+
+	return nil
+}
+
+func (s *ServiceImpl) UpdateProfile(ctx context.Context, userId string, dto UpdateProfileDto) error {
+	updateModel := &UpdateModel{
+		Name:     &dto.Name,
+		ImageURL: &dto.ImageURL,
+	}
+
+	err := s.repo.Update(ctx, userId, updateModel)
+	if err != nil {
+		return errors.New("failed to update profile")
 	}
 
 	return nil

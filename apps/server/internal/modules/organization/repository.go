@@ -35,6 +35,7 @@ type sqlModel struct {
 	ID        string    `bun:"id,pk"`
 	Name      string    `bun:"name,notnull"`
 	Slug      string    `bun:"slug,unique,notnull"`
+	ImageURL  string    `bun:"image_url"`
 	CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
 	UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
 }
@@ -43,6 +44,7 @@ type userSQLModel struct {
 	bun.BaseModel `bun:"table:users,alias:u"`
 	ID            string `bun:"id,pk"`
 	Email         string `bun:"email"`
+	Name          string `bun:"name"`
 }
 
 type organizationUserSQLModel struct {
@@ -96,6 +98,7 @@ func (r *SQLRepositoryImpl) FindMembers(ctx context.Context, orgID string) ([]*O
 			domainUser.User = &User{
 				ID:    sm.User.ID,
 				Email: sm.User.Email,
+				Name:  sm.User.Name,
 			}
 		}
 		if sm.Organization != nil {
@@ -119,6 +122,7 @@ func toDomainModel(sm *sqlModel) *Organization {
 		ID:        sm.ID,
 		Name:      sm.Name,
 		Slug:      sm.Slug,
+		ImageURL:  sm.ImageURL,
 		CreatedAt: sm.CreatedAt,
 		UpdatedAt: sm.UpdatedAt,
 	}
@@ -129,6 +133,7 @@ func toSQLModel(m *Organization) *sqlModel {
 		ID:        m.ID,
 		Name:      m.Name,
 		Slug:      m.Slug,
+		ImageURL:  m.ImageURL,
 		CreatedAt: m.CreatedAt,
 		UpdatedAt: m.UpdatedAt,
 	}

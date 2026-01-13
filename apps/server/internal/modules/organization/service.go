@@ -73,8 +73,9 @@ func (s *ServiceImpl) Create(ctx context.Context, dto *CreateOrganizationDto, cr
 	}
 
 	org := &Organization{
-		Name: dto.Name,
-		Slug: slug,
+		Name:     dto.Name,
+		Slug:     slug,
+		ImageURL: dto.ImageURL,
 	}
 
 	if err := s.validateSlug(ctx, "", slug); err != nil {
@@ -129,6 +130,9 @@ func (s *ServiceImpl) Update(ctx context.Context, id string, dto *UpdateOrganiza
 			return nil, err
 		}
 		org.Slug = *dto.Slug
+	}
+	if dto.ImageURL != nil {
+		org.ImageURL = *dto.ImageURL
 	}
 
 	err = s.repo.Update(ctx, id, org)

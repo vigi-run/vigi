@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"vigi/internal/utils"
 	"strings"
+	"vigi/internal/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -197,6 +197,45 @@ func (c *Controller) UpdatePassword(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("Password updated successfully", nil))
+}
+
+// @Router	/auth/profile [put]
+// @Summary	Update user profile
+// @Tags		Auth
+// @Produce	json
+// @Accept	json
+// @Security JwtAuth
+// @Param	body body     UpdateProfileDto  true  "Profile update data"
+// @Success	200	{object}	utils.ApiResponse[any]
+// @Failure	400	{object}	utils.APIError[any]
+// @Failure	401	{object}	utils.APIError[any]
+// @Failure	500	{object}	utils.APIError[any]
+func (c *Controller) UpdateProfile(ctx *gin.Context) {
+	userId, exists := ctx.Get("userId")
+	if !exists {
+		ctx.JSON(http.StatusUnauthorized, utils.NewFailResponse("Unauthorized"))
+		return
+	}
+
+	var dto UpdateProfileDto
+	if err := ctx.ShouldBindJSON(&dto); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	if err := c.validateWithDetails(dto); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	err := c.service.UpdateProfile(ctx, userId.(string), dto)
+	if err != nil {
+		c.logger.Errorw("Failed to update profile", "error", err)
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("Profile updated successfully", nil))
 }
 
 // @Router	/auth/2fa/setup [post]

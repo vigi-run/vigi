@@ -125,6 +125,10 @@ definitions:
         type: string
       id:
         type: string
+      imageUrl:
+        type: string
+      name:
+        type: string
       twofa_status:
         type: boolean
       updatedAt:
@@ -141,10 +145,13 @@ definitions:
     properties:
       email:
         type: string
+      name:
+        type: string
       password:
         type: string
     required:
     - email
+    - name
     - password
     type: object
   auth.TwoFADisableRequestDto:
@@ -205,6 +212,16 @@ definitions:
     required:
     - currentPassword
     - newPassword
+    type: object
+  auth.UpdateProfileDto:
+    properties:
+      image_url:
+        type: string
+      name:
+        minLength: 3
+        type: string
+    required:
+    - name
     type: object
   heartbeat.Model:
     properties:
@@ -756,6 +773,8 @@ definitions:
     type: object
   organization.CreateOrganizationDto:
     properties:
+      image_url:
+        type: string
       name:
         example: My Organization
         minLength: 3
@@ -804,6 +823,8 @@ definitions:
         type: string
       id:
         type: string
+      image_url:
+        type: string
       name:
         type: string
       slug:
@@ -838,6 +859,8 @@ definitions:
     - RoleMember
   organization.UpdateOrganizationDto:
     properties:
+      image_url:
+        type: string
       name:
         example: Updated Organization Name
         minLength: 3
@@ -1194,6 +1217,33 @@ definitions:
       theme:
         type: string
       title:
+        type: string
+    type: object
+  storage.PresignedURLRequestDto:
+    properties:
+      contentType:
+        type: string
+      filename:
+        type: string
+      type:
+        description: To organize files in folder structure
+        enum:
+        - user
+        - organization
+        type: string
+    required:
+    - contentType
+    - filename
+    - type
+    type: object
+  storage.PresignedURLResponseDto:
+    properties:
+      key:
+        type: string
+      publicUrl:
+        description: This might vary based on your S3 setup (CDN, public bucket, etc.)
+        type: string
+      uploadUrl:
         type: string
     type: object
   tag.CreateUpdateDto:
@@ -1565,6 +1615,16 @@ definitions:
     - data
     - message
     type: object
+  utils.ApiResponse-storage_PresignedURLResponseDto:
+    properties:
+      data:
+        $ref: '#/definitions/storage.PresignedURLResponseDto'
+      message:
+        type: string
+    required:
+    - data
+    - message
+    type: object
   utils.ApiResponse-tag_Model:
     properties:
       data:
@@ -1894,6 +1954,41 @@ paths:
       security:
       - JwtAuth: []
       summary: Update user password
+      tags:
+      - Auth
+  /auth/profile:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Profile update data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.UpdateProfileDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      summary: Update user profile
       tags:
       - Auth
   /auth/refresh:
@@ -4059,6 +4154,37 @@ paths:
       summary: Get monitors for a status page by slug for homepage
       tags:
       - Status Pages
+  /storage/presigned-url:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/storage.PresignedURLRequestDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-storage_PresignedURLResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.APIError'
+      security:
+      - JwtAuth: []
+      summary: Get presigned URL for file upload
+      tags:
+      - Storage
   /tags:
     get:
       parameters:

@@ -97,7 +97,8 @@
             "retries": "Tentativas",
             "slug": "Slug",
             "title": "Título",
-            "username": "Nome de usuário"
+            "username": "Nome de usuário",
+            "name": "Nome Completo"
         },
         "placeholders": {
             "auto_refresh_help": "0 para não atualizar automaticamente",

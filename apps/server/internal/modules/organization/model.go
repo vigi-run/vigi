@@ -8,6 +8,7 @@ type Organization struct {
 	ID        string    `json:"id"`
 	Name      string    `json:"name"`
 	Slug      string    `json:"slug"`
+	ImageURL  string    `json:"image_url"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -32,6 +33,7 @@ type OrganizationUser struct {
 type User struct {
 	ID    string `json:"id"`
 	Email string `json:"email"`
+	Name  string `json:"name"`
 }
 
 type InvitationStatus string

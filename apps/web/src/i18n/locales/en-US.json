@@ -97,7 +97,8 @@
             "retries": "Retries",
             "slug": "Slug",
             "title": "Title",
-            "username": "Username"
+            "username": "Username",
+            "name": "Full Name"
         },
         "placeholders": {
             "auto_refresh_help": "0 for no auto refresh",
@@ -107,7 +108,8 @@
             "monitor_name": "My monitor",
             "page_description": "Enter status page description",
             "page_title": "Enter status page title",
-            "slug": "status-page-slug"
+            "slug": "status-page-slug",
+            "name": "Your full name"
         },
         "validation": {
             "email_invalid": "Please enter a valid email address",
