@@ -28,5 +28,6 @@ func (r *Route) Register(router *gin.RouterGroup) {
 	group.Use(r.authMiddleware.Auth())
 	{
 		group.POST("/presigned-url", r.controller.GetPresignedURL)
+		group.GET("/config", r.controller.GetConfig)
 	}
 }

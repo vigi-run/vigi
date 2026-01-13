@@ -39,6 +39,22 @@ type PresignedURLResponseDto struct {
 	PublicURL string `json:"publicUrl"` // This might vary based on your S3 setup (CDN, public bucket, etc.)
 }
 
+type StorageConfigResponseDto struct {
+	Enabled bool `json:"enabled"`
+}
+
+// @Router		/storage/config [get]
+// @Summary		Get storage configuration
+// @Tags			Storage
+// @Produce		json
+// @Success		200	{object}	utils.ApiResponse[StorageConfigResponseDto]
+func (c *Controller) GetConfig(ctx *gin.Context) {
+	enabled := c.service.IsS3Enabled()
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("Storage configuration", StorageConfigResponseDto{
+		Enabled: enabled,
+	}))
+}
+
 // @Router		/storage/presigned-url [post]
 // @Summary		Get presigned URL for file upload
 // @Tags			Storage

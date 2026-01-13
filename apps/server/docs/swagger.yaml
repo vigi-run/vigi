@@ -876,6 +876,8 @@ definitions:
         type: string
       id:
         type: string
+      name:
+        type: string
     type: object
   proxy.CreateUpdateDto:
     properties:
@@ -1245,6 +1247,11 @@ definitions:
         type: string
       uploadUrl:
         type: string
+    type: object
+  storage.StorageConfigResponseDto:
+    properties:
+      enabled:
+        type: boolean
     type: object
   tag.CreateUpdateDto:
     properties:
@@ -1619,6 +1626,16 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/storage.PresignedURLResponseDto'
+      message:
+        type: string
+    required:
+    - data
+    - message
+    type: object
+  utils.ApiResponse-storage_StorageConfigResponseDto:
+    properties:
+      data:
+        $ref: '#/definitions/storage.StorageConfigResponseDto'
       message:
         type: string
     required:
@@ -4154,6 +4171,18 @@ paths:
       summary: Get monitors for a status page by slug for homepage
       tags:
       - Status Pages
+  /storage/config:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ApiResponse-storage_StorageConfigResponseDto'
+      summary: Get storage configuration
+      tags:
+      - Storage
   /storage/presigned-url:
     post:
       consumes:

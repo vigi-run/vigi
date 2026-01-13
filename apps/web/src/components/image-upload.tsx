@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { postStoragePresignedUrlMutation } from "@/api/@tanstack/react-query.gen";
-import { useMutation } from "@tanstack/react-query";
+import { postStoragePresignedUrlMutation, getStorageConfigOptions } from "@/api/@tanstack/react-query.gen";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import axios from "axios";
 import { Loader2, Upload } from "lucide-react";
@@ -61,29 +61,38 @@ export function ImageUpload({ value, onChange, type, fallback }: ImageUploadProp
     }
   };
 
+  // Check if storage is enabled
+  const { data: config } = useQuery({
+    ...getStorageConfigOptions(),
+  });
+
+  const isEnabled = config?.data?.enabled ?? false;
+
   return (
     <div className="flex items-center gap-4">
       <Avatar className="h-16 w-16">
         <AvatarImage src={value} />
         <AvatarFallback>{fallback}</AvatarFallback>
       </Avatar>
-      <div className="flex flex-col gap-2">
-        <Button variant="outline" size="sm" className="relative cursor-pointer" disabled={isLoading}>
-          {isLoading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Upload className="mr-2 h-4 w-4" />
-          )}
-          {isLoading ? "Uploading..." : "Upload Image"}
-          <Input
-            type="file"
-            className="absolute inset-0 cursor-pointer opacity-0"
-            onChange={handleFileChange}
-            accept="image/*"
-            disabled={isLoading}
-          />
-        </Button>
-      </div>
+      {isEnabled && (
+        <div className="flex flex-col gap-2">
+          <Button variant="outline" size="sm" className="relative cursor-pointer" disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Upload className="mr-2 h-4 w-4" />
+            )}
+            {isLoading ? "Uploading..." : "Upload Image"}
+            <Input
+              type="file"
+              className="absolute inset-0 cursor-pointer opacity-0"
+              onChange={handleFileChange}
+              accept="image/*"
+              disabled={isLoading}
+            />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

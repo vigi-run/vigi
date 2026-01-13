@@ -4019,6 +4019,25 @@ const docTemplate = `{
                 }
             }
         },
+        "/storage/config": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Storage"
+                ],
+                "summary": "Get storage configuration",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-storage_StorageConfigResponseDto"
+                        }
+                    }
+                }
+            }
+        },
         "/storage/presigned-url": {
             "post": {
                 "security": [
@@ -5790,6 +5809,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -6333,6 +6355,14 @@ const docTemplate = `{
                 },
                 "uploadUrl": {
                     "type": "string"
+                }
+            }
+        },
+        "storage.StorageConfigResponseDto": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
                 }
             }
         },
@@ -6894,6 +6924,21 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/storage.PresignedURLResponseDto"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ApiResponse-storage_StorageConfigResponseDto": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/storage.StorageConfigResponseDto"
                 },
                 "message": {
                     "type": "string"

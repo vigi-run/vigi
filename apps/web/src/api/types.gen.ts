@@ -439,6 +439,7 @@ export type OrganizationUpdateOrganizationDto = {
 export type OrganizationUser = {
     email?: string;
     id?: string;
+    name?: string;
 };
 
 export type ProxyCreateUpdateDto = {
@@ -618,6 +619,10 @@ export type StoragePresignedUrlResponseDto = {
     uploadUrl?: string;
 };
 
+export type StorageStorageConfigResponseDto = {
+    enabled?: boolean;
+};
+
 export type TagCreateUpdateDto = {
     color: string;
     description?: string;
@@ -792,6 +797,11 @@ export type UtilsApiResponseStatusPageStatusPageWithMonitorsResponseDto = {
 
 export type UtilsApiResponseStoragePresignedUrlResponseDto = {
     data: StoragePresignedUrlResponseDto;
+    message: string;
+};
+
+export type UtilsApiResponseStorageStorageConfigResponseDto = {
+    data: StorageStorageConfigResponseDto;
     message: string;
 };
 
@@ -3616,6 +3626,22 @@ export type PatchStatusPagesByIdResponses = {
 };
 
 export type PatchStatusPagesByIdResponse = PatchStatusPagesByIdResponses[keyof PatchStatusPagesByIdResponses];
+
+export type GetStorageConfigData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/storage/config';
+};
+
+export type GetStorageConfigResponses = {
+    /**
+     * OK
+     */
+    200: UtilsApiResponseStorageStorageConfigResponseDto;
+};
+
+export type GetStorageConfigResponse = GetStorageConfigResponses[keyof GetStorageConfigResponses];
 
 export type PostStoragePresignedUrlData = {
     /**

@@ -4010,6 +4010,25 @@
                 }
             }
         },
+        "/storage/config": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Storage"
+                ],
+                "summary": "Get storage configuration",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ApiResponse-storage_StorageConfigResponseDto"
+                        }
+                    }
+                }
+            }
+        },
         "/storage/presigned-url": {
             "post": {
                 "security": [
@@ -5781,6 +5800,9 @@
                 },
                 "id": {
                     "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -6324,6 +6346,14 @@
                 },
                 "uploadUrl": {
                     "type": "string"
+                }
+            }
+        },
+        "storage.StorageConfigResponseDto": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
                 }
             }
         },
@@ -6885,6 +6915,21 @@
             "properties": {
                 "data": {
                     "$ref": "#/definitions/storage.PresignedURLResponseDto"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "utils.ApiResponse-storage_StorageConfigResponseDto": {
+            "type": "object",
+            "required": [
+                "data",
+                "message"
+            ],
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/storage.StorageConfigResponseDto"
                 },
                 "message": {
                     "type": "string"
