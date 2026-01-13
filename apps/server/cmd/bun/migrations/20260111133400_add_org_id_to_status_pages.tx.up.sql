@@ -1,1 +1,2 @@
-ALTER TABLE status_pages ADD COLUMN org_id VARCHAR(255);
+ALTER TABLE status_pages
+ADD COLUMN IF NOT EXISTS org_id VARCHAR(255);

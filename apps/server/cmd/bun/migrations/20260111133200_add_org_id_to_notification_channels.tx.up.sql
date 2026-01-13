@@ -1,1 +1,2 @@
-ALTER TABLE notification_channels ADD COLUMN org_id VARCHAR(255);
+ALTER TABLE notification_channels
+ADD COLUMN IF NOT EXISTS org_id VARCHAR(255);
