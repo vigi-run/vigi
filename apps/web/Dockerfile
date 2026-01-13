@@ -32,7 +32,7 @@ COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
 COPY apps/web/docker-entrypoint.sh /docker-entrypoint.d/01-envsubst.sh
 RUN chmod +x /docker-entrypoint.d/01-envsubst.sh
 
-COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
+COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf.template
 
 EXPOSE 80
 

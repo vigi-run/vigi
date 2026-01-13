@@ -1,6 +1,7 @@
 networks:
   appnet:
 
+
 services:
   database:
     image: postgres:17
@@ -18,7 +19,7 @@ services:
     networks:
       - appnet
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-vigi}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-vigi}" ]
       interval: 30s
       timeout: 2s
       retries: 5
@@ -32,7 +33,7 @@ services:
     networks:
       - appnet
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 30s
       timeout: 2s
       retries: 5
@@ -68,7 +69,7 @@ services:
     networks:
       - appnet
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO - http://localhost:8034/api/v1/health || exit 1"]
+      test: [ "CMD-SHELL", "wget -qO - http://localhost:8034/api/v1/health || exit 1" ]
       interval: 30s
       timeout: 2s
       retries: 5
@@ -125,14 +126,14 @@ services:
     ports:
       - "8383:80"
     environment:
-      - API_URL=http://localhost:8034
+      - API_URL=http://api:8034
     depends_on:
       api:
         condition: service_healthy
     networks:
       - appnet
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:80 || exit 1"]
+      test: [ "CMD-SHELL", "curl -f http://localhost:80 || exit 1" ]
       interval: 30s
       timeout: 2s
       retries: 5
