@@ -10,6 +10,7 @@ import (
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"go.uber.org/zap"
 )
 
@@ -90,6 +91,7 @@ func (s *ServiceImpl) GetPresignedURL(ctx context.Context, key string, contentTy
 		Bucket:      aws.String(s.cfg.S3Bucket),
 		Key:         aws.String(key),
 		ContentType: aws.String(contentType),
+		ACL:         types.ObjectCannedACLPublicRead,
 	}, func(opts *s3.PresignOptions) {
 		opts.Expires = time.Duration(15 * time.Minute)
 	})

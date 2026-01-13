@@ -46,6 +46,7 @@ export function ImageUpload({ value, onChange, type, fallback }: ImageUploadProp
       await axios.put(data.uploadUrl, file, {
         headers: {
           "Content-Type": file.type,
+          "x-amz-acl": "public-read",
         },
       });
 
