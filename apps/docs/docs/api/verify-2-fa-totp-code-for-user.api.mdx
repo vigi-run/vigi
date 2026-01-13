@@ -5,9 +5,9 @@ description: "Verify 2FA (TOTP) code for user"
 sidebar_label: "Verify 2FA (TOTP) code for user"
 hide_title: true
 hide_table_of_contents: true
-api: eJzNVd9P2zAQ/lesexqSUVm1veQtbCAVHqigY5OqaHKTa2ua2MZ2Cl2U/306OymlLWMvk/YUy/fru+++cxqw+Fij8+e62EDSQK6VR+XpKIwpZS681Grw4LSiO5cvsRJ0KtDlVhqyQgKTJ32Z3qOV881tTPjVayYdqx0WzGu2DjYm2ORmMma5LhA4GKsNWi/RxdIF0tdvDEICzlupFtBywErI8oil5QG9tFhAMoUuafTOeO+tZw+Ye2jJ/TXo4WXa4+pYgN2M3tYYSjijlYsYh2dnh83fXAP/e+JeN12hc2JxvG9X5zk6t2ObaV2iUKH1g/ZaDp+OwTsXBbvd9vdf4Px8DOdIebRKlOwO7Rotu7BW23+E2Atfu/cl1efYRhyTFQU5zGsr/QaSaQNXTz6t/RKSadZSgFg4Shbusn0RxqVhpMUPtBsnYTnYXFvaHeq/Qr/UBSRgdJigEZQbBqL2y8FwLgZRwwQyEOcCiNqWwcnIwfojEI4e4x0RFjlKjbzGTQS7P450PGIr3DAqg8p3tLMPZvWTGYtz+UwgK+FPgIOkiCWKIiBWoiKKfpym49HpNRK0jjURCtIItiTt1736PmFer1AdVD5HYdF2xndqU25t5a8Qeli/5UD6uX15/C6eRWVKfHmIek1s358d/Ug11/1rKXKSJgldeoqHe7mQLB2PgANNI3ZFUTS/SgTRdijfH/4rbrZy9fjsB6YUUlHeMOqm08UUiDbgMJyLiIC0kXFYknqSKTTNTDj8Zsu2pevHGi3JNuOwFlaKGfUwzVreU0piWuEGEvgSF/F0QiDIvawjp3tL2fI+Is1zNP6PvtmOwMc3dxPgMOv+RVWcgxVP9C6LJ6KRgw5kBPmGuwZKoRZ1WHWIOWm8ohPXy+BXQYjdgbrqTWqzg3BfOLGRVRDtGyFNE2XVtlv/aHozYqvW6E1jzNq2/Q0KtJMU
+api: eJzNVU1v2kAQ/SurOSWSESlqL745TSKRHEAJTSshq1rsATbYu5vdNQm1/N+r2bUJAVJ6qdQT1s7XmzdvhhoMPldo3aXKNxDXkCnpUDr65FoXIuNOKNl/skrSm82WWHL6ytFmRmiyQgyTF3WTPKIR8819SHjlFBOWVRZz5hRbexvjbDKajFmmcoQItFEajRNoQ+kc6ddtNEIM1hkhF9BEgCUXxRFLE3n0wmAO8RTapME7jTpvNXvCzEFD7u9BD26SDlfLAuxmdKZCX8JqJW3AOLi4OGx+dAfR3xP3vukSreWL433bKsvQ2h3bTKkCufStH7TXRPD5GLxLnrP7bX//Bc4vx3AOpUMjecEe0KzRsGtjlPlHiB13lT0tqS7HNuKYrCjIYlYZ4TYQT2u4fXFJ5ZYQT9OGAvjCUjL/lu6LMCwNIy2e0W6c++Vgc2Vod6j/Et1S5RCDVn6CmlNu6PPKLfuDOe8HDRNIT5z1ICpTeCct+utPQDg6jA9EWOAo0eIONwHs/jiS8ZCtcMOoDErX0s7O9Oon0wbn4pVAltydQwSCIpbIc49Y8pIo+tFLxsPeHRK0ljXuC9IItiTt1739PmFOrVAeVL5EbtC0xhO1Kbcy4pcPPVZ/ZBbD/DiCkVlw2Yay4dUBjlDrdPe7eXrDq0MUTQSk4vu3E3z9yktd4Ns57JS5vYI7KhZyrrqbzTNaEFo34SgeHsVCsGQ8hAhIE6EziiIVldyvTov0tATf8bNdGoevrq8LLiTl9YKrW3VOgUiDCAZzHhCQQtMIlqTheAp1PeMWv5miaej5uUJDy5NGsOZG8Bn1ME2bqKOVJL3CDcTwNZyD3oRAkHtRBU73TkMTdRFJlqF2f/RNd9ZsPHqYQASz9h+xDHMw/IX+HfgL0RiB8mT4JfJvNRRcLip/cCDkpPHyVmBvg1/5dWg/qKvOJDc7CPflGxpZeel+EFLXQVZNs/UPpg8jtooN3jTGtGma3wC7wKw=
 sidebar_class_name: "post api-method"
-info_path: docs/api/vigi-api
+info_path: api/vigi-api
 custom_edit_url: null
 ---
 
@@ -31,7 +31,7 @@ import Heading from "@theme/Heading";
   path={"/auth/2fa/verify"}
   context={"endpoint"}
 >
-
+  
 </MethodEndpoint>
 
 
@@ -49,14 +49,14 @@ Verify 2FA (TOTP) code for user
 <ParamsDetails
   parameters={undefined}
 >
-
+  
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
   body={{"content":{"application/json":{"schema":{"description":"TwoFAVerifyRequestDto is used to verify a TOTP code","properties":{"code":{"type":"string"},"email":{"type":"string"}},"required":["code","email"],"type":"object"}}},"description":"2FA verify request","required":true}}
 >
-
+  
 </RequestSchema>
 
 <StatusCodes
@@ -64,7 +64,8 @@ Verify 2FA (TOTP) code for user
   label={undefined}
   responses={{"200":{"description":"OK","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"success":{"type":"boolean"}},"type":"object"}}}},"400":{"description":"Bad Request","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"success":{"type":"boolean"}},"type":"object"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"properties":{"message":{"type":"string"},"status":{"type":"string"}},"required":["message","status"],"type":"object"}}}}}}
 >
-
+  
 </StatusCodes>
 
 
+      

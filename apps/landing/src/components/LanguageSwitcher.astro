@@ -1,0 +1,44 @@
+---
+import { languages, type Lang, getPathWithLang } from "../i18n/config";
+
+interface Props {
+  currentLang: Lang;
+}
+
+const { currentLang } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// Get the base path without the language prefix
+function getBasePath(path: string): string {
+  if (path.startsWith("/en")) {
+    return path.slice(3) || "/";
+  }
+  return path;
+}
+
+const basePath = getBasePath(currentPath);
+---
+
+<div class="flex items-center gap-1">
+  {Object.entries(languages).map(([langCode, langInfo]) => {
+    const isActive = langCode === currentLang;
+    const href = getPathWithLang(basePath, langCode as Lang);
+    
+    return (
+      <a
+        href={href}
+        class:list={[
+          "flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 text-lg",
+          isActive 
+            ? "bg-zinc-200 ring-2 ring-zinc-400 scale-110" 
+            : "hover:bg-zinc-100 opacity-70 hover:opacity-100"
+        ]}
+        title={langInfo.name}
+        aria-label={`Switch to ${langInfo.name}`}
+        aria-current={isActive ? "true" : undefined}
+      >
+        {langInfo.flag}
+      </a>
+    );
+  })}
+</div>

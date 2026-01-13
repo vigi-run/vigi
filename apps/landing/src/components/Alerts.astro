@@ -1,50 +1,57 @@
 ---
 import ListItem from "../components/ListItem.astro";
+import { type Lang, defaultLang } from "../i18n/config";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section class="py-8 px-4" id="alerts">
   <div class="card max-w-screen-lg mx-auto py-10 sm:py-12 px-6 sm:px-8">
-    <h2 class="font-bold text-2xl sm:text-[32px] leading-[125%] mb-8 text-white">
-      <span class="text-gradient">Canais</span> de Alerta
-    </h2>
+    <h2 class="font-bold text-2xl sm:text-[32px] leading-[125%] mb-8 text-white">{t.alerts.title}</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
       <!-- Email & Webhooks -->
       <div class="col-span-full mt-2 text-xs font-semibold uppercase tracking-wider text-white/40">
-        Email & Webhooks
+        {t.alerts.categories.emailWebhooks}
       </div>
-      <ListItem><strong class="text-white">Email (SMTP)</strong> — Envie alertas através do seu servidor SMTP</ListItem>
-      <ListItem><strong class="text-white">Webhook</strong> — POST JSON payloads para qualquer endpoint HTTP</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.email} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.webhook} /></ListItem>
 
-      <!-- Chat & Colaboração -->
+      <!-- Chat & Collaboration -->
       <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
-        Chat & Colaboração
+        {t.alerts.categories.chatCollab}
       </div>
-      <ListItem><strong class="text-white">Telegram</strong> — Mensagens de bot para usuários/canais</ListItem>
-      <ListItem><strong class="text-white">Slack</strong> — Webhook de entrada para canais</ListItem>
-      <ListItem><strong class="text-white">Google Chat</strong> — Webhooks de espaço</ListItem>
-      <ListItem><strong class="text-white">Signal</strong> — Mensagens seguras via bot/integração</ListItem>
-      <ListItem><strong class="text-white">Mattermost</strong> — Webhook de entrada para canais</ListItem>
-      <ListItem><strong class="text-white">Matrix</strong> — Envie para salas via token de acesso</ListItem>
-      <ListItem><strong class="text-white">Discord</strong> — Webhooks de canal</ListItem>
-      <ListItem><strong class="text-white">WeCom</strong> — Mensagens empresariais para grupos</ListItem>
-      <ListItem><strong class="text-white">WhatsApp (WAHA)</strong> — Via gateway WAHA</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.telegram} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.slack} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.googleChat} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.signal} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.mattermost} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.matrix} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.discord} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.wecom} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.whatsapp} /></ListItem>
 
-      <!-- On-Call & Incidente -->
+      <!-- On-Call & Incident -->
       <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
-        On-Call & Incidente
+        {t.alerts.categories.onCall}
       </div>
-      <ListItem><strong class="text-white">PagerDuty</strong> — Acione incidentes e escalonamentos</ListItem>
-      <ListItem><strong class="text-white">Opsgenie</strong> — Alertas, roteamento e plantão</ListItem>
-      <ListItem><strong class="text-white">Grafana OnCall</strong> — Integre com agendamentos de plantão</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.pagerduty} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.opsgenie} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.grafana} /></ListItem>
 
-      <!-- Push Móvel & Auto-Hospedado -->
+      <!-- Mobile Push & Self-Hosted -->
       <div class="col-span-full mt-6 text-xs font-semibold uppercase tracking-wider text-white/40">
-        Push Móvel & Auto-Hospedado
+        {t.alerts.categories.mobilePush}
       </div>
-      <ListItem><strong class="text-white">NTFY</strong> — Notificações push pub/sub simples</ListItem>
-      <ListItem><strong class="text-white">Gotify</strong> — Servidor de push auto-hospedado</ListItem>
-      <ListItem><strong class="text-white">Pushover</strong> — Push móvel/desktop confiável</ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.ntfy} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.gotify} /></ListItem>
+      <ListItem><Fragment set:html={t.alerts.items.pushover} /></ListItem>
     </div>
   </div>
 </section>
