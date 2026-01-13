@@ -129,7 +129,7 @@ func main() {
 	queue.RegisterDependencies(container, internalCfg)
 	api_key.RegisterDependencies(container, internalCfg)
 	organization.RegisterDependencies(container, internalCfg)
-	organization.RegisterDependencies(container, internalCfg)
+
 	middleware.RegisterDependencies(container)
 	storage.RegisterDependencies(container)
 
