@@ -3,24 +3,25 @@
 -- Wrapped in a transaction for atomicity
 -- Tags table for storing tag definitions
 CREATE TABLE IF NOT EXISTS tags (
-  id UUID PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  color VARCHAR(7) NOT NULL DEFAULT '#3B82F6',
-  -- Hex color code
-  description TEXT,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id UUID PRIMARY KEY,
+    org_id UUID,
+    name VARCHAR(100) NOT NULL,
+    color VARCHAR(7) NOT NULL DEFAULT '#3B82F6',
+    -- Hex color code
+    description TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 -- Monitor tags junction table for many-to-many relationship
 CREATE TABLE IF NOT EXISTS monitor_tags (
-  id UUID PRIMARY KEY,
-  monitor_id UUID NOT NULL,
-  tag_id UUID NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (monitor_id) REFERENCES monitors(id) ON DELETE CASCADE,
-  FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE,
-  UNIQUE(monitor_id, tag_id)
+    id UUID PRIMARY KEY,
+    monitor_id UUID NOT NULL,
+    tag_id UUID NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (monitor_id) REFERENCES monitors(id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE,
+    UNIQUE(monitor_id, tag_id)
 );
 -- Create indexes for better performance
 -- Tag name index for searches

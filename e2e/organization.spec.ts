@@ -77,10 +77,18 @@ test.describe('Organization Management', () => {
 
     const updatedName = `${orgName} Updated`;
     await page.getByRole('textbox', { name: 'Organization Name' }).fill(updatedName);
-    await page.getByRole('button', { name: 'Update Organization' }).click();
+    // Wait for the update request to complete before reloading
+    await Promise.all([
+      page.waitForResponse(async resp => {
+        return resp.url().includes('/api/v1/organizations') && resp.request().method() === 'PATCH' && resp.status() === 200;
+      }),
+      page.getByRole('button', { name: 'Update Organization' }).click()
+    ]);
 
-    // Verify success toast/message
-    await expect(page.getByText('Organization updated successfully')).toBeVisible();
+
+
+    // Reload to ensure persistence and verify checking the state from the server
+    await page.reload();
 
     // Verify name change in UI
     await expect(page.getByRole('textbox', { name: 'Organization Name' })).toHaveValue(updatedName);

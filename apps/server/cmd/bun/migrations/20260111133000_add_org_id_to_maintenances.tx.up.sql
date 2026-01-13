@@ -1,2 +1,0 @@
-ALTER TABLE maintenances
-ADD COLUMN IF NOT EXISTS org_id VARCHAR(255);
