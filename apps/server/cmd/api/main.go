@@ -15,6 +15,7 @@ import (
 	"vigi/internal/modules/auth"
 	"vigi/internal/modules/badge"
 	"vigi/internal/modules/bruteforce"
+	"vigi/internal/modules/catalog_item"
 	"vigi/internal/modules/certificate"
 	"vigi/internal/modules/cleanup"
 	"vigi/internal/modules/client"
@@ -131,6 +132,7 @@ func main() {
 	api_key.RegisterDependencies(container, internalCfg)
 	organization.RegisterDependencies(container, internalCfg)
 	client.RegisterDependencies(container, internalCfg)
+	catalog_item.RegisterDependencies(container, internalCfg)
 
 	middleware.RegisterDependencies(container)
 	storage.RegisterDependencies(container)

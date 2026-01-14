@@ -60,7 +60,7 @@ const ClientsPage = () => {
 
     const { ref: observerRef } = useIntersectionObserver<HTMLDivElement>(handleObserver);
 
-    const clients = data?.pages.flatMap((page) => page.data) || [];
+    const clients = data?.pages.flatMap((page) => page.data || []) || [];
 
     const handleCreate = () => {
         navigate("new");
@@ -105,7 +105,7 @@ const ClientsPage = () => {
                         </div>
 
                         <div className="flex flex-col gap-1 w-full sm:w-auto">
-                            <Label htmlFor="classification-filter">{t("clients.classification", "Classification")}</Label>
+                            <Label htmlFor="classification-filter">{t("clients.form.classification", "Classification")}</Label>
                             <Select
                                 value={classificationFilter}
                                 onValueChange={(v) =>

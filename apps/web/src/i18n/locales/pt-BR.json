@@ -39,6 +39,77 @@
         "status": "Status",
         "time": "Tempo"
     },
+    "catalog_item": {
+        "title": "Catálogo de Itens",
+        "create": "Criar Item",
+        "create_success": "Item criado com sucesso",
+        "create_error": "Falha ao criar item",
+        "update_success": "Item atualizado com sucesso",
+        "update_error": "Falha ao atualizar item",
+        "delete_success": "Item excluído com sucesso",
+        "delete_error": "Falha ao excluir item",
+        "empty": {
+            "title": "Nenhum item encontrado",
+            "description": "Crie seu primeiro produto ou serviço."
+        },
+        "new": {
+            "title": "Novo Item"
+        },
+        "edit": {
+            "title": "Editar Item"
+        },
+        "details": {
+            "title": "Detalhes do Item",
+            "loading": "Carregando Item...",
+            "not_found": "Item Não Encontrado",
+            "general": "Informações Gerais",
+            "stock": "Informações de Estoque"
+        },
+        "fields": {
+            "name": "Nome",
+            "type": "Tipo",
+            "productKey": "Código / SKU",
+            "price": "Preço",
+            "cost": "Custo",
+            "unit": "Unidade",
+            "ncmNbs": "NCM / NBS",
+            "taxRate": "Alíquota",
+            "inStockQuantity": "Em Estoque",
+            "stockThreshold": "Limite de Estoque",
+            "stockNotification": "Notificação de Estoque",
+            "notes": "Observações"
+        },
+        "form": {
+            "name": "Nome",
+            "name_placeholder": "Nome do Produto ou Serviço",
+            "type": "Tipo",
+            "type_placeholder": "Selecione o tipo",
+            "product_key": "Código / SKU",
+            "notes": "Observações",
+            "price": "Preço de Venda",
+            "cost": "Preço de Custo",
+            "unit": "Unidade",
+            "unit_placeholder": "Selecione a unidade",
+            "ncm_nbs": "NCM / NBS",
+            "tax_rate": "Alíquota (%)",
+            "in_stock_quantity": "Quantidade em Estoque",
+            "stock_notification": "Notificação de Estoque",
+            "stock_threshold": "Limite Mínimo de Estoque"
+        },
+        "type": {
+            "product": "Produto",
+            "service": "Serviço"
+        },
+        "filters": {
+            "search_placeholder": "Buscar itens...",
+            "type_placeholder": "Todos os Tipos"
+        },
+        "validation": {
+            "name_required": "Nome é obrigatório",
+            "product_key_required": "Código/SKU é obrigatório",
+            "unit_required": "Selecione uma unidade válida"
+        }
+    },
     "clients": {
         "title": "Clientes",
         "create": "Criar Cliente",
@@ -114,6 +185,7 @@
         "days": "dias",
         "default": "Padrão",
         "delete": "Excluir",
+        "edit": "Editar",
         "disabling": "Desativando...",
         "dismiss": "Fechar",
         "down": "Indisponível",

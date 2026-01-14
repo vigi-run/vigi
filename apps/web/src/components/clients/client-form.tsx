@@ -10,6 +10,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MaskedInput } from "@/components/ui/masked-input";
 import { Button } from "@/components/ui/button";
 import {
     Select,
@@ -19,8 +20,10 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useLocalizedTranslation } from "@/hooks/useTranslation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "sonner";
 
 interface ClientFormProps {
     initialValues?: ClientFormValues;
@@ -31,6 +34,7 @@ interface ClientFormProps {
 export function ClientForm({ initialValues, onSubmit, isSubmitting }: ClientFormProps) {
     const { t } = useLocalizedTranslation();
     const navigate = useNavigate();
+    const [isLoadingCep, setIsLoadingCep] = useState(false);
 
     const form = useForm<ClientFormValues>({
         resolver: zodResolver(ClientSchema),
@@ -56,6 +60,32 @@ export function ClientForm({ initialValues, onSubmit, isSubmitting }: ClientForm
             form.trigger("idNumber");
         }
     }, [classification, form]);
+
+    const postalCode = form.watch("postalCode");
+
+    useEffect(() => {
+        const fetchAddress = async () => {
+            const cleanCep = postalCode?.replace(/\D/g, "");
+            if (cleanCep?.length === 8) {
+                try {
+                    setIsLoadingCep(true);
+                    const response = await axios.get(`https://brasilapi.com.br/api/cep/v2/${cleanCep}`);
+                    const { street, city, state } = response.data;
+
+                    form.setValue("address1", street);
+                    form.setValue("city", city);
+                    form.setValue("state", state);
+                } catch (error) {
+                    toast.error(t("clients.errors.cep_fetch", "Failed to fetch address details"));
+                    console.error("CEP fetch error:", error);
+                } finally {
+                    setIsLoadingCep(false);
+                }
+            }
+        };
+
+        fetchAddress();
+    }, [postalCode, form, t]);
 
     return (
         <Form {...form}>
@@ -108,7 +138,15 @@ export function ClientForm({ initialValues, onSubmit, isSubmitting }: ClientForm
                                         : t("clients.form.cnpj", "CNPJ")}
                                 </FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <MaskedInput
+                                        {...field}
+                                        mask={
+                                            classification === "individual"
+                                                ? "999.999.999-99"
+                                                : "99.999.999/9999-99"
+                                        }
+                                        value={field.value || ""}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -136,13 +174,30 @@ export function ClientForm({ initialValues, onSubmit, isSubmitting }: ClientForm
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <FormField
                             control={form.control}
+                            name="postalCode"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{t("clients.form.postal_code", "Postal Code")}</FormLabel>
+                                    <FormControl>
+                                        <MaskedInput
+                                            {...field}
+                                            mask="99999-999"
+                                            value={field.value || ""}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="address1"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>{t("clients.form.address1", "Street")}</FormLabel>
                                     <FormControl>
                                         {/* @ts-ignore */}
-                                        <Input {...field} value={field.value || ""} />
+                                        <Input {...field} value={field.value || ""} disabled={isLoadingCep} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -156,7 +211,7 @@ export function ClientForm({ initialValues, onSubmit, isSubmitting }: ClientForm
                                     <FormLabel>{t("clients.form.address_number", "Number")}</FormLabel>
                                     <FormControl>
                                         {/* @ts-ignore */}
-                                        <Input {...field} value={field.value || ""} />
+                                        <Input {...field} value={field.value || ""} disabled={isLoadingCep} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -170,7 +225,7 @@ export function ClientForm({ initialValues, onSubmit, isSubmitting }: ClientForm
                                     <FormLabel>{t("clients.form.city", "City")}</FormLabel>
                                     <FormControl>
                                         {/* @ts-ignore */}
-                                        <Input {...field} value={field.value || ""} />
+                                        <Input {...field} value={field.value || ""} disabled={isLoadingCep} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -184,21 +239,7 @@ export function ClientForm({ initialValues, onSubmit, isSubmitting }: ClientForm
                                     <FormLabel>{t("clients.form.state", "State")}</FormLabel>
                                     <FormControl>
                                         {/* @ts-ignore */}
-                                        <Input {...field} value={field.value || ""} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="postalCode"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{t("clients.form.postal_code", "Postal Code")}</FormLabel>
-                                    <FormControl>
-                                        {/* @ts-ignore */}
-                                        <Input {...field} value={field.value || ""} />
+                                        <Input {...field} value={field.value || ""} disabled={isLoadingCep} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

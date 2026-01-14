@@ -80,6 +80,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 url: `${prefix}/clients`,
                 icon: Briefcase,
             },
+            {
+                title: t("catalog_item.title", "Catalog Items"),
+                url: `${prefix}/catalog-items`,
+                icon: Tag,
+            },
         ],
         navSecondary: [
             {
