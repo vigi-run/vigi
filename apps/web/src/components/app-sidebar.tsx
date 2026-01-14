@@ -8,6 +8,7 @@ import {
     Tag,
     Users,
     Building2,
+    Briefcase,
 } from "lucide-react";
 
 import {
@@ -73,6 +74,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 title: t("navigation.notification_channels"),
                 url: `${prefix}/notification-channels`,
                 icon: Vibrate,
+            },
+            {
+                title: t("clients.title", "Clients"),
+                url: `${prefix}/clients`,
+                icon: Briefcase,
             },
         ],
         navSecondary: [

@@ -39,6 +39,65 @@
         "status": "Status",
         "time": "Time"
     },
+    "clients": {
+        "title": "Clients",
+        "create": "Create Client",
+        "create_success": "Client created successfully",
+        "create_error": "Failed to create client",
+        "update_success": "Client updated successfully",
+        "update_error": "Failed to update client",
+        "name": "Name",
+        "city": "City",
+        "empty": {
+            "title": "No clients found",
+            "description": "Create your first client to get started."
+        },
+        "new": {
+            "title": "New Client"
+        },
+        "details": {
+            "loading": "Loading Client...",
+            "not_found": "Client Not Found",
+            "company_data": "Company Data",
+            "address_data": "Address Data"
+        },
+        "edit": {
+            "title": "Edit Client",
+            "loading": "Loading Client...",
+            "not_found": "Client Not Found"
+        },
+        "errors": {
+            "not_found_message": "The requested client does not exist."
+        },
+        "form": {
+            "name": "Name",
+            "name_placeholder": "My Client",
+            "classification": "Classification",
+            "cpf": "CPF",
+            "cnpj": "CNPJ",
+            "vat_number": "VAT Number",
+            "address": "Address",
+            "address1": "Street",
+            "address_number": "Number",
+            "city": "City",
+            "state": "State",
+            "postal_code": "Postal Code"
+        },
+        "classification": {
+            "individual": "Individual",
+            "company": "Company"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "blocked": "Blocked"
+        },
+        "status_updated": "Status updated successfully",
+        "status_update_error": "Failed to update status",
+        "filters": {
+            "search_placeholder": "Search by name..."
+        }
+    },
     "common": {
         "active": "Active",
         "all": "All",

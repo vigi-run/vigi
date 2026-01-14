@@ -17,6 +17,7 @@ import (
 	"vigi/internal/modules/bruteforce"
 	"vigi/internal/modules/certificate"
 	"vigi/internal/modules/cleanup"
+	"vigi/internal/modules/client"
 	"vigi/internal/modules/domain_status_page"
 	"vigi/internal/modules/events"
 	"vigi/internal/modules/healthcheck"
@@ -129,6 +130,7 @@ func main() {
 	queue.RegisterDependencies(container, internalCfg)
 	api_key.RegisterDependencies(container, internalCfg)
 	organization.RegisterDependencies(container, internalCfg)
+	client.RegisterDependencies(container, internalCfg)
 
 	middleware.RegisterDependencies(container)
 	storage.RegisterDependencies(container)

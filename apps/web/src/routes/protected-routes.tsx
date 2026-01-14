@@ -27,6 +27,10 @@ import OrganizationMembersPage from "@/app/organization/members/page";
 import { RootRedirect } from "@/components/root-redirect";
 import UserInvitationsPage from "@/app/user/invitations/page";
 import OnboardingPage from "@/app/onboarding/page";
+import ClientsPage from "@/app/clients/page";
+import NewClientPage from "@/app/clients/new/page";
+import EditClientPage from "@/app/clients/edit/page";
+import ClientDetailsPage from "@/app/clients/view/page";
 
 export const protectedRoutes = [
     <Route key="root" path="/" element={<RootRedirect />} />,
@@ -70,6 +74,12 @@ export const protectedRoutes = [
     // Organization routes
         <Route path="settings/organization" element={<OrganizationSettingsPage />} />
         <Route path="settings/members" element={<OrganizationMembersPage />} />
+
+    // Client routes
+        <Route path="clients" element={<ClientsPage />} />
+        <Route path="clients/new" element={<NewClientPage />} />
+        <Route path="clients/:id" element={<ClientDetailsPage />} />
+        <Route path="clients/:id/edit" element={<EditClientPage />} />
 
 
 

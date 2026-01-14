@@ -7,6 +7,7 @@ import (
 	"vigi/internal/modules/api_key"
 	"vigi/internal/modules/auth"
 	"vigi/internal/modules/badge"
+	"vigi/internal/modules/client"
 	"vigi/internal/modules/healthcheck"
 	"vigi/internal/modules/heartbeat"
 	"vigi/internal/modules/maintenance"
@@ -84,6 +85,7 @@ func ProvideServer(
 	apiKeyController *api_key.Controller,
 	organizationRoute *organization.OrganizationRoute,
 	organizationController *organization.OrganizationController,
+	clientRoute *client.Route,
 	storageRoute *storage.Route,
 ) *Server {
 	// Initialize server based on mode
@@ -128,6 +130,7 @@ func ProvideServer(
 	badgeRoute.ConnectRoute(router, badgeController)
 	apiKeyRoute.ConnectRoute(router, apiKeyController)
 	organizationRoute.ConnectRoute(router)
+	clientRoute.ConnectRoute(router)
 	storageRoute.Register(router)
 
 	// Register push endpoint
