@@ -139,7 +139,7 @@ const htmlLang = lang === "pt-BR" ? "pt-BR" : "en";
         <div class="flex justify-center mb-4">
           <button
             id="seo-toggle"
-            class="text-zinc-600 hover:text-zinc-900 font-semibold px-4 py-2 rounded-full border border-zinc-300 hover:border-zinc-400 transition-colors"
+            class="text-zinc-400 hover:text-white font-semibold px-4 py-2 rounded-full border border-zinc-700 hover:border-zinc-500 transition-colors"
             aria-expanded="false"
             aria-controls="seo-content"
           >
@@ -149,15 +149,15 @@ const htmlLang = lang === "pt-BR" ? "pt-BR" : "en";
         </div>
         <div
           id="seo-content"
-          class="seo-content-hidden prose prose-zinc max-w-none text-zinc-600 text-sm sm:text-base leading-relaxed"
+          class="seo-content-hidden prose prose-invert prose-zinc max-w-none text-zinc-400 text-sm sm:text-base leading-relaxed"
         >
-          <h2 class="text-2xl font-bold text-zinc-900 mb-4">{t.seo.title}</h2>
+          <h2 class="text-2xl font-bold text-white mb-4">{t.seo.title}</h2>
 
           {t.seo.paragraphs.map((p) => (
             <p class="mb-4">{p}</p>
           ))}
 
-          <h3 class="text-xl font-semibold text-zinc-900 mt-6 mb-3">{t.seo.capabilitiesTitle}</h3>
+          <h3 class="text-xl font-semibold text-white mt-6 mb-3">{t.seo.capabilitiesTitle}</h3>
           
           {t.seo.capabilitiesParagraphs.map((p) => (
             <p class="mb-4">{p}</p>
