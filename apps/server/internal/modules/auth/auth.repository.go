@@ -9,5 +9,6 @@ type Repository interface {
 	FindByEmail(ctx context.Context, email string) (*Model, error)
 	FindByID(ctx context.Context, id string) (*Model, error)
 	FindAllCount(ctx context.Context) (int64, error)
+	FindAll(ctx context.Context) ([]*Model, error)
 	Update(ctx context.Context, id string, entity *UpdateModel) error
 }

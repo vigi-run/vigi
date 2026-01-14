@@ -112,6 +112,19 @@ func (m *MockOrganizationRepository) UpdateInvitationStatus(ctx context.Context,
 	return args.Error(0)
 }
 
+func (m *MockOrganizationRepository) FindAll(ctx context.Context) ([]*Organization, error) {
+	args := m.Called(ctx)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]*Organization), args.Error(1)
+}
+
+func (m *MockOrganizationRepository) FindAllCount(ctx context.Context) (int64, error) {
+	args := m.Called(ctx)
+	return args.Get(0).(int64), args.Error(1)
+}
+
 func setupService() (*ServiceImpl, *MockOrganizationRepository) {
 	mockRepo := &MockOrganizationRepository{}
 	logger := zap.NewNop().Sugar()

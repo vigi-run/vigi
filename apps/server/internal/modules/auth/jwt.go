@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"vigi/internal/modules/shared"
 	"time"
+	"vigi/internal/modules/shared"
 
 	"github.com/golang-jwt/jwt/v5"
 	"go.uber.org/zap"
@@ -19,6 +19,7 @@ var (
 type Claims struct {
 	UserID string `json:"userId"`
 	Email  string `json:"email"`
+	Role   string `json:"role"`
 	Type   string `json:"type"` // "access" or "refresh"
 	jwt.RegisteredClaims
 }
@@ -93,6 +94,7 @@ func (maker *TokenMaker) createToken(user *Model, tokenType string, duration tim
 	claims := &Claims{
 		UserID: user.ID,
 		Email:  user.Email,
+		Role:   user.Role,
 		Type:   tokenType,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(duration)),
