@@ -29,6 +29,7 @@ func (c *Controller) RegisterRoutes(router *gin.RouterGroup) {
 		group.GET("/stats", c.GetStats)
 		group.GET("/users", c.ListUsers)
 		group.GET("/organizations", c.ListOrganizations)
+		group.GET("/organizations/:id", c.GetOrgDetails)
 	}
 }
 
@@ -87,4 +88,30 @@ func (c *Controller) ListOrganizations(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, orgs)
+}
+
+// GetOrgDetails returns details of a specific organization
+// @Summary Get organization details
+// @Description Get organization details including usage statistics
+// @Tags Backoffice
+// @Accept json
+// @Produce json
+// @Param id path string true "Organization ID"
+// @Success 200 {object} OrgDetailDto
+// @Failure 401 {object} utils.FailResponse
+// @Failure 403 {object} utils.FailResponse
+// @Failure 404 {object} utils.FailResponse
+// @Router /backoffice/organizations/{id} [get]
+func (c *Controller) GetOrgDetails(ctx *gin.Context) {
+	id := ctx.Param("id")
+	org, err := c.service.GetOrgDetails(ctx, id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+	if org == nil {
+		ctx.JSON(http.StatusNotFound, utils.NewFailResponse("Organization not found"))
+		return
+	}
+	ctx.JSON(http.StatusOK, org)
 }

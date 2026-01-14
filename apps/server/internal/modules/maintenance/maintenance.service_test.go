@@ -74,6 +74,11 @@ func (m *MockRepository) GetMaintenancesByMonitorID(ctx context.Context, monitor
 	return args.Get(0).([]*Model), args.Error(1)
 }
 
+func (m *MockRepository) Count(ctx context.Context, orgID string) (int64, error) {
+	args := m.Called(ctx, orgID)
+	return args.Get(0).(int64), args.Error(1)
+}
+
 type MockMonitorMaintenanceService struct {
 	mock.Mock
 }

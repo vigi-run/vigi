@@ -315,3 +315,11 @@ func (r *SQLRepositoryImpl) GetMaintenancesByMonitorID(ctx context.Context, moni
 
 	return models, nil
 }
+
+func (r *SQLRepositoryImpl) Count(ctx context.Context, orgID string) (int64, error) {
+	count, err := r.db.NewSelect().Model((*sqlModel)(nil)).Where("org_id = ?", orgID).Count(ctx)
+	if err != nil {
+		return 0, err
+	}
+	return int64(count), nil
+}

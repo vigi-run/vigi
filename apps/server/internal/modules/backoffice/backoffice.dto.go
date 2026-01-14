@@ -23,3 +23,19 @@ type OrgListDto struct {
 	UserCount int64  `json:"userCount"`
 	CreatedAt string `json:"createdAt"`
 }
+
+type OrgDetailDto struct {
+	ID        string   `json:"id"`
+	Name      string   `json:"name"`
+	Slug      string   `json:"slug"`
+	UserCount int64    `json:"userCount"`
+	CreatedAt string   `json:"createdAt"`
+	Stats     OrgStats `json:"stats"`
+}
+
+type OrgStats struct {
+	Monitors             int64 `json:"monitors"`
+	StatusPages          int64 `json:"statusPages"`
+	Maintenances         int64 `json:"maintenances"`
+	NotificationChannels int64 `json:"notificationChannels"`
+}

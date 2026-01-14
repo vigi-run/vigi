@@ -668,3 +668,12 @@ func (r *MonitorRepositoryImpl) FindByIDs(ctx context.Context, ids []string, org
 
 	return monitors, nil
 }
+
+func (r *MonitorRepositoryImpl) Count(ctx context.Context, orgID string) (int64, error) {
+	filter := bson.M{"org_id": orgID}
+	count, err := r.collection.CountDocuments(ctx, filter)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

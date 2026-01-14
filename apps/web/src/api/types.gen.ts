@@ -71,6 +71,22 @@ export type BackofficeOrgListDto = {
     createdAt: string;
 };
 
+export type BackofficeOrgStats = {
+    monitors: number;
+    statusPages: number;
+    maintenances: number;
+    notificationChannels: number;
+};
+
+export type BackofficeOrgDetailDto = {
+    id: string;
+    name: string;
+    slug: string;
+    userCount: number;
+    createdAt: string;
+    stats: BackofficeOrgStats;
+};
+
 export type AuthLoginDto = {
     email: string;
     password: string;

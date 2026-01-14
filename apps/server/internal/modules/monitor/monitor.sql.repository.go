@@ -385,6 +385,14 @@ func (r *SQLRepositoryImpl) FindByProxyId(ctx context.Context, proxyId string) (
 	return models, nil
 }
 
+func (r *SQLRepositoryImpl) Count(ctx context.Context, orgID string) (int64, error) {
+	count, err := r.db.NewSelect().Model((*sqlModel)(nil)).Where("org_id = ?", orgID).Count(ctx)
+	if err != nil {
+		return 0, err
+	}
+	return int64(count), nil
+}
+
 func (r *SQLRepositoryImpl) FindOneByPushToken(ctx context.Context, pushToken string) (*Model, error) {
 	sm := new(sqlModel)
 	err := r.db.NewSelect().Model(sm).Where("push_token = ?", pushToken).Scan(ctx)

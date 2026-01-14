@@ -3,30 +3,48 @@ package backoffice
 import (
 	"context"
 	"vigi/internal/modules/auth"
+	"vigi/internal/modules/maintenance"
+	"vigi/internal/modules/monitor"
+	"vigi/internal/modules/notification_channel"
 	"vigi/internal/modules/organization"
 	"vigi/internal/modules/stats"
+	"vigi/internal/modules/status_page"
 )
 
 type Service interface {
 	GetStats(ctx context.Context) (*StatsDto, error)
 	ListUsers(ctx context.Context) ([]*UserListDto, error)
 	ListOrganizations(ctx context.Context) ([]*OrgListDto, error)
+	GetOrgDetails(ctx context.Context, orgID string) (*OrgDetailDto, error)
 }
 
 type ServiceImpl struct {
-	authRepo  auth.Repository
-	orgRepo   organization.OrganizationRepository
-	statsRepo stats.Repository
+	authRepo                auth.Repository
+	orgRepo                 organization.OrganizationRepository
+	statsRepo               stats.Repository
+	monitorRepo             monitor.MonitorRepository
+	statusPageRepo          status_page.Repository
+	maintenanceRepo         maintenance.Repository
+	notificationChannelRepo notification_channel.Repository
 }
 
-func NewService(authRepo auth.Repository, orgRepo organization.OrganizationRepository, statsRepo stats.Repository) Service {
+func NewService(
+	authRepo auth.Repository,
+	orgRepo organization.OrganizationRepository,
+	statsRepo stats.Repository,
+	monitorRepo monitor.MonitorRepository,
+	statusPageRepo status_page.Repository,
+	maintenanceRepo maintenance.Repository,
+	notificationChannelRepo notification_channel.Repository,
+) Service {
 	return &ServiceImpl{
-		authRepo:  authRepo,
-		orgRepo:   orgRepo,
-		statsRepo: statsRepo, // We might need stats service if logic is complex, but repo seems fine for now if we just read
-		// Wait, stats logic for "Active Pings" usually involves aggregation.
-		// The prompt said "ping ativos / executados por hora"
-		// This likely means I need to aggregate from stats.
+		authRepo:                authRepo,
+		orgRepo:                 orgRepo,
+		statsRepo:               statsRepo,
+		monitorRepo:             monitorRepo,
+		statusPageRepo:          statusPageRepo,
+		maintenanceRepo:         maintenanceRepo,
+		notificationChannelRepo: notificationChannelRepo,
 	}
 }
 
@@ -101,4 +119,53 @@ func (s *ServiceImpl) ListOrganizations(ctx context.Context) ([]*OrgListDto, err
 		})
 	}
 	return dtos, nil
+}
+
+func (s *ServiceImpl) GetOrgDetails(ctx context.Context, orgID string) (*OrgDetailDto, error) {
+	org, err := s.orgRepo.FindByID(ctx, orgID)
+	if err != nil {
+		return nil, err
+	}
+	if org == nil {
+		return nil, nil
+	}
+
+	members, err := s.orgRepo.FindMembers(ctx, orgID)
+	if err != nil {
+		return nil, err
+	}
+
+	monitorCount, err := s.monitorRepo.Count(ctx, orgID)
+	if err != nil {
+		return nil, err
+	}
+
+	statusPageCount, err := s.statusPageRepo.Count(ctx, orgID)
+	if err != nil {
+		return nil, err
+	}
+
+	maintenanceCount, err := s.maintenanceRepo.Count(ctx, orgID)
+	if err != nil {
+		return nil, err
+	}
+
+	notificationChannelCount, err := s.notificationChannelRepo.Count(ctx, orgID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &OrgDetailDto{
+		ID:        org.ID,
+		Name:      org.Name,
+		Slug:      org.Slug,
+		UserCount: int64(len(members)),
+		CreatedAt: org.CreatedAt.String(),
+		Stats: OrgStats{
+			Monitors:             monitorCount,
+			StatusPages:          statusPageCount,
+			Maintenances:         maintenanceCount,
+			NotificationChannels: notificationChannelCount,
+		},
+	}, nil
 }
