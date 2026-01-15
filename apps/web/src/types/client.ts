@@ -16,8 +16,18 @@ export interface Client {
     customValue1?: number;
     classification: ClientClassification;
     status: ClientStatus;
+    contacts?: ClientContact[];
     createdAt: string;
     updatedAt: string;
+}
+
+export interface ClientContact {
+    id: string;
+    clientId: string;
+    name: string;
+    email?: string;
+    phone?: string;
+    role?: string;
 }
 
 export interface CreateClientDTO {
@@ -32,6 +42,7 @@ export interface CreateClientDTO {
     postalCode?: string;
     customValue1?: number;
     classification: ClientClassification;
+    contacts?: Omit<ClientContact, 'id' | 'clientId'>[];
 }
 
 export type UpdateClientDTO = Partial<CreateClientDTO> & {

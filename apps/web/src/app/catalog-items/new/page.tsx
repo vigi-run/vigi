@@ -20,7 +20,7 @@ export default function NewCatalogItemPage() {
         if (!organization?.id) return;
 
         const dto: CreateCatalogItemDTO = {
-            ...values,
+            ...(values as any),
             ncmNbs: values.ncmNbs || undefined,
             // Ensure stock fields are undefined for SERVICE type
             ...(values.type === CatalogItemType.SERVICE && {

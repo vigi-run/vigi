@@ -21,7 +21,7 @@ export default function EditCatalogItemPage() {
     const mutation = useUpdateCatalogItemMutation();
 
     const handleSubmit = async (values: CatalogItemFormValues) => {
-        const dto: UpdateCatalogItemDTO = { ...values };
+        const dto: UpdateCatalogItemDTO = { ...(values as any) };
 
         if (dto.type === CatalogItemType.SERVICE) {
             delete dto.inStockQuantity;

@@ -11,6 +11,7 @@ import (
 	"vigi/internal/modules/client"
 	"vigi/internal/modules/healthcheck"
 	"vigi/internal/modules/heartbeat"
+	"vigi/internal/modules/invoice"
 	"vigi/internal/modules/maintenance"
 	"vigi/internal/modules/middleware"
 	"vigi/internal/modules/monitor"
@@ -91,6 +92,7 @@ func ProvideServer(
 	storageRoute *storage.Route,
 	authChain *middleware.AuthChain,
 	catalogItemRoute *catalog_item.Route,
+	invoiceRoute *invoice.Route,
 ) *Server {
 	// Initialize server based on mode
 	var server *gin.Engine
@@ -136,6 +138,7 @@ func ProvideServer(
 	organizationRoute.ConnectRoute(router)
 	clientRoute.ConnectRoute(router)
 	catalogItemRoute.ConnectRoute(router, authChain)
+	invoiceRoute.ConnectRoute(router, authChain)
 	storageRoute.Register(router)
 
 	// Register push endpoint

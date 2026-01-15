@@ -9,6 +9,7 @@ import {
     Users,
     Building2,
     Briefcase,
+    FileText,
 } from "lucide-react";
 
 import {
@@ -84,6 +85,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 title: t("catalog_item.title", "Catalog Items"),
                 url: `${prefix}/catalog-items`,
                 icon: Tag,
+            },
+            {
+                title: t("invoice.title", "Invoices"),
+                url: `${prefix}/invoices`,
+                icon: FileText,
             },
         ],
         navSecondary: [

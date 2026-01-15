@@ -18,13 +18,30 @@ func NewSQLRepository(db *bun.DB) *SQLRepository {
 }
 
 func (r *SQLRepository) Create(ctx context.Context, client *Client) error {
-	_, err := r.db.NewInsert().Model(client).Exec(ctx)
-	return err
+	return r.db.RunInTx(ctx, nil, func(ctx context.Context, tx bun.Tx) error {
+		if _, err := tx.NewInsert().Model(client).Exec(ctx); err != nil {
+			return err
+		}
+
+		if len(client.Contacts) > 0 {
+			for _, contact := range client.Contacts {
+				contact.ClientID = client.ID
+				if _, err := tx.NewInsert().Model(contact).Exec(ctx); err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	})
 }
 
 func (r *SQLRepository) GetByID(ctx context.Context, id uuid.UUID) (*Client, error) {
 	var client Client
-	err := r.db.NewSelect().Model(&client).Where("id = ?", id).Scan(ctx)
+	err := r.db.NewSelect().
+		Model(&client).
+		Relation("Contacts").
+		Where("id = ?", id).
+		Scan(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +50,10 @@ func (r *SQLRepository) GetByID(ctx context.Context, id uuid.UUID) (*Client, err
 
 func (r *SQLRepository) GetByOrganizationID(ctx context.Context, organizationID uuid.UUID, filter ClientFilter) ([]*Client, int, error) {
 	var clients []*Client
-	query := r.db.NewSelect().Model(&clients).Where("organization_id = ?", organizationID)
+	query := r.db.NewSelect().
+		Model(&clients).
+		Relation("Contacts").
+		Where("organization_id = ?", organizationID)
 
 	if filter.Search != nil && *filter.Search != "" {
 		query.Where("LOWER(name) LIKE LOWER(?)", "%"+*filter.Search+"%")
@@ -66,8 +86,26 @@ func (r *SQLRepository) GetByOrganizationID(ctx context.Context, organizationID 
 }
 
 func (r *SQLRepository) Update(ctx context.Context, client *Client) error {
-	_, err := r.db.NewUpdate().Model(client).WherePK().Exec(ctx)
-	return err
+	return r.db.RunInTx(ctx, nil, func(ctx context.Context, tx bun.Tx) error {
+		if _, err := tx.NewUpdate().Model(client).WherePK().Exec(ctx); err != nil {
+			return err
+		}
+
+		// Replace contacts strategy
+		if _, err := tx.NewDelete().Model((*ClientContact)(nil)).Where("client_id = ?", client.ID).Exec(ctx); err != nil {
+			return err
+		}
+
+		if len(client.Contacts) > 0 {
+			for _, contact := range client.Contacts {
+				contact.ClientID = client.ID
+				if _, err := tx.NewInsert().Model(contact).Exec(ctx); err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	})
 }
 
 func (r *SQLRepository) Delete(ctx context.Context, id uuid.UUID) error {

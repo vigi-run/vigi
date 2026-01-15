@@ -1,7 +1,15 @@
 package client
 
+type ClientContactDTO struct {
+	Name  string  `json:"name" validate:"required"`
+	Email *string `json:"email"`
+	Phone *string `json:"phone"`
+	Role  *string `json:"role"`
+}
+
 type CreateClientDTO struct {
 	Name           string               `json:"name" validate:"required"`
+	Classification ClientClassification `json:"classification" validate:"required,oneof=individual company"`
 	IDNumber       *string              `json:"idNumber"`
 	VATNumber      *string              `json:"vatNumber"`
 	Address1       *string              `json:"address1"`
@@ -11,12 +19,12 @@ type CreateClientDTO struct {
 	State          *string              `json:"state"`
 	PostalCode     *string              `json:"postalCode"`
 	CustomValue1   *float64             `json:"customValue1"`
-	Classification ClientClassification `json:"classification" validate:"required,oneof=individual company"`
-	Status         ClientStatus         `json:"status" validate:"omitempty,oneof=active inactive blocked"`
+	Contacts       []ClientContactDTO   `json:"contacts" validate:"dive"`
 }
 
 type UpdateClientDTO struct {
 	Name           *string               `json:"name"`
+	Classification *ClientClassification `json:"classification" validate:"omitempty,oneof=individual company"`
 	IDNumber       *string               `json:"idNumber"`
 	VATNumber      *string               `json:"vatNumber"`
 	Address1       *string               `json:"address1"`
@@ -26,8 +34,8 @@ type UpdateClientDTO struct {
 	State          *string               `json:"state"`
 	PostalCode     *string               `json:"postalCode"`
 	CustomValue1   *float64              `json:"customValue1"`
-	Classification *ClientClassification `json:"classification" validate:"omitempty,oneof=individual company"`
 	Status         *ClientStatus         `json:"status" validate:"omitempty,oneof=active inactive blocked"`
+	Contacts       []ClientContactDTO    `json:"contacts" validate:"dive"`
 }
 
 type ClientFilter struct {

@@ -126,7 +126,7 @@ const ClientDetailsPage = () => {
                             <div className="text-lg font-semibold">{client.name}</div>
                         </div>
                         <div>
-                            <div className="text-sm font-medium text-muted-foreground">{t("clients.classification", "Classification")}</div>
+                            <div className="text-sm font-medium text-muted-foreground">{t("clients.form.classification", "Classification")}</div>
                             <div className="mt-1">
                                 <Badge variant={client.classification === 'company' ? 'default' : 'secondary'}>
                                     {t(`clients.classification.${client.classification}`, client.classification)}

@@ -35,6 +35,10 @@ import CatalogItemsPage from "@/app/catalog-items/page";
 import NewCatalogItemPage from "@/app/catalog-items/new/page";
 import EditCatalogItemPage from "@/app/catalog-items/[id]/edit/page";
 import CatalogItemDetailsPage from "@/app/catalog-items/[id]/view/page";
+import InvoicesPage from "@/app/invoices/page";
+import NewInvoicePage from "@/app/invoices/new/page";
+import EditInvoicePage from "@/app/invoices/[id]/edit/page";
+import InvoiceDetailsPage from "@/app/invoices/[id]/view/page";
 
 export const protectedRoutes = [
     <Route key="root" path="/" element={<RootRedirect />} />,
@@ -92,6 +96,12 @@ export const protectedRoutes = [
         <Route path="catalog-items/new" element={<NewCatalogItemPage />} />
         <Route path="catalog-items/:id" element={<CatalogItemDetailsPage />} />
         <Route path="catalog-items/:id/edit" element={<EditCatalogItemPage />} />
+
+        {/* Invoice routes */}
+        <Route path="invoices" element={<InvoicesPage />} />
+        <Route path="invoices/new" element={<NewInvoicePage />} />
+        <Route path="invoices/:id" element={<InvoiceDetailsPage />} />
+        <Route path="invoices/:id/edit" element={<EditInvoicePage />} />
 
 
 

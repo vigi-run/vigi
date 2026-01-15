@@ -40,13 +40,46 @@ type Client struct {
 	CustomValue1   *float64             `bun:"custom_value1" json:"customValue1"`
 	Classification ClientClassification `bun:"classification,notnull,type:client_classification,default:'company'" json:"classification"`
 	Status         ClientStatus         `bun:"status,notnull,type:client_status,default:'active'" json:"status"`
+	
+	Contacts []*ClientContact `bun:"rel:has-many,join:id=client_id" json:"contacts"`
+
 	CreatedAt      time.Time            `bun:"created_at,nullzero,notnull,default:current_timestamp" json:"createdAt"`
 	UpdatedAt      time.Time            `bun:"updated_at,nullzero,notnull,default:current_timestamp" json:"updatedAt"`
+}
+
+type ClientContact struct {
+	bun.BaseModel `bun:"table:client_contacts,alias:cc"`
+
+	ID       uuid.UUID `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
+	ClientID uuid.UUID `bun:"client_id,type:uuid" json:"clientId"`
+	Name     string    `bun:"name,notnull" json:"name"`
+	Email    *string   `bun:"email" json:"email"`
+	Phone    *string   `bun:"phone" json:"phone"`
+	Role     *string   `bun:"role" json:"role"`
+
+	CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp" json:"createdAt"`
+	UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp" json:"updatedAt"`
 }
 
 var _ bun.BeforeAppendModelHook = (*Client)(nil)
 
 func (c *Client) BeforeAppendModel(ctx context.Context, query bun.Query) error {
+	switch query.(type) {
+	case *bun.InsertQuery:
+		if c.ID == uuid.Nil {
+			c.ID = uuid.New()
+		}
+		c.CreatedAt = time.Now()
+		c.UpdatedAt = time.Now()
+	case *bun.UpdateQuery:
+		c.UpdatedAt = time.Now()
+	}
+	return nil
+}
+
+var _ bun.BeforeAppendModelHook = (*ClientContact)(nil)
+
+func (c *ClientContact) BeforeAppendModel(ctx context.Context, query bun.Query) error {
 	switch query.(type) {
 	case *bun.InsertQuery:
 		if c.ID == uuid.Nil {
