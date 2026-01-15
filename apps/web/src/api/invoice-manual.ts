@@ -10,6 +10,7 @@ export const getInvoicesInfiniteOptions = (orgId: string, params?: InvoiceFilter
         if (params?.limit) queryParams.append('limit', params.limit.toString());
         if (params?.q) queryParams.append('q', params.q);
         if (params?.status) queryParams.append('status', params.status);
+        if (params?.clientId) queryParams.append('clientId', params.clientId);
 
         const res = await client.get({
             url: `/organizations/${orgId}/invoices?${queryParams.toString()}`,

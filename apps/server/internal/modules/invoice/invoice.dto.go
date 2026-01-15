@@ -48,8 +48,9 @@ type UpdateInvoiceDTO struct {
 }
 
 type InvoiceFilter struct {
-	Limit  int            `form:"limit"`
-	Page   int            `form:"page"`
-	Search *string        `form:"q"`
-	Status *InvoiceStatus `form:"status"`
+	Limit    int            `form:"limit"`
+	Page     int            `form:"page"`
+	Search   *string        `form:"q"`
+	Status   *InvoiceStatus `form:"status"`
+	ClientID *uuid.UUID     `form:"clientId"`
 }

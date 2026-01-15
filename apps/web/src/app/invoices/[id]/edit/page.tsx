@@ -8,12 +8,14 @@ import { getInvoiceOptions, useUpdateInvoiceMutation } from "@/api/invoice-manua
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { InvoiceFormValues } from "@/schemas/invoice.schema";
+import { useOrganizationStore } from "@/store/organization";
 
 export default function EditInvoicePage() {
     const { id } = useParams<{ id: string }>();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const updateMutation = useUpdateInvoiceMutation();
+    const { currentOrganization } = useOrganizationStore();
 
     const { data: invoice, isLoading } = useQuery(getInvoiceOptions(id!));
 
@@ -40,7 +42,7 @@ export default function EditInvoicePage() {
                 },
             });
             toast.success(t("invoice.updated_successfully"));
-            navigate(`/invoices/${id}`);
+            navigate(`/${currentOrganization?.slug}/invoices/${id}`);
         } catch (error) {
             toast.error(t("common.error_occurred"));
         }

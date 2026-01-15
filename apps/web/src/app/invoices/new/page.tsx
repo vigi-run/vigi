@@ -22,6 +22,12 @@ export default function NewInvoicePage() {
                 orgId: organization.id,
                 data: {
                     ...data,
+                    // Ensure nulls are converted to undefined
+                    nfId: data.nfId || undefined,
+                    nfStatus: data.nfStatus || undefined,
+                    nfLink: data.nfLink || undefined,
+                    bankInvoiceId: data.bankInvoiceId || undefined,
+                    bankInvoiceStatus: data.bankInvoiceStatus || undefined,
                     // Ensure dates are defined, though schema makes them optional but DTO might need handling if API expects them
                     items: data.items.map(item => ({
                         ...item,
@@ -30,7 +36,7 @@ export default function NewInvoicePage() {
                 },
             });
             toast.success(t("invoice.created_successfully"));
-            navigate("/invoices");
+            navigate(`/${organization.slug}/invoices`);
         } catch (error) {
             toast.error(t("common.error_occurred"));
         }

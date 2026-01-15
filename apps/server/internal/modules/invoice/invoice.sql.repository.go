@@ -42,7 +42,7 @@ func (r *SQLRepository) GetByID(ctx context.Context, id uuid.UUID) (*Invoice, er
 
 func (r *SQLRepository) GetByOrganizationID(ctx context.Context, orgID uuid.UUID, filter InvoiceFilter) ([]*Invoice, int, error) {
 	var entities []*Invoice
-	query := r.db.NewSelect().Model(&entities).Where("organization_id = ?", orgID)
+	query := r.db.NewSelect().Model(&entities).Relation("Items").Where("organization_id = ?", orgID)
 
 	// Case-insensitive search (SQLite compatible)
 	if filter.Search != nil && *filter.Search != "" {
@@ -51,6 +51,10 @@ func (r *SQLRepository) GetByOrganizationID(ctx context.Context, orgID uuid.UUID
 
 	if filter.Status != nil && *filter.Status != "" {
 		query.Where("status = ?", *filter.Status)
+	}
+
+	if filter.ClientID != nil {
+		query.Where("client_id = ?", *filter.ClientID)
 	}
 
 	if filter.Limit > 0 {

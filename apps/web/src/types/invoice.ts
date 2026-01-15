@@ -69,4 +69,5 @@ export type InvoiceFilter = {
     limit?: number;
     q?: string;
     status?: InvoiceStatus;
+    clientId?: string;
 };

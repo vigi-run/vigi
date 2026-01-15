@@ -75,6 +75,12 @@ func (c *Controller) GetByOrganizationID(ctx *gin.Context) {
 		s := InvoiceStatus(status)
 		filter.Status = &s
 	}
+	if clientIDStr := ctx.Query("clientId"); clientIDStr != "" {
+		clientID, err := uuid.Parse(clientIDStr)
+		if err == nil {
+			filter.ClientID = &clientID
+		}
+	}
 
 	entities, count, err := c.service.GetByOrganizationID(ctx, orgID, filter)
 	if err != nil {
