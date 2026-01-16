@@ -1,0 +1,2 @@
+ALTER TABLE invoices
+ADD COLUMN nf_link TEXT;

@@ -8,6 +8,8 @@ import {
     Tag,
     Users,
     Building2,
+    Briefcase,
+    FileText,
 } from "lucide-react";
 
 import {
@@ -73,6 +75,21 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 title: t("navigation.notification_channels"),
                 url: `${prefix}/notification-channels`,
                 icon: Vibrate,
+            },
+            {
+                title: t("clients.title", "Clients"),
+                url: `${prefix}/clients`,
+                icon: Briefcase,
+            },
+            {
+                title: t("catalog_item.title", "Catalog Items"),
+                url: `${prefix}/catalog-items`,
+                icon: Tag,
+            },
+            {
+                title: t("invoice.title", "Invoices"),
+                url: `${prefix}/invoices`,
+                icon: FileText,
             },
         ],
         navSecondary: [

@@ -16,12 +16,15 @@ import (
 	"vigi/internal/modules/backoffice"
 	"vigi/internal/modules/badge"
 	"vigi/internal/modules/bruteforce"
+	"vigi/internal/modules/catalog_item"
 	"vigi/internal/modules/certificate"
 	"vigi/internal/modules/cleanup"
+	"vigi/internal/modules/client"
 	"vigi/internal/modules/domain_status_page"
 	"vigi/internal/modules/events"
 	"vigi/internal/modules/healthcheck"
 	"vigi/internal/modules/heartbeat"
+	"vigi/internal/modules/invoice"
 	"vigi/internal/modules/maintenance"
 	"vigi/internal/modules/middleware"
 	"vigi/internal/modules/monitor"
@@ -131,6 +134,9 @@ func main() {
 	queue.RegisterDependencies(container, internalCfg)
 	api_key.RegisterDependencies(container, internalCfg)
 	organization.RegisterDependencies(container, internalCfg)
+	client.RegisterDependencies(container, internalCfg)
+	catalog_item.RegisterDependencies(container, internalCfg)
+	invoice.RegisterDependencies(container, internalCfg)
 
 	middleware.RegisterDependencies(container)
 	storage.RegisterDependencies(container)

@@ -39,6 +39,158 @@
         "status": "Status",
         "time": "Time"
     },
+    "catalog_item": {
+        "title": "Catalog Items",
+        "create": "Create Item",
+        "create_success": "Catalog item created successfully",
+        "create_error": "Failed to create catalog item",
+        "update_success": "Catalog item updated successfully",
+        "update_error": "Failed to update catalog item",
+        "delete_success": "Catalog item deleted successfully",
+        "delete_error": "Failed to delete catalog item",
+        "empty": {
+            "title": "No catalog items found",
+            "description": "Create your first product or service."
+        },
+        "new": {
+            "title": "New Catalog Item"
+        },
+        "edit": {
+            "title": "Edit Catalog Item"
+        },
+        "details": {
+            "title": "Item Details",
+            "loading": "Loading Item...",
+            "not_found": "Item Not Found",
+            "general": "General Information",
+            "stock": "Stock Information"
+        },
+        "fields": {
+            "name": "Name",
+            "type": "Type",
+            "productKey": "Product Key",
+            "price": "Price",
+            "cost": "Cost",
+            "unit": "Unit",
+            "ncmNbs": "NCM / NBS",
+            "taxRate": "Tax Rate",
+            "inStockQuantity": "In Stock",
+            "stockThreshold": "Stock Threshold",
+            "stockNotification": "Stock Notification",
+            "notes": "Notes"
+        },
+        "form": {
+            "name": "Name",
+            "name_placeholder": "Product or Service Name",
+            "type": "Type",
+            "type_placeholder": "Select type",
+            "product_key": "Product Key / SKU",
+            "notes": "Notes",
+            "price": "Price",
+            "cost": "Cost",
+            "unit": "Unit",
+            "unit_placeholder": "Select unit",
+            "ncm_nbs": "NCM / NBS",
+            "tax_rate": "Tax Rate (%)",
+            "in_stock_quantity": "In Stock Quantity",
+            "stock_notification": "Stock Notification",
+            "stock_threshold": "Stock Threshold"
+        },
+        "type": {
+            "product": "Product",
+            "service": "Service"
+        },
+        "filters": {
+            "search_placeholder": "Search items...",
+            "type_placeholder": "All Types"
+        },
+        "validation": {
+            "name_required": "Name is required",
+            "product_key_required": "Product Key/SKU is required",
+            "unit_required": "Please select a valid unit"
+        }
+    },
+    "clients": {
+        "title": "Clients",
+        "create": "Create Client",
+        "create_success": "Client created successfully",
+        "create_error": "Failed to create client",
+        "update_success": "Client updated successfully",
+        "update_error": "Failed to update client",
+        "name": "Name",
+        "city": "City",
+        "empty": {
+            "title": "No clients found",
+            "description": "Create your first client to get started."
+        },
+        "new": {
+            "title": "New Client"
+        },
+        "details": {
+            "loading": "Loading Client...",
+            "not_found": "Client Not Found",
+            "company_data": "Company Data",
+            "address_data": "Address Data"
+        },
+        "edit": {
+            "title": "Edit Client",
+            "loading": "Loading Client...",
+            "not_found": "Client Not Found"
+        },
+        "errors": {
+            "not_found_message": "The requested client does not exist."
+        },
+        "validation": {
+            "name_required": "Name is required",
+            "cpf_required": "CPF is required",
+            "cpf_invalid": "Invalid CPF",
+            "cnpj_invalid": "Invalid CNPJ",
+            "email_invalid": "Invalid Email",
+            "contact_required": "Email or Phone is required"
+        },
+        "form": {
+            "name": "Name",
+            "name_placeholder": "My Client",
+            "classification": "Classification",
+            "cpf": "CPF",
+            "cnpj": "CNPJ",
+            "vat_number": "VAT Number",
+            "address": "Address",
+            "address1": "Street",
+            "address_number": "Number",
+            "city": "City",
+            "state": "State",
+            "contact_info": "Contact Info",
+            "financial_contact": "Financial Contact",
+            "contacts": "Contacts",
+            "add_contact": "Add Contact",
+            "contact_name": "Contact Name",
+            "contact_email": "Email",
+            "contact_phone": "Phone",
+            "contact_role": "Role",
+            "postal_code": "Postal Code",
+            "no_contacts": "No contacts added"
+        },
+        "common": {
+            "no_results": "No results found.",
+            "cancel": "Cancel",
+            "saving": "Saving..."
+        },
+        "classification": {
+            "individual": "Individual",
+            "company": "Company"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "blocked": "Blocked"
+        },
+        "status_updated": "Status updated successfully",
+        "status_update_error": "Failed to update status",
+        "filters": {
+            "search_placeholder": "Search by name..."
+        }
+    },
     "common": {
         "active": "Active",
         "all": "All",
@@ -55,6 +207,10 @@
         "days": "days",
         "default": "Default",
         "delete": "Delete",
+        "edit": "Edit",
+        "print": "Print",
+        "view": "View",
+        "actions": "Actions",
         "disabling": "Disabling...",
         "dismiss": "Dismiss",
         "down": "Down",
@@ -640,6 +796,7 @@
         }
     },
     "organization": {
+        "logo_label": "Organization Logo",
         "create_button": "Create Organization",
         "logo_label": "Organization Logo",
         "create_description": "Start by creating a new organization for your monitors.",
@@ -1422,5 +1579,91 @@
     "ui": {
         "general": "General",
         "intervals_retries": "Intervals, Retries, Timeouts"
+    },
+    "invoice": {
+        "title": "Invoices",
+        "new_invoice": "New Invoice",
+        "edit_invoice": "Edit Invoice",
+        "create": "Create Invoice",
+        "details": "Invoice Details",
+        "bill_to": "Bill To",
+        "invoice_number": "Invoice Number",
+        "date_issued": "Date Issued",
+        "due_date": "Due Date",
+        "item_description": "Description",
+        "item_quantity": "Qty",
+        "item_price": "Price",
+        "item_total": "Total",
+        "total": "Grand Total",
+        "notes": "Notes",
+        "terms": "Terms & Conditions",
+        "thank_you": "Thank you for your business!",
+        "created_successfully": "Invoice created successfully",
+        "updated_successfully": "Invoice updated successfully",
+        "status_updated": "Invoice status updated",
+        "status": {
+            "draft": "Draft",
+            "sent": "Sent",
+            "paid": "Paid",
+            "cancelled": "Cancelled",
+            "pending": "Pending",
+            "error": "Error"
+        },
+        "filters": {
+            "search_placeholder": "Search invoices..."
+        },
+        "empty": {
+            "title": "No invoices found",
+            "description": "Create your first invoice to get started."
+        },
+        "validation": {
+            "client_required": "Client is required",
+            "number_required": "Number is required",
+            "item_description_required": "Item description is required",
+            "item_quantity_min": "Quantity must be greater than 0",
+            "item_price_min": "Price must be greater or equal to 0",
+            "items_required": "At least one item is required"
+        },
+        "items_label": "{{count}} item",
+        "items_label_other": "{{count}} items",
+        "form": {
+            "client": "Client",
+            "select_client": "Select a client",
+            "select_from_catalog": "Select from Catalog",
+            "search_catalog": "Search catalog...",
+            "search_client": "Search client...",
+            "no_catalog_items": "No items found.",
+            "item_description_placeholder": "Item description",
+            "number": "Number",
+            "date": "Date",
+            "due_date": "Due Date",
+            "items": "Items",
+            "add_item": "Add Item",
+            "select_item": "Select from catalog",
+            "select_status": "Select status",
+            "general_info": "General Information",
+            "additional_info": "Additional Information",
+            "fiscal_info": "Fiscal Information",
+            "terms": "Terms & Conditions",
+            "terms_placeholder": "Enter terms and conditions...",
+            "notes": "Notes",
+            "notes_placeholder": "Enter notes...",
+            "item_description": "Description",
+            "item_quantity": "Qty",
+            "item_price": "Price",
+            "item_total": "Total",
+            "total": "Grand Total",
+            "subtotal": "Subtotal",
+            "total_discount": "Total Discount",
+            "final_total": "Final Total",
+            "discount": "Discount",
+            "nf_id": "NF ID",
+            "nf_status": "NF Status",
+            "nf_link": "NF Link",
+            "bank_invoice_id": "Bank Invoice ID",
+            "bank_invoice_status": "Bank Invoice Status",
+            "metadata": "Metadata",
+            "metadata_description": "Manage additional invoice details"
+        }
     }
 }

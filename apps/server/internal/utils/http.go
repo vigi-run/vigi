@@ -34,3 +34,25 @@ type PaginatedQueryParams struct {
 	Page  int `form:"page" binding:"numeric"`
 	Limit int `form:"limit" binding:"numeric,max=50"`
 }
+
+type PaginatedResponse[T any] struct {
+	Data       []T `json:"data"`
+	TotalCount int `json:"totalCount"`
+	Page       int `json:"page"`
+	Limit      int `json:"limit"`
+	TotalPages int `json:"totalPages"`
+}
+
+func NewPaginatedResponse[T any](data []T, count int, page, limit int) PaginatedResponse[T] {
+	totalPages := 0
+	if limit > 0 {
+		totalPages = (count + limit - 1) / limit
+	}
+	return PaginatedResponse[T]{
+		Data:       data,
+		TotalCount: count,
+		Page:       page,
+		Limit:      limit,
+		TotalPages: totalPages,
+	}
+}

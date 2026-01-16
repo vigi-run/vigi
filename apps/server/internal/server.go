@@ -8,9 +8,13 @@ import (
 	"vigi/internal/modules/auth"
 	"vigi/internal/modules/backoffice"
 	"vigi/internal/modules/badge"
+	"vigi/internal/modules/catalog_item"
+	"vigi/internal/modules/client"
 	"vigi/internal/modules/healthcheck"
 	"vigi/internal/modules/heartbeat"
+	"vigi/internal/modules/invoice"
 	"vigi/internal/modules/maintenance"
+	"vigi/internal/modules/middleware"
 	"vigi/internal/modules/monitor"
 	"vigi/internal/modules/notification_channel"
 	"vigi/internal/modules/organization"
@@ -85,9 +89,13 @@ func ProvideServer(
 	apiKeyController *api_key.Controller,
 	organizationRoute *organization.OrganizationRoute,
 	organizationController *organization.OrganizationController,
+	clientRoute *client.Route,
 	backofficeRoute *backoffice.Route,
 	backofficeController *backoffice.Controller,
 	storageRoute *storage.Route,
+	authChain *middleware.AuthChain,
+	catalogItemRoute *catalog_item.Route,
+	invoiceRoute *invoice.Route,
 ) *Server {
 	// Initialize server based on mode
 	var server *gin.Engine
@@ -131,6 +139,9 @@ func ProvideServer(
 	badgeRoute.ConnectRoute(router, badgeController)
 	apiKeyRoute.ConnectRoute(router, apiKeyController)
 	organizationRoute.ConnectRoute(router)
+	clientRoute.ConnectRoute(router)
+	catalogItemRoute.ConnectRoute(router, authChain)
+	invoiceRoute.ConnectRoute(router, authChain)
 	backofficeRoute.ConnectRoute(router, backofficeController)
 	storageRoute.Register(router)
 
