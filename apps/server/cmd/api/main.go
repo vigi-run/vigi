@@ -25,6 +25,7 @@ import (
 	"vigi/internal/modules/healthcheck"
 	"vigi/internal/modules/heartbeat"
 	"vigi/internal/modules/invoice"
+	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/maintenance"
 	"vigi/internal/modules/middleware"
 	"vigi/internal/modules/monitor"
@@ -138,6 +139,7 @@ func main() {
 	client.RegisterDependencies(container, internalCfg)
 	catalog_item.RegisterDependencies(container, internalCfg)
 	invoice.RegisterDependencies(container, internalCfg)
+	recurring_invoice.RegisterDependencies(container, internalCfg)
 	webhook.RegisterDependencies(container, internalCfg)
 
 	middleware.RegisterDependencies(container)

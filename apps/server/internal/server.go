@@ -14,6 +14,7 @@ import (
 	"vigi/internal/modules/heartbeat"
 	"vigi/internal/modules/invoice"
 	"vigi/internal/modules/maintenance"
+	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/middleware"
 	"vigi/internal/modules/monitor"
 	"vigi/internal/modules/notification_channel"
@@ -96,6 +97,7 @@ func ProvideServer(
 	authChain *middleware.AuthChain,
 	catalogItemRoute *catalog_item.Route,
 	invoiceRoute *invoice.Route,
+	recurringInvoiceRoute *recurring_invoice.Route,
 ) *Server {
 	// Initialize server based on mode
 	var server *gin.Engine
@@ -141,6 +143,7 @@ func ProvideServer(
 	// Invoice routes MUST be registered before organization routes
 	// to avoid /organizations/:id matching /invoices path segments
 	invoiceRoute.ConnectRoute(router, authChain)
+	recurringInvoiceRoute.ConnectRoute(router, authChain)
 	catalogItemRoute.ConnectRoute(router, authChain)
 	clientRoute.ConnectRoute(router)
 	organizationRoute.ConnectRoute(router)

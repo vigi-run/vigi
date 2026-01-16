@@ -6,6 +6,7 @@ import {
     Building2,
     Briefcase,
     FileText,
+    Repeat,
 } from "lucide-react";
 
 import {
@@ -61,6 +62,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 title: t("invoice.title", "Invoices"),
                 url: `${prefix}/invoices`,
                 icon: FileText,
+            },
+            {
+                title: t("invoice.recurring_title", "Recurring Invoices"),
+                url: `${prefix}/recurring-invoices`,
+                icon: Repeat,
             },
         ],
         navSecondary: [
