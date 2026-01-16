@@ -255,7 +255,7 @@ export default function InvoiceDetailsPage() {
                                 {emails.map((email) => (
                                     <div key={email.id} className="flex justify-between items-center p-4 border rounded-lg bg-muted/10">
                                         <div>
-                                            <div className="font-medium capitalize">{email.type} Reminder</div>
+                                            <div className="font-medium capitalize">{t(`invoice.email.type.${email.type.toLowerCase() as "created"}`)}</div>
                                             <div className="text-sm text-muted-foreground">{format(new Date(email.createdAt), "PPp")}</div>
                                         </div>
                                         <div className="text-right">

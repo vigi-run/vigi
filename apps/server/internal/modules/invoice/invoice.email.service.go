@@ -168,7 +168,21 @@ func (s *Service) sendInvoiceEmail(ctx context.Context, id uuid.UUID, emailType 
 	}
 
 	fmt.Printf("Saving email record: %+v\n", emailRecord)
-	return s.emailRepo.Create(ctx, emailRecord)
+	if err := s.emailRepo.Create(ctx, emailRecord); err != nil {
+		return err
+	}
+
+	// If invoice is in draft, update to sent
+	if invoice.Status == InvoiceStatusDraft {
+		invoice.Status = InvoiceStatusSent
+		err := s.repo.Update(ctx, invoice)
+		if err != nil {
+			fmt.Printf("Error updating invoice status to sent: %v\n", err)
+			// Don't fail the request just because status update failed, email was sent
+		}
+	}
+
+	return nil
 }
 
 func (s *Service) generateEmailBody(invoice *Invoice, subject string, orgName string, emailType InvoiceEmailType, customMessage string) string {
