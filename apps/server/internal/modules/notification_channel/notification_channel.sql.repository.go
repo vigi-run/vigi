@@ -163,3 +163,11 @@ func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string, orgID string)
 	_, err := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ?", id).Where("org_id = ?", orgID).Exec(ctx)
 	return err
 }
+
+func (r *SQLRepositoryImpl) Count(ctx context.Context, orgID string) (int64, error) {
+	count, err := r.db.NewSelect().Model((*sqlModel)(nil)).Where("org_id = ?", orgID).Count(ctx)
+	if err != nil {
+		return 0, err
+	}
+	return int64(count), nil
+}

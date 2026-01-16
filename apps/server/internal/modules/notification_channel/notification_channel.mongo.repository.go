@@ -198,3 +198,12 @@ func (r *RepositoryImpl) Delete(ctx context.Context, id string, orgID string) er
 	_, err = r.collection.DeleteOne(ctx, filter)
 	return err
 }
+
+func (r *RepositoryImpl) Count(ctx context.Context, orgID string) (int64, error) {
+	filter := bson.M{"org_id": orgID}
+	count, err := r.collection.CountDocuments(ctx, filter)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

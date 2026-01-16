@@ -6,6 +6,7 @@ import (
 	"vigi/internal/config"
 	"vigi/internal/modules/api_key"
 	"vigi/internal/modules/auth"
+	"vigi/internal/modules/backoffice"
 	"vigi/internal/modules/badge"
 	"vigi/internal/modules/catalog_item"
 	"vigi/internal/modules/client"
@@ -89,6 +90,8 @@ func ProvideServer(
 	organizationRoute *organization.OrganizationRoute,
 	organizationController *organization.OrganizationController,
 	clientRoute *client.Route,
+	backofficeRoute *backoffice.Route,
+	backofficeController *backoffice.Controller,
 	storageRoute *storage.Route,
 	authChain *middleware.AuthChain,
 	catalogItemRoute *catalog_item.Route,
@@ -139,6 +142,7 @@ func ProvideServer(
 	clientRoute.ConnectRoute(router)
 	catalogItemRoute.ConnectRoute(router, authChain)
 	invoiceRoute.ConnectRoute(router, authChain)
+	backofficeRoute.ConnectRoute(router, backofficeController)
 	storageRoute.Register(router)
 
 	// Register push endpoint

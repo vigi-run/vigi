@@ -144,6 +144,28 @@ func (r *MongoRepositoryImpl) Delete(ctx context.Context, id string) error {
 	return err
 }
 
+func (r *MongoRepositoryImpl) FindAll(ctx context.Context) ([]*Organization, error) {
+	cursor, err := r.orgColl.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var organizations []*Organization
+	for cursor.Next(ctx) {
+		var mm mongoModel
+		if err := cursor.Decode(&mm); err != nil {
+			return nil, err
+		}
+		organizations = append(organizations, toDomainModelFromMongo(&mm))
+	}
+	return organizations, cursor.Err()
+}
+
+func (r *MongoRepositoryImpl) FindAllCount(ctx context.Context) (int64, error) {
+	return r.orgColl.CountDocuments(ctx, bson.M{})
+}
+
 // Members
 func (r *MongoRepositoryImpl) AddMember(ctx context.Context, orgUser *OrganizationUser) error {
 	mm := &mongoOrgUserModel{

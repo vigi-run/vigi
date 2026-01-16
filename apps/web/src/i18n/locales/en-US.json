@@ -798,6 +798,7 @@
     "organization": {
         "logo_label": "Organization Logo",
         "create_button": "Create Organization",
+        "logo_label": "Organization Logo",
         "create_description": "Start by creating a new organization for your monitors.",
         "create_title": "Create Organization",
         "creation_error": "Failed to create organization",

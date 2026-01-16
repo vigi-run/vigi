@@ -47,6 +47,46 @@ export type ApiKeyUpdateApiKeyDto = {
     name?: string;
 };
 
+export type BackofficeStatsDto = {
+    totalUsers: number;
+    totalOrgs: number;
+    activePings: number;
+    executedPings: number;
+};
+
+export type BackofficeUserListDto = {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+    orgCount: number;
+    createdAt: string;
+};
+
+export type BackofficeOrgListDto = {
+    id: string;
+    name: string;
+    slug: string;
+    userCount: number;
+    createdAt: string;
+};
+
+export type BackofficeOrgStats = {
+    monitors: number;
+    statusPages: number;
+    maintenances: number;
+    notificationChannels: number;
+};
+
+export type BackofficeOrgDetailDto = {
+    id: string;
+    name: string;
+    slug: string;
+    userCount: number;
+    createdAt: string;
+    stats: BackofficeOrgStats;
+};
+
 export type AuthLoginDto = {
     email: string;
     password: string;
@@ -66,6 +106,7 @@ export type AuthModel = {
     id?: string;
     imageUrl?: string;
     name?: string;
+    role?: string;
     twofa_status?: boolean;
     updatedAt?: string;
 };

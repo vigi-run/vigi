@@ -20,6 +20,7 @@ type sqlModel struct {
 	TwoFASecret    string    `bun:"twofa_secret"`
 	TwoFAStatus    bool      `bun:"twofa_status,notnull,default:false"`
 	TwoFALastToken string    `bun:"twofa_last_token"`
+	Role           string    `bun:"role"`
 	CreatedAt      time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
 	UpdatedAt      time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
 }
@@ -35,6 +36,7 @@ func toDomainModelFromSQL(sm *sqlModel) *Model {
 		TwoFASecret:    sm.TwoFASecret,
 		TwoFAStatus:    sm.TwoFAStatus,
 		TwoFALastToken: sm.TwoFALastToken,
+		Role:           sm.Role,
 		CreatedAt:      sm.CreatedAt,
 		UpdatedAt:      sm.UpdatedAt,
 	}
@@ -51,6 +53,7 @@ func toSQLModel(m *Model) *sqlModel {
 		TwoFASecret:    m.TwoFASecret,
 		TwoFAStatus:    m.TwoFAStatus,
 		TwoFALastToken: m.TwoFALastToken,
+		Role:           m.Role,
 		CreatedAt:      m.CreatedAt,
 		UpdatedAt:      m.UpdatedAt,
 	}
@@ -75,6 +78,7 @@ func (r *SQLRepositoryImpl) Create(ctx context.Context, user *Model) (*Model, er
 		TwoFASecret:    user.TwoFASecret,
 		TwoFAStatus:    user.TwoFAStatus,
 		TwoFALastToken: user.TwoFALastToken,
+		Role:           user.Role,
 		CreatedAt:      time.Now(),
 		UpdatedAt:      time.Now(),
 	}
@@ -117,6 +121,20 @@ func (r *SQLRepositoryImpl) FindAllCount(ctx context.Context) (int64, error) {
 	return int64(count), err
 }
 
+func (r *SQLRepositoryImpl) FindAll(ctx context.Context) ([]*Model, error) {
+	var models []*sqlModel
+	err := r.db.NewSelect().Model(&models).Scan(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []*Model
+	for _, m := range models {
+		result = append(result, toDomainModelFromSQL(m))
+	}
+	return result, nil
+}
+
 func (r *SQLRepositoryImpl) Update(ctx context.Context, id string, entity *UpdateModel) error {
 	query := r.db.NewUpdate().Model((*sqlModel)(nil)).Where("id = ?", id)
 
@@ -152,6 +170,10 @@ func (r *SQLRepositoryImpl) Update(ctx context.Context, id string, entity *Updat
 	}
 	if entity.TwoFALastToken != nil {
 		query = query.Set("twofa_last_token = ?", *entity.TwoFALastToken)
+		hasUpdates = true
+	}
+	if entity.Role != nil {
+		query = query.Set("role = ?", *entity.Role)
 		hasUpdates = true
 	}
 

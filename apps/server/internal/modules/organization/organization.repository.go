@@ -10,6 +10,8 @@ type OrganizationRepository interface {
 	FindBySlug(ctx context.Context, slug string) (*Organization, error)
 	Update(ctx context.Context, id string, organization *Organization) error
 	Delete(ctx context.Context, id string) error
+	FindAll(ctx context.Context) ([]*Organization, error)
+	FindAllCount(ctx context.Context) (int64, error)
 
 	AddMember(ctx context.Context, orgUser *OrganizationUser) error
 	RemoveMember(ctx context.Context, orgID, userID string) error

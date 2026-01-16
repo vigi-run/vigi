@@ -326,6 +326,32 @@
           "pause_description": "Tem certeza de que deseja pausar esta manutenção?",
           "resume_description": "Você tem certeza de que deseja retomar esta manutenção?",
           "title": "Confirmar ação"
+    "forms": {
+        "labels": {
+            "confirm_password": "Confirmar senha",
+            "email": "E-mail",
+            "footer_text": "Texto do rodapé",
+            "heartbeat_interval": "Intervalo de heartbeat (segundos)",
+            "icon_url": "URL do ícone",
+            "monitor_name": "Nome",
+            "monitor_type": "Tipo",
+            "password": "Senha",
+            "retries": "Tentativas",
+            "slug": "Slug",
+            "title": "Título",
+            "username": "Nome de usuário",
+            "name": "Nome Completo"
+        },
+        "placeholders": {
+            "auto_refresh_help": "0 para não atualizar automaticamente",
+            "domains": "Digite o domínio (ex.: status.example.com)",
+            "footer_text": "Insira o texto do rodapé",
+            "icon_url": "https://example.com/icon.png",
+            "monitor_name": "Meu monitor",
+            "page_description": "Digite a descrição da página de status",
+            "page_title": "Digite o título da página de status",
+            "slug": "slug-pagina-de-status",
+            "name": "Seu nome completo"
         },
         "confirm_delete": {
           "description": "Tem certeza de que deseja excluir esta janela de manutenção? Esta ação não pode ser desfeita.",
@@ -813,6 +839,43 @@
       "name_min_length": "O nome deve ter pelo menos 3 caracteres",
       "slug_format": "O slug deve conter apenas letras minúsculas, números e hífens",
       "slug_min_length": "O slug deve ter pelo menos 3 caracteres"
+    "organization": {
+        "create_button": "Criar Organização",
+        "logo_label": "Logo da Organização",
+        "create_description": "Comece criando uma nova organização para seus monitores.",
+        "create_title": "Criar Organização",
+        "creation_error": "Falha ao criar organização",
+        "creation_success": "Organização criada com sucesso",
+        "name_label": "Nome da Organização",
+        "placeholders": {
+            "name": "Acme Corp",
+            "slug": "acme-corp"
+        },
+        "slug_already_used": "O slug '{{slug}}' já está em uso",
+        "slug_label": "Slug (Opcional)",
+        "update_button": "Atualizar Organização",
+        "update_error": "Falha ao atualizar organização",
+        "update_success": "Organização atualizada com sucesso",
+        "validation": {
+            "name_min_length": "O nome deve ter pelo menos 3 caracteres",
+            "slug_format": "O slug deve conter apenas letras minúsculas, números e hífens",
+            "slug_min_length": "O slug deve ter pelo menos 3 caracteres"
+        },
+        "switcher": {
+            "add_organization": "Adicionar organização",
+            "label": "Organização",
+            "organizations_label": "Organizações"
+        },
+        "settings_title": "Configurações",
+        "settings_description": "Gerencie os detalhes da sua organização e monitores.",
+        "general_title": "Geral",
+        "general_description": "Atualize o nome e o slug da sua organização.",
+        "members_title": "Membros da Organização",
+        "members_description": "Gerencie membros e convites.",
+        "invite_member_title": "Convidar Membro",
+        "invite_member_description": "Convide um novo membro por e-mail.",
+        "invite_button": "Convidar",
+        "members_list_title": "Membros"
     },
     "switcher": {
       "add_organization": "Adicionar organização",

@@ -3,8 +3,8 @@ package auth
 import (
 	"context"
 	"errors"
-	"vigi/internal/config"
 	"time"
+	"vigi/internal/config"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,6 +19,7 @@ type mongoModel struct {
 	TwoFASecret    string             `bson:"twofa_secret"`
 	TwoFAStatus    bool               `bson:"twofa_status"`
 	TwoFALastToken string             `bson:"twofa_last_token"`
+	Role           string             `bson:"role"`
 	CreatedAt      time.Time          `bson:"createdAt"`
 	UpdatedAt      time.Time          `bson:"updatedAt"`
 }
@@ -30,6 +31,7 @@ type mongoUpdateModel struct {
 	TwoFASecret    *string    `bson:"twofa_secret,omitempty"`
 	TwoFAStatus    *bool      `bson:"twofa_status,omitempty"`
 	TwoFALastToken *string    `bson:"twofa_last_token,omitempty"`
+	Role           *string    `bson:"role,omitempty"`
 	CreatedAt      *time.Time `bson:"createdAt,omitempty"`
 	UpdatedAt      *time.Time `bson:"updatedAt,omitempty"`
 }
@@ -43,6 +45,7 @@ func toDomainModel(mm *mongoModel) *Model {
 		TwoFASecret:    mm.TwoFASecret,
 		TwoFAStatus:    mm.TwoFAStatus,
 		TwoFALastToken: mm.TwoFALastToken,
+		Role:           mm.Role,
 		CreatedAt:      mm.CreatedAt,
 		UpdatedAt:      mm.UpdatedAt,
 	}
@@ -69,6 +72,7 @@ func (r *RepositoryImpl) Create(ctx context.Context, user *Model) (*Model, error
 		TwoFASecret:    user.TwoFASecret,
 		TwoFAStatus:    user.TwoFAStatus,
 		TwoFALastToken: user.TwoFALastToken,
+		Role:           user.Role,
 		CreatedAt:      time.Now(),
 		UpdatedAt:      time.Now(),
 	}
@@ -125,6 +129,7 @@ func (r *RepositoryImpl) Update(ctx context.Context, id string, entity *UpdateMo
 		TwoFASecret:    entity.TwoFASecret,
 		TwoFAStatus:    entity.TwoFAStatus,
 		TwoFALastToken: entity.TwoFALastToken,
+		Role:           entity.Role,
 	}
 
 	set := buildSetMapFromUpdateModel(mu)
@@ -148,6 +153,24 @@ func (r *RepositoryImpl) FindAllCount(ctx context.Context) (int64, error) {
 	return count, err
 }
 
+func (r *RepositoryImpl) FindAll(ctx context.Context) ([]*Model, error) {
+	cursor, err := r.collection.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var models []*Model
+	for cursor.Next(ctx) {
+		var mm mongoModel
+		if err := cursor.Decode(&mm); err != nil {
+			return nil, err
+		}
+		models = append(models, toDomainModel(&mm))
+	}
+	return models, cursor.Err()
+}
+
 // buildSetMapFromUpdateModel converts mongoUpdateModel to bson.M for MongoDB updates
 func buildSetMapFromUpdateModel(mu *mongoUpdateModel) bson.M {
 	set := bson.M{}
@@ -168,6 +191,9 @@ func buildSetMapFromUpdateModel(mu *mongoUpdateModel) bson.M {
 	}
 	if mu.TwoFALastToken != nil {
 		set["twofa_last_token"] = *mu.TwoFALastToken
+	}
+	if mu.Role != nil {
+		set["role"] = *mu.Role
 	}
 	if mu.CreatedAt != nil {
 		set["createdAt"] = *mu.CreatedAt
