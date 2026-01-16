@@ -1,4 +1,4 @@
-import { BlockItem, OrganizationContext } from './types';
+import type { BlockItem } from './types';
 import {
     Text as TextIcon,
     Heading1,
@@ -85,7 +85,7 @@ export const clearLine: BlockItem = {
     description: 'Delete current block',
     searchTerms: ['clear', 'delete', 'remove'],
     icon: <Eraser className="w-4 h-4" />,
-    command: ({ editor, range }) => {
+    command: ({ editor }) => {
         editor.chain().focus().selectParentNode().deleteSelection().run();
     },
 };

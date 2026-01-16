@@ -6,6 +6,7 @@ import (
 	"vigi/internal/config"
 	"vigi/internal/modules/api_key"
 	"vigi/internal/modules/auth"
+	"vigi/internal/modules/backoffice"
 	"vigi/internal/modules/badge"
 	"vigi/internal/modules/catalog_item"
 	"vigi/internal/modules/client"
@@ -20,6 +21,7 @@ import (
 	"vigi/internal/modules/organization"
 	"vigi/internal/modules/proxy"
 	"vigi/internal/modules/queue"
+	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/setting"
 	"vigi/internal/modules/status_page"
 	"vigi/internal/modules/storage"
@@ -90,11 +92,14 @@ func ProvideServer(
 	organizationRoute *organization.OrganizationRoute,
 	organizationController *organization.OrganizationController,
 	clientRoute *client.Route,
+	backofficeRoute *backoffice.Route,
+	backofficeController *backoffice.Controller,
 	storageRoute *storage.Route,
 	authChain *middleware.AuthChain,
 	catalogItemRoute *catalog_item.Route,
 	invoiceRoute *invoice.Route,
 	interRoute *inter.Route,
+	recurringInvoiceRoute *recurring_invoice.Route,
 ) *Server {
 	// Initialize server based on mode
 	var server *gin.Engine
@@ -140,10 +145,12 @@ func ProvideServer(
 	// Invoice routes MUST be registered before organization routes
 	// to avoid /organizations/:id matching /invoices path segments
 	invoiceRoute.ConnectRoute(router, authChain)
+	recurringInvoiceRoute.ConnectRoute(router, authChain)
 	catalogItemRoute.ConnectRoute(router, authChain)
 	clientRoute.ConnectRoute(router)
 	organizationRoute.ConnectRoute(router)
 	interRoute.ConnectRoute(router)
+	backofficeRoute.ConnectRoute(router, backofficeController)
 	storageRoute.Register(router)
 
 	// Register push endpoint

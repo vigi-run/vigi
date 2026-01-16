@@ -1,5 +1,5 @@
 import type { Editor, Range } from '@tiptap/core';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 export interface CommandProps {
     editor: Editor;

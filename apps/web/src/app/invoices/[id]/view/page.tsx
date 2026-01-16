@@ -59,7 +59,7 @@ export default function InvoiceDetailsPage() {
         if (!organization || !id) return;
         setIsGeneratingCharge(true);
         try {
-            await generateInterCharge(organization.id, id);
+            await generateInterCharge(organization.id!, id);
             toast.success("Charge generated successfully");
             queryClient.invalidateQueries({ queryKey: getInvoiceOptions(id).queryKey });
         } catch (error) {

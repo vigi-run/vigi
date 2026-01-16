@@ -13,6 +13,7 @@ import (
 	"vigi/internal/infra"
 	"vigi/internal/modules/api_key"
 	"vigi/internal/modules/auth"
+	"vigi/internal/modules/backoffice"
 	"vigi/internal/modules/badge"
 	"vigi/internal/modules/bruteforce"
 	"vigi/internal/modules/catalog_item"
@@ -38,6 +39,7 @@ import (
 	"vigi/internal/modules/organization"
 	"vigi/internal/modules/proxy"
 	"vigi/internal/modules/queue"
+	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/setting"
 	"vigi/internal/modules/stats"
 	"vigi/internal/modules/status_page"
@@ -131,6 +133,7 @@ func main() {
 	tag.RegisterDependencies(container, internalCfg)
 	monitor_tag.RegisterDependencies(container, internalCfg)
 	badge.RegisterDependencies(container, internalCfg)
+	backoffice.RegisterDependencies(container)
 	queue.RegisterDependencies(container, internalCfg)
 	api_key.RegisterDependencies(container, internalCfg)
 	organization.RegisterDependencies(container, internalCfg)
@@ -138,6 +141,7 @@ func main() {
 	catalog_item.RegisterDependencies(container, internalCfg)
 	invoice.RegisterDependencies(container, internalCfg)
 	inter.RegisterDependencies(container)
+	recurring_invoice.RegisterDependencies(container, internalCfg)
 	webhook.RegisterDependencies(container, internalCfg)
 
 	middleware.RegisterDependencies(container)

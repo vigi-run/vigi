@@ -1,4 +1,4 @@
-import { BlockItem } from './types';
+import type { BlockItem } from './types';
 import { MousePointer } from 'lucide-react';
 
 export const button: BlockItem = {

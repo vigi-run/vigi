@@ -800,6 +800,7 @@
     "organization": {
         "logo_label": "Organization Logo",
         "create_button": "Create Organization",
+        "logo_label": "Organization Logo",
         "create_description": "Start by creating a new organization for your monitors.",
         "create_title": "Create Organization",
         "creation_error": "Failed to create organization",
@@ -873,6 +874,7 @@
         "or": "Or"
     },
     "navigation": {
+        "home": "Home",
         "maintenance": "Maintenance",
         "monitors": "Monitors",
         "notification_channels": "Notification Channels",
@@ -1684,5 +1686,14 @@
             "metadata": "Metadata",
             "metadata_description": "Manage additional invoice details"
         }
+    },
+    "dashboard": {
+        "welcome": "Welcome back",
+        "subtitle": "Here's an overview of your organization's activity.",
+        "getting_started": "Getting Started",
+        "quick_links": "Quick Links",
+        "step1": "Register your clients to keep track of their details.",
+        "step2": "Create and define your catalog items/services.",
+        "step3": "Generate professional invoices and send them via email."
     }
 }

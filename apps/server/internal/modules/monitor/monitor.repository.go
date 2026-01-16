@@ -24,4 +24,5 @@ type MonitorRepository interface {
 	RemoveProxyReference(ctx context.Context, proxyId string) error
 	FindByProxyId(ctx context.Context, proxyId string) ([]*Model, error)
 	FindOneByPushToken(ctx context.Context, pushToken string) (*Model, error)
+	Count(ctx context.Context, orgID string) (int64, error)
 }

@@ -1,4 +1,4 @@
-import { BlockItem } from './types';
+import type { BlockItem } from './types';
 import { Columns, MoveVertical, Minus } from 'lucide-react';
 
 export const columns: BlockItem = {

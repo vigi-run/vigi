@@ -52,9 +52,10 @@ export function InterConfigForm() {
 
     useEffect(() => {
         const loadConfig = async () => {
-            if (!currentOrganization) return;
+            if (!currentOrganization?.id) return;
             try {
-                const { data } = await getInterConfig(currentOrganization.id);
+                const res = await getInterConfig(currentOrganization.id);
+                const data = res.data as any;
                 if (data?.data) {
                     form.reset({
                         clientId: data.data.clientId,
@@ -73,7 +74,7 @@ export function InterConfigForm() {
     }, [currentOrganization, form]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        if (!currentOrganization) return;
+        if (!currentOrganization?.id) return;
         setIsLoading(true);
         try {
             await saveInterConfig(currentOrganization.id, values);

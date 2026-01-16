@@ -57,6 +57,11 @@ func (m *MockRepository) Delete(ctx context.Context, id string, orgID string) er
 	return args.Error(0)
 }
 
+func (m *MockRepository) Count(ctx context.Context, orgID string) (int64, error) {
+	args := m.Called(ctx, orgID)
+	return args.Get(0).(int64), args.Error(1)
+}
+
 // MockMonitorNotificationService implements the monitor_notification.Service interface for testing
 type MockMonitorNotificationService struct {
 	mock.Mock
