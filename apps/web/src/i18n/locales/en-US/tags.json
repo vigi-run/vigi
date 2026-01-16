@@ -1,0 +1,27 @@
+{
+    "confirm_delete_description": "This action cannot be undone. This will permanently delete the tag \"{{name}}\" and remove it from all monitors.",
+    "edit_page_name": "Edit Tag",
+    "empty_state": {
+        "action": "Create your first tag",
+        "description": "Get started by creating your first tag to organize your monitors.",
+        "title": "No tags found"
+    },
+    "form": {
+        "color_description": "Choose a color for your tag",
+        "color_label": "Color",
+        "create_button": "Create Tag",
+        "description_label": "Description",
+        "description_placeholder": "Enter tag description (optional)",
+        "name_label": "Name",
+        "name_placeholder": "Enter tag name",
+        "update_button": "Update Tag"
+    },
+    "messages": {
+        "create_description": "Create a new tag to organize and categorize your monitors.",
+        "failed_to_load_tag": "Failed to load tag. The tag may not exist or you may not have permission to view it.",
+        "tag_id_required": "Tag ID is required",
+        "update_description": "Update the tag details to better organize your monitors."
+    },
+    "new_page_name": "New Tag",
+    "search_placeholder": "Search tags..."
+}

@@ -35,6 +35,7 @@
             "saving": "Salvando...",
             "encrypted_certificate": "O conteúdo do certificado está oculto e criptografado.",
             "encrypted_key": "O conteúdo da chave privada está oculto e criptografado.",
+            "encrypted_secret": "O conteúdo do segredo está oculto e criptografado.",
             "replace_content": "Substituir conteúdo",
             "toast_success": "Configuração salva com sucesso",
             "toast_error": "Falha ao salvar configuração",

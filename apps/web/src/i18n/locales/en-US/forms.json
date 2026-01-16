@@ -1,0 +1,34 @@
+{
+    "labels": {
+        "confirm_password": "Confirm Password",
+        "email": "Email",
+        "footer_text": "Footer Text",
+        "heartbeat_interval": "Heartbeat interval (seconds)",
+        "icon_url": "Icon URL",
+        "monitor_name": "Name",
+        "monitor_type": "Type",
+        "password": "Password",
+        "retries": "Retries",
+        "slug": "Slug",
+        "title": "Title",
+        "username": "Username",
+        "name": "Full Name"
+    },
+    "placeholders": {
+        "auto_refresh_help": "0 for no auto refresh",
+        "domains": "Enter domain (e.g., status.example.com)",
+        "footer_text": "Enter footer text",
+        "icon_url": "https://example.com/icon.png",
+        "monitor_name": "My monitor",
+        "page_description": "Enter status page description",
+        "page_title": "Enter status page title",
+        "slug": "status-page-slug",
+        "name": "Your full name"
+    },
+    "validation": {
+        "email_invalid": "Please enter a valid email address",
+        "password_min_length": "Password must be at least 8 characters",
+        "password_required": "Password is required",
+        "passwords_mismatch": "Passwords don't match"
+    }
+}

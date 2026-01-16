@@ -1,0 +1,38 @@
+{
+    "logo_label": "Organization Logo",
+    "create_button": "Create Organization",
+    "create_description": "Start by creating a new organization for your monitors.",
+    "create_title": "Create Organization",
+    "creation_error": "Failed to create organization",
+    "creation_success": "Organization created successfully",
+    "name_label": "Organization Name",
+    "placeholders": {
+        "name": "Acme Corp",
+        "slug": "acme-corp"
+    },
+    "slug_already_used": "Slug '{{slug}}' is already used",
+    "slug_label": "Slug (Optional)",
+    "update_button": "Update Organization",
+    "update_error": "Failed to update organization",
+    "update_success": "Organization updated successfully",
+    "validation": {
+        "name_min_length": "Name must be at least 3 characters",
+        "slug_format": "Slug must contain only lowercase letters, numbers, and hyphens",
+        "slug_min_length": "Slug must be at least 3 characters"
+    },
+    "switcher": {
+        "add_organization": "Add organization",
+        "label": "Organization",
+        "organizations_label": "Organizations"
+    },
+    "settings_title": "Settings",
+    "settings_description": "Manage your organization details and monitors.",
+    "general_title": "General",
+    "general_description": "Update your organization's name and slug.",
+    "members_title": "Organization Members",
+    "members_description": "Manage members and invitations.",
+    "invite_member_title": "Invite Member",
+    "invite_member_description": "Invite a new member by email.",
+    "invite_button": "Invite",
+    "members_list_title": "Members"
+}
