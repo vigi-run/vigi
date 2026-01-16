@@ -209,6 +209,7 @@
         "delete": "Delete",
         "edit": "Edit",
         "print": "Print",
+        "preview": "Preview",
         "view": "View",
         "actions": "Actions",
         "disabling": "Disabling...",
@@ -216,6 +217,7 @@
         "down": "Down",
         "enabling": "Enabling...",
         "error": "Error",
+        "error_occurred": "An error occurred",
         "expires": "Expires",
         "inactive": "Inactive",
         "loading": "Loading...",
@@ -1580,6 +1582,24 @@
         "intervals_retries": "Intervals, Retries, Timeouts"
     },
     "invoice": {
+        "email_sent": "Email sent successfully",
+        "email": {
+            "send": "Send Email",
+            "send_title": "Send Invoice Email",
+            "template": "Template",
+            "subject": "Subject",
+            "send_action": "Send",
+            "history": "Email History",
+            "send_first": "Send 1st Reminder",
+            "send_second": "Send 2nd Reminder",
+            "send_third": "Send 3rd Reminder",
+            "type": {
+                "created": "Invoice Generated",
+                "first": "1st Reminder",
+                "second": "2nd Reminder",
+                "third": "3rd Reminder"
+            }
+        },
         "title": "Invoices",
         "new_invoice": "New Invoice",
         "edit_invoice": "Edit Invoice",

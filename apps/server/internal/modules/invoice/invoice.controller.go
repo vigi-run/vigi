@@ -1,6 +1,7 @@
 package invoice
 
 import (
+	"fmt"
 	"net/http"
 
 	"vigi/internal/utils"
@@ -139,6 +140,148 @@ func (c *Controller) Delete(ctx *gin.Context) {
 
 	if err := c.service.Delete(ctx, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse("Failed to delete invoice"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("success", nil))
+}
+
+func (c *Controller) SendFirstEmail(ctx *gin.Context) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Printf("Panic in SendFirstEmail: %v\n", r)
+			// debug.PrintStack() // Import runtime/debug if needed
+			ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(fmt.Sprintf("Panic: %v", r)))
+		}
+	}()
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	if err := c.service.SendFirstEmail(ctx, id); err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("email sent", nil))
+}
+
+func (c *Controller) SendSecondReminder(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	if err := c.service.SendSecondReminder(ctx, id); err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("email sent", nil))
+}
+
+func (c *Controller) SendThirdReminder(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	if err := c.service.SendThirdReminder(ctx, id); err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("email sent", nil))
+}
+
+func (c *Controller) GetEmailHistory(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	history, err := c.service.GetEmailHistory(ctx, id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", history))
+}
+
+type EmailPreviewRequest struct {
+	Type    InvoiceEmailType `json:"type" binding:"required"`
+	Message string           `json:"message"`
+}
+
+type EmailSendRequest struct {
+	Type    InvoiceEmailType `json:"type" binding:"required"`
+	Subject string           `json:"subject"`
+	HTML    string           `json:"html"`
+}
+
+func (c *Controller) PreviewEmail(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("invalid id format"))
+		return
+	}
+
+	var req EmailPreviewRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	subject, html, message, err := c.service.PreviewEmail(ctx.Request.Context(), id, req.Type, req.Message)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", gin.H{
+		"subject": subject,
+		"html":    html,
+		"message": message,
+	}))
+}
+
+func (c *Controller) SendManualEmail(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("invalid id format"))
+		return
+	}
+
+	var req EmailSendRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	if req.Subject == "" {
+		switch req.Type {
+		case InvoiceEmailTypeCreated:
+			req.Subject = "Nova Fatura Gerada"
+		case InvoiceEmailTypeFirst:
+			req.Subject = "Lembrete de Fatura"
+		case InvoiceEmailTypeSecond:
+			req.Subject = "Segundo Lembrete de Fatura"
+		case InvoiceEmailTypeThird:
+			req.Subject = "Último Lembrete de Fatura"
+		default:
+			req.Subject = "Notificação de Fatura"
+		}
+	}
+
+	// req.HTML is used as messageBody now
+	if err := c.service.SendManualEmail(ctx.Request.Context(), id, req.Type, req.Subject, req.HTML); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
 		return
 	}
 

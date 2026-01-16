@@ -1,29 +1,35 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import Layout from "@/layout";
 import { BackButton } from "@/components/back-button";
-import { getInvoiceOptions, useUpdateInvoiceMutation } from "@/api/invoice-manual";
-import { useQuery } from "@tanstack/react-query";
+import { getInvoiceOptions, useUpdateInvoiceMutation, getInvoiceEmailsOptions } from "@/api/invoice-manual";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { InvoiceStatus } from "@/types/invoice";
 import { client } from "@/api/client.gen";
 import { useOrganizationStore } from "@/store/organization";
+import { SendEmailDialog } from "../../components/send-email-dialog";
 
 export default function InvoiceDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const updateMutation = useUpdateInvoiceMutation();
+    const queryClient = useQueryClient();
     const { currentOrganization: organization } = useOrganizationStore();
+    const [isSendEmailOpen, setIsSendEmailOpen] = useState(false);
 
     const { data: invoice, isLoading } = useQuery(getInvoiceOptions(id!));
+    const { data: emails } = useQuery(getInvoiceEmailsOptions(id!, !!id));
 
     // Fetch client details for display
     const { data: clientData } = useQuery({
@@ -93,10 +99,24 @@ export default function InvoiceDetailsPage() {
                             <SelectItem value="CANCELLED">{t("invoice.status.cancelled")}</SelectItem>
                         </SelectContent>
                     </Select>
+
+                    <Button onClick={() => setIsSendEmailOpen(true)}>
+                        <Mail className="h-4 w-4 mr-2" />
+                        {t("invoice.email.send")}
+                    </Button>
                     <Button onClick={() => navigate("edit")}>{t("common.edit")}</Button>
                     <Button variant="outline" onClick={() => window.print()}>{t("common.print")}</Button>
                 </div>
             </div>
+
+            <SendEmailDialog
+                open={isSendEmailOpen}
+                onOpenChange={setIsSendEmailOpen}
+                invoiceId={id!}
+                onSend={() => {
+                    queryClient.invalidateQueries({ queryKey: ['invoice-emails', id] });
+                }}
+            />
 
             <Card className="max-w-4xl mx-auto print:shadow-none print:border-none">
                 <CardHeader className="flex flex-row justify-between border-b pb-8">
@@ -237,6 +257,26 @@ export default function InvoiceDetailsPage() {
                                     <div className="text-sm whitespace-pre-wrap rounded-md bg-muted/30 p-3">{invoice.terms}</div>
                                 </div>
                             )}
+                        </div>
+                    )}
+
+                    {/* Email History */}
+                    {emails && emails.length > 0 && (
+                        <div className="mt-8 pt-8 border-t">
+                            <h3 className="text-lg font-semibold mb-4">{t("invoice.email.history")}</h3>
+                            <div className="space-y-4">
+                                {emails.map((email) => (
+                                    <div key={email.id} className="flex justify-between items-center p-4 border rounded-lg bg-muted/10">
+                                        <div>
+                                            <div className="font-medium capitalize">{email.type} Reminder</div>
+                                            <div className="text-sm text-muted-foreground">{format(new Date(email.createdAt), "PPp")}</div>
+                                        </div>
+                                        <div className="text-right">
+                                            <Badge variant="outline">{email.status}</Badge>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
