@@ -84,6 +84,14 @@
             },
             "never": "Never"
         },
+        "validation": {
+            "name_required": "Name is required",
+            "cpf_required": "CPF is required",
+            "cpf_invalid": "Invalid CPF",
+            "cnpj_invalid": "Invalid CNPJ",
+            "email_invalid": "Invalid email",
+            "contact_required": "Email or Phone is required"
+        },
         "delete_dialog": {
             "title": "Delete API Key",
             "description": "Are you sure you want to delete the API key \"{{name}}\"? This action cannot be undone.",

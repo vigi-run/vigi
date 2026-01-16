@@ -25,6 +25,12 @@
         "slug": "slug-pagina-de-status",
         "name": "Seu nome completo"
     },
+    "validation": {
+        "email_invalid": "Por favor, insira um endereço de e-mail válido",
+        "password_min_length": "A senha deve ter pelo menos 8 caracteres",
+        "password_required": "A senha é obrigatória",
+        "passwords_mismatch": "As senhas não coincidem"
+    },
     "confirm_delete": {
         "description": "Tem certeza de que deseja excluir esta janela de manutenção? Esta ação não pode ser desfeita.",
         "title": "Confirmar exclusão"

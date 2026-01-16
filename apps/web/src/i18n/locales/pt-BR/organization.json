@@ -1,6 +1,7 @@
 {
     "logo_label": "Logo da Organização",
     "create_button": "Criar Organização",
+    "create_description": "Comece criando uma nova organização para seus monitores.",
     "integrations": {
         "title": "Integrações",
         "description": "Gerencie suas integrações com serviços externos.",
@@ -13,7 +14,8 @@
         "bank_select": {
             "label": "Selecione o Banco",
             "placeholder": "Selecione um banco...",
-            "inter": "Banco Inter"
+            "inter": "Banco Inter",
+            "asaas": "Asaas"
         },
         "common": {
             "coming_soon": "Em breve"
@@ -22,9 +24,14 @@
             "title": "Banco Inter",
             "description": "Configure sua integração com o Banco Inter para boleto bancário."
         },
+        "asaas": {
+            "title": "Asaas",
+            "description": "Configure sua integração com o Asaas para boleto bancário."
+        },
         "form": {
             "client_id": "Client ID",
             "client_secret": "Client Secret",
+            "api_key": "Chave de API (API Key)",
             "certificate": "Certificado (CRT)",
             "key": "Chave Privada (KEY)",
             "account_number": "Número da Conta (x-conta-corrente)",

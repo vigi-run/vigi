@@ -47,5 +47,6 @@
     "unnamed_monitor": "Unnamed Monitor",
     "up": "Up",
     "update": "Update",
-    "verifying": "Verifying..."
+    "verifying": "Verifying...",
+    "paused": "Paused"
 }

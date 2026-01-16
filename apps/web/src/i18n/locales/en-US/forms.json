@@ -25,6 +25,10 @@
         "slug": "status-page-slug",
         "name": "Your full name"
     },
+    "confirm_delete": {
+        "description": "Are you sure you want to delete this maintenance window? This action cannot be undone.",
+        "title": "Confirm Delete"
+    },
     "validation": {
         "email_invalid": "Please enter a valid email address",
         "password_min_length": "Password must be at least 8 characters",

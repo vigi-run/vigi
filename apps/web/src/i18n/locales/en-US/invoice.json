@@ -1,4 +1,5 @@
 {
+    "recurring_title": "Recurring Invoices",
     "email_sent": "Email sent successfully",
     "email": {
         "send": "Send Email",
@@ -71,6 +72,47 @@
         "no_catalog_items": "No items found.",
         "item_description_placeholder": "Item description",
         "number": "Number",
+        "due_in_days": "Due in (days)",
+        "recurrence_start_date": "Recurrence Start Date",
+        "recurrence": {
+            "title": "Recurrence Configuration",
+            "next_occurrences": "Estimated next charges:",
+            "frequency": "Frequency",
+            "interval": "Interval",
+            "day_of_month": "Day of Month",
+            "day_of_week": "Day of Week",
+            "month": "Month",
+            "frequency_placeholder": "Select frequency",
+            "frequencies": {
+                "daily": "Daily",
+                "weekly": "Weekly",
+                "monthly": "Monthly",
+                "yearly": "Yearly"
+            },
+            "days": {
+                "sunday": "Sunday",
+                "monday": "Monday",
+                "tuesday": "Tuesday",
+                "wednesday": "Wednesday",
+                "thursday": "Thursday",
+                "friday": "Friday",
+                "saturday": "Saturday"
+            },
+            "months": {
+                "january": "January",
+                "february": "February",
+                "march": "March",
+                "april": "April",
+                "may": "May",
+                "june": "June",
+                "july": "July",
+                "august": "August",
+                "september": "September",
+                "october": "October",
+                "november": "November",
+                "december": "December"
+            }
+        },
         "date": "Date",
         "due_date": "Due Date",
         "items": "Items",

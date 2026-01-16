@@ -111,6 +111,7 @@
         "no_catalog_items": "Nenhum item encontrado.",
         "item_description_placeholder": "Descrição do item",
         "number": "Número",
+        "date": "Data",
         "due_in_days": "Vencimento em (dias)",
         "due_date": "Vencimento",
         "recurrence_start_date": "Data de Início da Recorrência",
