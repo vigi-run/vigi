@@ -40,6 +40,7 @@ import NewInvoicePage from "@/app/invoices/new/page";
 import EditInvoicePage from "@/app/invoices/[id]/edit/page";
 import InvoiceDetailsPage from "@/app/invoices/[id]/view/page";
 import InvoiceEmailPage from "@/app/invoices/[id]/email/page";
+import DashboardPage from "@/app/dashboard/page";
 
 export const protectedRoutes = [
     <Route key="root" path="/" element={<RootRedirect />} />,
@@ -52,7 +53,7 @@ export const protectedRoutes = [
         <Route path="invitations" element={<UserInvitationsPage />} />
     </Route>,
     <Route key="slug" path="/:slug" element={<OrganizationLayout />}>
-        <Route index element={<Navigate to="monitors" replace />} />
+        <Route index element={<DashboardPage />} />
 
 
         {/* Monitor routes */}
@@ -89,7 +90,6 @@ export const protectedRoutes = [
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<NewClientPage />} />
         <Route path="clients/:id" element={<ClientDetailsPage />} />
-        <Route path="clients/:id" element={<ClientDetailsPage />} />
         <Route path="clients/:id/edit" element={<EditClientPage />} />
 
         {/* Catalog Item routes */}
@@ -113,6 +113,6 @@ export const protectedRoutes = [
         <Route path="tags/:id/edit" element={<EditTag />} />
 
         {/* Default redirect */}
-        <Route path="*" element={<Navigate to="monitors" replace />} />
+        <Route path="*" element={<Navigate to="" replace />} />
     </Route>
 ]; 

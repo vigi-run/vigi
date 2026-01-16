@@ -48,7 +48,7 @@ export function EditorBubbleMenu({ editor, ...props }: EditorBubbleMenuProps) {
     return (
         <BubbleMenu
             editor={editor}
-            tippyOptions={{ duration: 100 }}
+
             className="flex items-center gap-1 rounded-md border bg-popover p-1 shadow-md"
             {...props}
         >
