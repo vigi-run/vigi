@@ -34,6 +34,15 @@ export default function EditRecurringInvoicePage() {
                     date: data.date,
                     dueDate: data.dueDate,
                     nextGenerationDate: data.nextGenerationDate,
+                    frequency: data.frequency,
+                    interval: data.interval,
+                    dayOfMonth: data.dayOfMonth,
+                    dayOfWeek: data.dayOfWeek,
+                    month: data.month,
+                    items: data.items.map((item) => ({
+                        ...item,
+                        catalogItemId: item.catalogItemId || undefined,
+                    })),
                 },
             });
             toast.success("Recurring invoice updated successfully");
@@ -45,7 +54,7 @@ export default function EditRecurringInvoicePage() {
 
     if (isLoading) {
         return (
-            <Layout pageName="Edit Recurring Invoice" backLink="/recurring-invoices">
+            <Layout pageName="Edit Recurring Invoice">
                 <div className="space-y-4">
                     <Skeleton className="h-10 w-full" />
                     <Skeleton className="h-96 w-full" />
@@ -57,7 +66,7 @@ export default function EditRecurringInvoicePage() {
     if (!invoice) return null;
 
     return (
-        <Layout pageName={`Edit ${invoice.number}`} backLink="/recurring-invoices">
+        <Layout pageName={`Edit ${invoice.number}`}>
             <RecurringInvoiceForm
                 defaultValues={{
                     ...invoice,

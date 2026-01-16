@@ -143,3 +143,19 @@ func (c *Controller) Delete(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("success", nil))
 }
+
+func (c *Controller) GenerateInvoice(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	invoice, err := c.service.GenerateInvoice(ctx, id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse("Failed to generate invoice: "+err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("generated", invoice))
+}

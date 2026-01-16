@@ -63,6 +63,13 @@ type RecurringInvoice struct {
 	// This is likely the "data que deve gerar a fatura"
 	NextGenerationDate *time.Time `bun:"next_generation_date" json:"nextGenerationDate"`
 
+	// Recurrence fields
+	Frequency  string `bun:"frequency,notnull,default:'MONTHLY'" json:"frequency"`
+	Interval   int    `bun:"interval,notnull,default:1" json:"interval"`
+	DayOfMonth *int   `bun:"day_of_month" json:"dayOfMonth"`
+	DayOfWeek  *int   `bun:"day_of_week" json:"dayOfWeek"`
+	Month      *int   `bun:"month" json:"month"`
+
 	// Fields from Invoice
 	Date     *time.Time `bun:"date" json:"date"`
 	DueDate  *time.Time `bun:"due_date" json:"dueDate"`

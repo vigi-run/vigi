@@ -1588,6 +1588,7 @@
     "intervals_retries": "Intervalos, Tentativas, Timeouts"
   },
   "invoice": {
+    "recurring_title": "Faturas Recorrentes",
     "email_sent": "Email enviado com sucesso",
     "email": {
       "send": "Enviar Email",
@@ -1652,6 +1653,45 @@
       "description": "Crie sua primeira fatura para começar."
     },
     "form": {
+      "recurrence": {
+        "title": "Configuração da Recorrência",
+        "next_occurrences": "Próximas cobranças estimadas:",
+        "frequency": "Frequência",
+        "interval": "Intervalo",
+        "day_of_month": "Dia do Mês",
+        "day_of_week": "Dia da Semana",
+        "month": "Mês",
+        "frequency_placeholder": "Selecione a frequência",
+        "frequencies": {
+          "daily": "Diário",
+          "weekly": "Semanal",
+          "monthly": "Mensal",
+          "yearly": "Anual"
+        },
+        "days": {
+          "sunday": "Domingo",
+          "monday": "Segunda-feira",
+          "tuesday": "Terça-feira",
+          "wednesday": "Quarta-feira",
+          "thursday": "Quinta-feira",
+          "friday": "Sexta-feira",
+          "saturday": "Sábado"
+        },
+        "months": {
+          "january": "Janeiro",
+          "february": "Fevereiro",
+          "march": "Março",
+          "april": "Abril",
+          "may": "Maio",
+          "june": "Junho",
+          "july": "Julho",
+          "august": "Agosto",
+          "september": "Setembro",
+          "october": "Outubro",
+          "november": "Novembro",
+          "december": "Dezembro"
+        }
+      },
       "client": "Cliente",
       "select_client": "Selecione um cliente",
       "select_from_catalog": "Selecionar do Catálogo",
@@ -1660,8 +1700,9 @@
       "no_catalog_items": "Nenhum item encontrado.",
       "item_description_placeholder": "Descrição do item",
       "number": "Número",
-      "date": "Data",
+      "due_in_days": "Vencimento em (dias)",
       "due_date": "Vencimento",
+      "recurrence_start_date": "Data de Início da Recorrência",
       "items": "Itens",
       "add_item": "Adicionar Item",
       "select_item": "Selecione do catálogo",

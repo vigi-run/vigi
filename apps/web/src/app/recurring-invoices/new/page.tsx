@@ -26,6 +26,15 @@ export default function NewRecurringInvoicePage() {
                     date: data.date,
                     dueDate: data.dueDate,
                     nextGenerationDate: data.nextGenerationDate,
+                    frequency: data.frequency,
+                    interval: data.interval,
+                    dayOfMonth: data.dayOfMonth,
+                    dayOfWeek: data.dayOfWeek,
+                    month: data.month,
+                    items: data.items.map((item) => ({
+                        ...item,
+                        catalogItemId: item.catalogItemId || undefined,
+                    })),
                 },
             });
             toast.success("Recurring invoice created successfully");
@@ -36,7 +45,7 @@ export default function NewRecurringInvoicePage() {
     };
 
     return (
-        <Layout pageName="Create Recurring Invoice" backLink="/recurring-invoices">
+        <Layout pageName="Create Recurring Invoice">
             <RecurringInvoiceForm
                 onSubmit={handleSubmit}
                 isLoading={createMutation.isPending}

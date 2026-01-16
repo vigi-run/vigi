@@ -9,11 +9,13 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Calendar, CreditCard, RefreshCw } from 'lucide-react';
+import { MoreHorizontal, Calendar, CreditCard, RefreshCw, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { formatCurrency } from '@/lib/utils';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
+import { useGenerateInvoiceMutation } from '@/api/recurring-invoice';
 
 interface RecurringInvoiceCardProps {
     entity: RecurringInvoice;
@@ -23,6 +25,17 @@ interface RecurringInvoiceCardProps {
 export const RecurringInvoiceCard: React.FC<RecurringInvoiceCardProps> = ({ entity, onDelete }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const generateMutation = useGenerateInvoiceMutation();
+
+    const handleGenerate = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        try {
+            await generateMutation.mutateAsync(entity.id);
+            toast.success(t('invoice.created_successfully'));
+        } catch (error) {
+            toast.error(t('common.error_occurred'));
+        }
+    };
 
     const statusColor = (status: string) => {
         switch (status) {
@@ -67,6 +80,12 @@ export const RecurringInvoiceCard: React.FC<RecurringInvoiceCardProps> = ({ enti
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={handleGenerate}>
+                                <div className="flex items-center gap-2">
+                                    <Play className="h-4 w-4" />
+                                    <span>{t('invoice.generate')}</span>
+                                </div>
+                            </DropdownMenuItem>
                             <DropdownMenuItem onClick={(e) => { e.stopPropagation(); navigate(`${entity.id}/edit`); }}>
                                 {t('common.edit')}
                             </DropdownMenuItem>

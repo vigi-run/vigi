@@ -29,6 +29,7 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.Auth
 	{
 		entityGroup.GET("/:id", r.controller.GetByID)
 		entityGroup.PATCH("/:id", r.controller.Update)
+		entityGroup.POST("/:id/generate", r.controller.GenerateInvoice)
 		entityGroup.DELETE("/:id", r.controller.Delete)
 	}
 }

@@ -23,6 +23,11 @@ type CreateRecurringInvoiceDTO struct {
 	Terms              string                          `json:"terms"`
 	Notes              string                          `json:"notes"`
 	Discount           float64                         `json:"discount" validate:"gte=0"`
+	Frequency          string                          `json:"frequency" validate:"required"`
+	Interval           int                             `json:"interval" validate:"required"`
+	DayOfMonth         *int                            `json:"dayOfMonth"`
+	DayOfWeek          *int                            `json:"dayOfWeek"`
+	Month              *int                            `json:"month"`
 	Items              []CreateRecurringInvoiceItemDTO `json:"items" validate:"required,min=1,dive"`
 }
 
@@ -35,6 +40,11 @@ type UpdateRecurringInvoiceDTO struct {
 	DueDate            *time.Time                      `json:"dueDate"`
 	Terms              *string                         `json:"terms"`
 	Notes              *string                         `json:"notes"`
+	Frequency          *string                         `json:"frequency"`
+	Interval           *int                            `json:"interval"`
+	DayOfMonth         *int                            `json:"dayOfMonth"`
+	DayOfWeek          *int                            `json:"dayOfWeek"`
+	Month              *int                            `json:"month"`
 	Discount           *float64                        `json:"discount" validate:"omitempty,gte=0"`
 	Items              []CreateRecurringInvoiceItemDTO `json:"items" validate:"omitempty,min=1,dive"`
 }
