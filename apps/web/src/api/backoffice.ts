@@ -2,17 +2,17 @@ import { client } from "./client.gen";
 import type { BackofficeStatsDto, BackofficeUserListDto, BackofficeOrgListDto, BackofficeOrgDetailDto } from "./types.gen";
 
 export const getBackofficeStats = () => {
-    return client.get<BackofficeStatsDto>({ url: '/backoffice/stats' });
+  return client.get<{ 200: BackofficeStatsDto }>({ url: '/backoffice/stats' });
 };
 
 export const getBackofficeUsers = () => {
-    return client.get<BackofficeUserListDto[]>({ url: '/backoffice/users' });
+  return client.get<{ 200: BackofficeUserListDto[] }>({ url: '/backoffice/users' });
 };
 
 export const getBackofficeOrgs = () => {
-    return client.get<BackofficeOrgListDto[]>({ url: '/backoffice/organizations' });
+  return client.get<{ 200: BackofficeOrgListDto[] }>({ url: '/backoffice/organizations' });
 };
 
 export const getBackofficeOrg = (id: string) => {
-    return client.get<BackofficeOrgDetailDto>({ url: `/backoffice/organizations/${id}` });
+  return client.get<{ 200: BackofficeOrgDetailDto }>({ url: `/backoffice/organizations/${id}` });
 };
