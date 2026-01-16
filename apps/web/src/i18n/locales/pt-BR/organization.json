@@ -1,0 +1,78 @@
+{
+    "logo_label": "Logo da Organização",
+    "create_button": "Criar Organização",
+    "integrations": {
+        "title": "Integrações",
+        "description": "Gerencie suas integrações com serviços externos.",
+        "tabs": {
+            "invoices": "Notas Fiscais",
+            "banks": "Bancos",
+            "signatures": "Assinaturas",
+            "tickets": "Ticket Plataforma"
+        },
+        "bank_select": {
+            "label": "Selecione o Banco",
+            "placeholder": "Selecione um banco...",
+            "inter": "Banco Inter"
+        },
+        "common": {
+            "coming_soon": "Em breve"
+        },
+        "inter": {
+            "title": "Banco Inter",
+            "description": "Configure sua integração com o Banco Inter para boleto bancário."
+        },
+        "form": {
+            "client_id": "Client ID",
+            "client_secret": "Client Secret",
+            "certificate": "Certificado (CRT)",
+            "key": "Chave Privada (KEY)",
+            "account_number": "Número da Conta (x-conta-corrente)",
+            "environment": "Ambiente",
+            "sandbox": "Sandbox",
+            "production": "Produção",
+            "save": "Salvar Configuração",
+            "saving": "Salvando...",
+            "encrypted_certificate": "O conteúdo do certificado está oculto e criptografado.",
+            "encrypted_key": "O conteúdo da chave privada está oculto e criptografado.",
+            "replace_content": "Substituir conteúdo",
+            "toast_success": "Configuração salva com sucesso",
+            "toast_error": "Falha ao salvar configuração",
+            "optional_derived": "Opcional / Derivado",
+            "select_environment": "Selecione o ambiente"
+        }
+    },
+    "create_title": "Criar Organização",
+    "creation_error": "Falha ao criar organização",
+    "creation_success": "Organização criada com sucesso",
+    "name_label": "Nome da Organização",
+    "placeholders": {
+        "name": "Acme Corp",
+        "slug": "acme-corp"
+    },
+    "slug_already_used": "O slug '{{slug}}' já está em uso",
+    "slug_label": "Slug (Opcional)",
+    "update_button": "Atualizar Organização",
+    "update_error": "Falha ao atualizar organização",
+    "update_success": "Organização atualizada com sucesso",
+    "validation": {
+        "name_min_length": "O nome deve ter pelo menos 3 caracteres",
+        "slug_format": "O slug deve conter apenas letras minúsculas, números e hífens",
+        "slug_min_length": "O slug deve ter pelo menos 3 caracteres"
+    },
+    "switcher": {
+        "add_organization": "Adicionar organização",
+        "label": "Organização",
+        "organizations_label": "Organizações"
+    },
+    "settings_title": "Configurações",
+    "settings_description": "Gerencie os detalhes da sua organização e monitores.",
+    "general_title": "Geral",
+    "general_description": "Atualize o nome e o slug da sua organização.",
+    "members_title": "Membros da Organização",
+    "members_description": "Gerencie membros e convites.",
+    "invite_member_title": "Convidar Membro",
+    "invite_member_description": "Convide um novo membro por e-mail.",
+    "invite_button": "Convidar",
+    "members_list_title": "Membros"
+}

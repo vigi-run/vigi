@@ -1,0 +1,12 @@
+{
+    "down_count": "Contagem de Falhas",
+    "important": "Importante",
+    "interval": "Intervalo",
+    "message": "Mensagem",
+    "ms": "ms",
+    "notified": "Notificado",
+    "ping": "Ping",
+    "retries": "Tentativas",
+    "status": "Status",
+    "time": "Tempo"
+}

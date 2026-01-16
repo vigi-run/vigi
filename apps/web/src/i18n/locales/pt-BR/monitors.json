@@ -1,0 +1,396 @@
+{
+    "card": {
+        "check_interval": "Intervalo de verificação:",
+        "loading_more": "Carregando mais…"
+    },
+    "empty_state": {
+        "action": "Criar seu primeiro monitor",
+        "description": "Comece criando seu primeiro monitor para acompanhar a saúde dos seus serviços.",
+        "title": "Nenhum monitor encontrado"
+    },
+    "filtering_by_tags": "Filtrar por tags",
+    "filters": {
+        "monitor_status": "Status",
+        "monitor_status_placeholder": "Status do monitor",
+        "search_placeholder": "Pesquisar monitores por nome...",
+        "status_placeholder": "Status"
+    },
+    "form": {
+        "buttons": {
+            "copied": "Copiado!",
+            "copy": "Copiar",
+            "create": "Criar",
+            "regenerate": "Regenerar",
+            "update": "Atualizar"
+        },
+        "dns": {
+            "hostname": "Nome do host",
+            "port": "Porta",
+            "record_type": "Tipo de Registro de Recursos",
+            "record_type_placeholder": "Selecione um tipo de registro",
+            "resolver_server": "Servidor de Resolução",
+            "title": "Configurações DNS"
+        },
+        "docker": {
+            "ca_cert_description": "Cole seu certificado da Autoridade Certificadora no formato PEM.",
+            "ca_certificate": "Certificado CA (PEM)",
+            "client_cert_description": "Cole seu certificado de cliente em formato PEM. Isso é usado para autenticação mútua TLS.",
+            "client_certificate": "Certificado do Cliente (PEM)",
+            "client_private_key": "Chave Privada do Cliente (PEM)",
+            "common_tls_issues": "Problemas comuns de TLS:",
+            "connection_type": "Tipo de Conexão",
+            "container_name_id": "Nome/ID do contêiner",
+            "disabled": "Desativado",
+            "docker_container": "Contêiner Docker",
+            "docker_host": "Host Docker",
+            "enable_tls": "Ativar TLS",
+            "enabled": "Ativado",
+            "examples": "Exemplos",
+            "hostname_mismatch": "\"x509: certificado é válido para X, não Y\":\"",
+            "hostname_mismatch_solution": "Certifique‑se de que o hostname corresponda ao SAN do certificado ou desative a verificação (não recomendado).",
+            "legacy_cert_error": "x509: o certificado depende do campo Common Name legado",
+            "legacy_cert_solution": "Adicione o nome do host aos Nomes Alternativos do Assunto (SAN) do seu certificado.",
+            "mtls_note": "Para TLS mútuo (mTLS), você precisa fornecer tanto o certificado do cliente quanto a chave privada. O certificado da CA é usado para verificar o certificado do servidor.",
+            "note": "Observação:",
+            "private_key_description": "Cole sua chave privada no formato PEM. Mantenha‑a segura!",
+            "select_connection_type": "Selecionar tipo de conexão",
+            "select_tls_option": "Selecione a opção TLS",
+            "select_verification_option": "Selecione a opção de verificação",
+            "skip_verification": "Ignorar verificação (inseguro)",
+            "tls_configuration": "Configuração TLS",
+            "unknown_authority": "\"x509: certificado assinado por autoridade desconhecida\"",
+            "unknown_authority_solution": "Forneça o certificado CA correto que assinou o certificado do servidor.",
+            "verify_certificates": "Verificar certificados",
+            "verify_tls": "Verificar TLS"
+        },
+        "grpc": {
+            "body": "Dados do Corpo (JSON)",
+            "enable_tls": "Habilitar TLS",
+            "enable_tls_description": "Use conexão segura (TLS/SSL)",
+            "invert_keyword": "Inverter palavra-chave",
+            "invert_keyword_description": "O monitor será marcado como ATIVO se a palavra-chave não for encontrada.",
+            "keyword": "Palavra-chave",
+            "keyword_description": "Pesquise por esta palavra-chave na resposta",
+            "keyword_placeholder": "Palavra-chave opcional para pesquisar",
+            "method_description": "Sensível a maiúsculas e minúsculas",
+            "method_placeholder": "Verificar",
+            "options_title": "Opções gRPC",
+            "proto_content": "Conteúdo Protobuf",
+            "proto_method": "Método Protobuf",
+            "proto_service_name": "Nome do Serviço Protobuf",
+            "service_name_placeholder": "Saúde"
+        },
+        "http": {
+            "advanced": {
+                "accepted_status_codes": "Códigos de Status Aceitos",
+                "ignore_tls": "Ignorar erros TLS/SSL em sites HTTPS",
+                "ignore_tls_description": "Ignorar a validação de certificado TLS. Use com cautela – isso torna as conexões menos seguras.",
+                "max_redirects": "Redirecionamentos Máximos",
+                "max_redirects_description": "Número máximo de redirecionamentos a serem seguidos (0‑30). Defina como 0 para desativar os redirecionamentos.",
+                "title": "Avançado"
+            },
+            "authentication": {
+                "auth_header": "Cabeçalho de Autorização",
+                "certificate": "Certificado",
+                "certificate_placeholder": "Certificado",
+                "client_id": "ID do cliente",
+                "client_id_placeholder": "ID do Cliente",
+                "client_secret": "Segredo do Cliente",
+                "client_secret_placeholder": "Segredo do Cliente",
+                "domain": "Domínio",
+                "domain_placeholder": "Domínio",
+                "form_data_body": "Corpo de Dados do Formulário",
+                "key": "Chave",
+                "key_placeholder": "Chave",
+                "method_label": "Método de Autenticação",
+                "method_placeholder": "Selecione o tipo de autenticação",
+                "oauth_scope": "Escopo OAuth",
+                "oauth_scope_placeholder": "Opcional: lista de escopos separados por espaço",
+                "oauth_token_url": "URL do token OAuth",
+                "oauth_token_url_placeholder": "URL do token OAuth",
+                "title": "Autenticação",
+                "workstation": "Estação de Trabalho",
+                "workstation_placeholder": "Estação de Trabalho"
+            },
+            "options": {
+                "body": "Corpo",
+                "body_encoding": "Codificação do corpo",
+                "body_encoding_placeholder": "Selecionar codificação do corpo",
+                "form_example": "Exemplo de Dados do Formulário",
+                "headers": "Cabeçalhos",
+                "json_example": "Exemplo JSON",
+                "method": "Método",
+                "method_placeholder": "Selecione o tipo de monitor",
+                "select_encoding": "Selecione a codificação do corpo",
+                "select_method": "Selecionar método",
+                "text_example": "Exemplo de Texto:\nQualquer conteúdo de texto simples aqui...",
+                "title": "Opções HTTP",
+                "xml_example": "Exemplo XML"
+            }
+        },
+        "http_json_query": {
+            "condition_label": "Condição",
+            "expected_value_label": "Valor Esperado",
+            "json_query_label": "Expressão de Consulta JSON",
+            "title": "Expressão de Consulta JSON"
+        },
+        "http_keyword": {
+            "invert_keyword_description": "Procure que a palavra-chave esteja ausente em vez de presente.",
+            "invert_keyword_label": "Inverter Palavra-chave",
+            "keyword_label": "Palavra-chave",
+            "keyword_validation_title": "Validação de Palavra-chave"
+        },
+        "kafka": {
+            "add_broker": "Adicionar Broker",
+            "auto_topic_creation_description": "Permitir que o produtor crie automaticamente o tópico caso não exista",
+            "auto_topic_creation_label": "Permitir criação automática de tópicos",
+            "brokers_description": "Lista de endereços de broker Kafka (formato host:porta)",
+            "brokers_label": "Brokers do Kafka",
+            "configuration_title": "Configuração do Kafka",
+            "enable_ssl_description": "Use criptografia SSL/TLS para a conexão",
+            "enable_ssl_label": "Habilitar SSL/TLS",
+            "message_description": "O conteúdo da mensagem a ser enviado ao tópico (formato JSON recomendado)",
+            "message_label": "Mensagem",
+            "sasl_mechanism_description": "Escolha o mecanismo de autenticação SASL",
+            "sasl_mechanism_label": "Mecanismo SASL",
+            "sasl_mechanism_placeholder": "Selecione o mecanismo SASL",
+            "sasl_password_description": "Senha para autenticação SASL",
+            "sasl_password_label": "Senha SASL",
+            "sasl_password_placeholder": "senha",
+            "sasl_username_description": "Nome de usuário para autenticação SASL",
+            "sasl_username_label": "Nome de usuário SASL",
+            "security_title": "Segurança",
+            "topic_description": "O tópico Kafka para publicar mensagens"
+        },
+        "mongodb": {
+            "command_description": "Comando MongoDB a ser executado em JSON. O padrão é ping se não for especificado.",
+            "command_label": "Comando (Opcional)",
+            "configuration_title": "Configuração do MongoDB",
+            "connection_string_description": "String de conexão MongoDB. Suporta tanto o formato padrão (mongodb://) quanto o formato de lista de sementes DNS (mongodb+srv://).",
+            "connection_string_label": "String de Conexão",
+            "expected_value_description": "Valor esperado para comparar com o resultado do caminho JSON.",
+            "expected_value_label": "Valor Esperado (Opcional)",
+            "expected_value_placeholder": "Valor esperado",
+            "json_path_description": "Caminho JSON para extrair o valor da resposta. Use $ para o nível raiz.",
+            "json_path_label": "JSON Path (Opcional)"
+        },
+        "mqtt": {
+            "check_type_json_query": "Consulta JSON",
+            "check_type_keyword": "Palavra-chave",
+            "check_type_label": "Tipo de verificação MQTT",
+            "check_type_none": "Nenhum (Qualquer Mensagem)",
+            "check_type_placeholder": "Selecione o tipo de verificação",
+            "configuration_title": "Configuração MQTT",
+            "expected_value_label": "Valor Esperado",
+            "hostname_label": "Nome do host",
+            "json_path_label": "Caminho JSON",
+            "password_label": "Senha MQTT",
+            "password_placeholder": "Senha (opcional)",
+            "port_label": "Porta",
+            "success_keyword_label": "Palavra-chave de Sucesso MQTT",
+            "success_keyword_placeholder": "Palavra-chave que indica sucesso",
+            "username_label": "Nome de usuário MQTT",
+            "username_placeholder": "Nome de usuário (opcional)",
+            "validation": {
+                "expected_value_required": "Valor esperado é obrigatório quando o tipo de verificação é json-query",
+                "json_path_required": "JSON path é obrigatório quando o tipo de verificação é json-query",
+                "success_keyword_required": "Palavra-chave de sucesso é obrigatória quando o tipo de verificação é palavra-chave"
+            }
+        },
+        "mysql": {
+            "connection_string_examples": "Exemplos:",
+            "connection_string_label": "String de conexão",
+            "connection_title": "Conexão MySQL",
+            "query_label": "Consulta"
+        },
+        "ping": {
+            "count": "Pacotes máximos",
+            "count_description": "Número de pacotes a enviar antes de parar",
+            "data_size": "Tamanho de Dados (bytes)",
+            "host": "Nome de host / IP",
+            "per_request_timeout": "Timeout por ping (segundos)",
+            "per_request_timeout_description": "Tempo máximo de espera antes de considerar um ping perdido",
+            "title": "Configurações de Ping"
+        },
+        "postgres": {
+            "connection_string_label": "String de Conexão",
+            "connection_title": "Conexão PostgreSQL",
+            "query_label": "Consulta"
+        },
+        "push": {
+            "url_description": "Use esta URL no seu serviço para reportar o status. Faça uma requisição HTTP (POST/GET) para este endpoint para enviar um heartbeat.",
+            "url_title": "URL de push do monitor"
+        },
+        "rabbitmq": {
+            "documentation_link": "Documentação do RabbitMQ",
+            "health_checks_description": "O monitor verifica o endpoint {{code}} em cada nó e retorna UP se algum nó estiver saudável.",
+            "management_nodes_description": "Digite a URL dos nós de gerenciamento do RabbitMQ, incluindo protocolo e porta. Exemplo: https://node1.rabbitmq.com:15672",
+            "management_nodes_title": "Nós de Gerenciamento",
+            "node_url_label": "URL do nó",
+            "password_description": "Senha para autenticação da interface de gerenciamento do RabbitMQ",
+            "setup_information_description": "Para usar o monitor RabbitMQ, você precisa habilitar o Plugin de Gerenciamento em sua configuração do RabbitMQ. Para obter mais informações, consulte a documentação do RabbitMQ.",
+            "setup_information_title": "Informações de Configuração",
+            "title": "Configuração do RabbitMQ",
+            "username_description": "Nome de usuário para autenticação na interface de gerenciamento do RabbitMQ"
+        },
+        "redis": {
+            "ca_certificate_description": "Certificado de CA raiz em formato PEM. Necessário para verificação TLS adequada com certificados autoassinados.",
+            "ca_certificate_label": "Certificado CA (Opcional)",
+            "client_certificate_description": "Certificado de cliente em formato PEM. Necessário para autenticação mútua TLS.",
+            "client_certificate_label": "Certificado do Cliente (Opcional)",
+            "client_key_description": "Chave privada do cliente em formato PEM. Deve ser fornecida junto com o certificado do cliente.",
+            "client_key_label": "Chave Privada do Cliente (Opcional)",
+            "connection_string_description": "Formato da string de conexão Redis: {{redis}} ou {{rediss}} para TLS",
+            "connection_string_label": "String de Conexão",
+            "ignore_tls_description": "Ignorar verificação do certificado TLS (não recomendado para produção)",
+            "ignore_tls_label": "Ignorar erros TLS/SSL",
+            "title": "Configuração do Redis"
+        },
+        "shared": {
+            "intervals": {
+                "heartbeat_retry": "Intervalo de reenvio do heartbeat (Reenviar a cada {{seconds}} segundos)",
+                "max_retries_description": "Número máximo de tentativas antes que o serviço seja marcado como indisponível e uma notificação seja enviada",
+                "request_timeout": "Tempo limite de solicitação (Tempo limite após {{seconds}} segundos)",
+                "resend_notification": "Reenviar notificação se ficar fora do ar X vezes consecutivas (Reenviar desativado)"
+            },
+            "notifications": {
+                "add_notifier": "Adicionar notificador",
+                "new_notifier": "+ Novo Notificador",
+                "no_channels": "Nenhum canal de notificação encontrado, crie um primeiro.",
+                "no_channels_available": "Nenhum canal disponível",
+                "select_channel": "Selecionar canal",
+                "select_notifier_placeholder": "Selecionar notificador",
+                "selected_channels": "Canais de notificação selecionados",
+                "title": "Canais de notificação"
+            },
+            "proxy": {
+                "add_proxy": "Adicionar Proxy",
+                "new_proxy": "+ Novo Proxy",
+                "no_proxy": "Sem Proxy",
+                "remove_proxy": "Remover Proxy",
+                "select_proxy_placeholder": "Selecionar Proxy",
+                "selected_proxy": "Proxy Selecionado",
+                "title": "Proxy"
+            },
+            "tags": {
+                "label": "Etiquetas",
+                "no_tags": "Nenhuma tag disponível",
+                "placeholder": "Selecione tags"
+            }
+        },
+        "snmp": {
+            "community_description": "A string da comunidade SNMP para autenticação (como uma senha)",
+            "community_label": "String da Comunidade",
+            "expected_value_description": "O valor a ser comparado. Deixe em branco para pular a validação.",
+            "expected_value_label": "Valor esperado",
+            "host_description": "O nome de host ou endereço IP do dispositivo com SNMP habilitado",
+            "host_label": "Hospedeiro",
+            "json_path_description": "Expressão JSONPath para extrair o valor da resposta (use \"$\" para valor bruto)",
+            "json_path_label": "Caminho JSON",
+            "json_path_operator_description": "Como comparar o valor extraído com o valor esperado",
+            "json_path_operator_eq": "igual",
+            "json_path_operator_ge": "maior ou igual",
+            "json_path_operator_gt": "maior que",
+            "json_path_operator_label": "Condição",
+            "json_path_operator_le": "menor ou igual",
+            "json_path_operator_lt": "menor que",
+            "json_path_operator_ne": "não igual",
+            "oid_description": "O Identificador de Objeto SNMP a consultar (por ex.: 1.3.6.1.2.1.1.1.0 para a descrição do sistema)",
+            "oid_label": "OID (Identificador de Objeto)",
+            "port_description": "Porta SNMP (padrão: 161)",
+            "port_label": "Porta",
+            "snmp_version_description": "Versão do protocolo SNMP a ser usada",
+            "snmp_version_label": "Versão SNMP",
+            "title": "Configurações SNMP",
+            "value_validation_label": "Validação de Valor (Opcional)"
+        },
+        "sqlserver": {
+            "allowed_statements_description": "SELECT, SHOW, DESCRIBE, EXPLAIN, WITH e VALUES.",
+            "allowed_statements_label": "Instruções permitidas:",
+            "connection_string_label": "String de Conexão",
+            "query_description": "Consulta a ser executada para verificação de integridade. Deixe em branco para usar o padrão",
+            "query_label": "Consulta",
+            "title": "Conexão ao Microsoft SQL Server"
+        },
+        "tcp": {
+            "host": "Servidor",
+            "port": "Porta",
+            "title": "Conexão TCP"
+        },
+        "type": {
+            "dns": "Monitor DNS",
+            "docker": "Contêiner Docker",
+            "grpc": "Monitor de Palavras-chave gRPC",
+            "http": "Monitor HTTP(S)",
+            "kafka": "Monitor de Produtor Kafka",
+            "mongodb": "Monitor de Banco de Dados MongoDB",
+            "mqtt": "Monitor de Broker MQTT",
+            "mysql": "Monitor MySQL/MariaDB",
+            "ping": "Monitor de Ping (ICMP)",
+            "postgres": "Monitor de Banco de Dados PostgreSQL",
+            "push": "Monitor Push (serviço externo faz chamada à URL gerada)",
+            "rabbitmq": "Monitor do RabbitMQ",
+            "redis": "Monitor de Banco de Dados Redis",
+            "snmp": "Monitor SNMP",
+            "sqlserver": "Monitor do Microsoft SQL Server",
+            "tcp": "Monitor de Porta TCP"
+        }
+    },
+    "page": {
+        "description": "Crie um novo monitor para começar a acompanhar o desempenho do seu site.",
+        "edit_title": "Editar Monitor:",
+        "new_title": "Novo Monitor"
+    },
+    "title": "Monitores",
+    "toasts": {
+        "deleted": "Monitor excluído",
+        "paused": "Monitor pausado",
+        "reset_success": "Dados do monitor redefinidos com sucesso",
+        "resumed": "Monitoramento retomado"
+    },
+    "view": {
+        "buttons": {
+            "clone": "Clonar",
+            "delete": "Excluir",
+            "edit": "Editar",
+            "pause": "Pausar",
+            "reset_data": "Resetar Dados",
+            "resume": "Retomar"
+        },
+        "certificate": "Certificado",
+        "check_every": "Verificar a cada",
+        "current_status": "Status atual",
+        "dialogs": {
+            "delete": {
+                "description": "Esta ação não pode ser desfeita. Isso excluirá permanentemente o monitor e todos os dados relacionados.",
+                "title": "Tem certeza absoluta?"
+            },
+            "pause": {
+                "description": "Tem certeza de que deseja pausar?",
+                "title": "Confirmação"
+            },
+            "reset": {
+                "description": "Esta ação excluirá permanentemente todo o histórico de heartbeats e as estatísticas de tempo de atividade deste monitor. O monitor aparecerá como se fosse recém‑criado. Esta ação não pode ser desfeita.",
+                "title": "Redefinir Dados do Monitor"
+            }
+        },
+        "expiring_soon": "Expira em breve",
+        "for": "para",
+        "live_status": "Status ao Vivo",
+        "monitor_for": "Monitorar",
+        "no_certificate_data": "Sem dados de certificado",
+        "seconds": "segundos",
+        "stats": {
+            "last_24_hours": "Últimas 24 horas",
+            "last_30_days": "Últimos 30 dias",
+            "last_365_days": "Últimos 365 dias",
+            "last_7_days": "Últimos 7 dias"
+        },
+        "status": {
+            "down": "Offline",
+            "maintenance": "Manutenção",
+            "paused": "Pausado",
+            "up": "Ativo"
+        }
+    }
+}

@@ -4,7 +4,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 // Only import English and Portuguese as the default/fallback languages
 import enUS from "./locales/en-US.json";
-import ptBR from "./locales/pt-BR.json";
+import ptBR from "./locales/pt-BR";
 
 // Available languages configuration
 export const AVAILABLE_LANGUAGES = [

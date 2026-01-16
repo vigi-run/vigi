@@ -1,0 +1,17 @@
+{
+    "messages": {
+        "all_systems_operational": "Todos os sistemas em funcionamento",
+        "down": "Indisponível",
+        "last_updated": "Última Atualização",
+        "maintenance": "Manutenção",
+        "no_monitors_configured": "Nenhum monitor configurado para esta página de status.",
+        "operational": "Operacional",
+        "partial_system_outage": "Falha parcial do sistema",
+        "powered_by": "Desenvolvido por",
+        "refresh_in": "Atualizar em",
+        "refresh_now": "Atualizar agora",
+        "status_page_not_found": "Página de status não encontrada ou não publicada.",
+        "under_maintenance": "Em Manutenção",
+        "unknown": "Desconhecido"
+    }
+}

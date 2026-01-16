@@ -1,0 +1,17 @@
+{
+    "accept_invitation": "Aceitar Convite",
+    "already_member": "Você já é membro de {{count}} organização.",
+    "already_member_plural": "Você já é membro de {{count}} organizações.",
+    "create_new_organization_desc": "Comece do zero com uma nova organização para sua equipe.",
+    "create_new_organization_title": "Criar Nova Organização",
+    "create_organization_button": "Criar Organização",
+    "get_started": "Começar",
+    "invitation_accepted": "Convite aceito!",
+    "invitation_failed": "Falha ao aceitar convite",
+    "invited_as": "Convidado como",
+    "no_invitations": "Nenhum convite pendente.",
+    "pending_invitations": "Convites Pendentes",
+    "skip_to_dashboard": "Pular para o Painel",
+    "welcome_description": "Você tem convites pendentes. Aceite um para entrar em uma equipe ou crie sua própria organização.",
+    "welcome_title": "Bem-vindo ao Vigi"
+}
