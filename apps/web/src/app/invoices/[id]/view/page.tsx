@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import Layout from "@/layout";
 import { BackButton } from "@/components/back-button";
 import { getInvoiceOptions, useUpdateInvoiceMutation, getInvoiceEmailsOptions } from "@/api/invoice-manual";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,15 +16,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { InvoiceStatus } from "@/types/invoice";
 import { client } from "@/api/client.gen";
 import { useOrganizationStore } from "@/store/organization";
+import { generateInterCharge } from "@/api/inter";
+import { useState } from "react";
 
 export default function InvoiceDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const updateMutation = useUpdateInvoiceMutation();
     const { currentOrganization: organization } = useOrganizationStore();
     const { data: invoice, isLoading } = useQuery(getInvoiceOptions(id!));
     const { data: emails } = useQuery(getInvoiceEmailsOptions(id!, !!id));
+    const [isGeneratingCharge, setIsGeneratingCharge] = useState(false);
 
     // Fetch client details for display
     const { data: clientData } = useQuery({
@@ -48,6 +52,21 @@ export default function InvoiceDetailsPage() {
             toast.success(t("invoice.status_updated"));
         } catch (error) {
             toast.error(t("common.error_occurred"));
+        }
+    };
+
+    const handleGenerateCharge = async () => {
+        if (!organization || !id) return;
+        setIsGeneratingCharge(true);
+        try {
+            await generateInterCharge(organization.id, id);
+            toast.success("Charge generated successfully");
+            queryClient.invalidateQueries({ queryKey: getInvoiceOptions(id).queryKey });
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to generate charge");
+        } finally {
+            setIsGeneratingCharge(false);
         }
     };
 
@@ -95,6 +114,11 @@ export default function InvoiceDetailsPage() {
                         </SelectContent>
                     </Select>
 
+                    {!invoice.bankInvoiceId && (
+                        <Button variant="secondary" onClick={handleGenerateCharge} disabled={isGeneratingCharge}>
+                            {isGeneratingCharge ? "Generating..." : "Generate Charge"}
+                        </Button>
+                    )}
                     <Button onClick={() => navigate(`email`)}>
                         <Mail className="h-4 w-4 mr-2" />
                         {t("invoice.email.send")}

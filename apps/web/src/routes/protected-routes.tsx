@@ -24,6 +24,7 @@ import { OrganizationLayout } from "@/components/organization-layout";
 import CreateOrganizationPage from "@/app/create-organization/page";
 import OrganizationSettingsPage from "@/app/organization/settings/page";
 import OrganizationMembersPage from "@/app/organization/members/page";
+import IntegrationsPage from "@/app/organization/integrations/page";
 import { RootRedirect } from "@/components/root-redirect";
 import UserInvitationsPage from "@/app/user/invitations/page";
 import OnboardingPage from "@/app/onboarding/page";
@@ -84,6 +85,7 @@ export const protectedRoutes = [
         {/* Organization routes */}
         <Route path="settings/organization" element={<OrganizationSettingsPage />} />
         <Route path="settings/members" element={<OrganizationMembersPage />} />
+        <Route path="settings/integrations" element={<IntegrationsPage />} />
 
         {/* Client routes */}
         <Route path="clients" element={<ClientsPage />} />

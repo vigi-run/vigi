@@ -10,6 +10,7 @@ import {
     Building2,
     Briefcase,
     FileText,
+    Blocks,
 } from "lucide-react";
 
 import {
@@ -112,6 +113,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
             title: t("navigation.organization_settings"),
             url: `${prefix}/settings/organization`,
             icon: Building2,
+        },
+        {
+            title: t("navigation.integrations", "Integrations"),
+            url: `${prefix}/settings/integrations`,
+            icon: Blocks,
         },
     ]
 
