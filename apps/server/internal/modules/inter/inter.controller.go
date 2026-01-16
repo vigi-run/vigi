@@ -1,6 +1,7 @@
 package inter
 
 import (
+	"io"
 	"net/http"
 	"vigi/internal/utils"
 
@@ -51,29 +52,29 @@ func (c *Controller) SaveConfig(ctx *gin.Context) {
 	if err != nil {
 		// Treat error as not found if it is indeed not found.
 		// For simplicity, let's try to create.
-        // If unique constraint fails, it means it existed (race condition or different error).
-        // A better approach is usually upsert (ON CONFLICT DO UPDATE).
-        // But let's stick to simple logic: Try create, if error, try update? No.
-        // Let's rely on `err` content.
-        // Since I cannot easily import `sql` or `bun` here without coupling, I will assume any error is potentially "not found" or DB error.
-        // But wait, `sql.ErrNoRows` is standard.
-        // Let's try create first.
-        config, err = c.service.CreateConfig(ctx.Request.Context(), orgID, dto)
-        if err != nil {
-             // If creation failed, maybe it exists? Try update.
-             // Or maybe `GetConfig` failed because of actual DB error.
-             // This logic is a bit flaky without checking error type.
-             // But let's assume if Create fails, we try Update.
-             updateDto := UpdateInterConfigDTO{
-                ClientID:      &dto.ClientID,
-                ClientSecret:  &dto.ClientSecret,
-                Certificate:   &dto.Certificate,
-                Key:           &dto.Key,
-                AccountNumber: dto.AccountNumber,
-                Environment:   &dto.Environment,
-            }
-             config, err = c.service.UpdateConfig(ctx.Request.Context(), orgID, updateDto)
-        }
+		// If unique constraint fails, it means it existed (race condition or different error).
+		// A better approach is usually upsert (ON CONFLICT DO UPDATE).
+		// But let's stick to simple logic: Try create, if error, try update? No.
+		// Let's rely on `err` content.
+		// Since I cannot easily import `sql` or `bun` here without coupling, I will assume any error is potentially "not found" or DB error.
+		// But wait, `sql.ErrNoRows` is standard.
+		// Let's try create first.
+		config, err = c.service.CreateConfig(ctx.Request.Context(), orgID, dto)
+		if err != nil {
+			// If creation failed, maybe it exists? Try update.
+			// Or maybe `GetConfig` failed because of actual DB error.
+			// This logic is a bit flaky without checking error type.
+			// But let's assume if Create fails, we try Update.
+			updateDto := UpdateInterConfigDTO{
+				ClientID:      &dto.ClientID,
+				ClientSecret:  &dto.ClientSecret,
+				Certificate:   &dto.Certificate,
+				Key:           &dto.Key,
+				AccountNumber: dto.AccountNumber,
+				Environment:   &dto.Environment,
+			}
+			config, err = c.service.UpdateConfig(ctx.Request.Context(), orgID, updateDto)
+		}
 	} else if existing != nil {
 		updateDto := UpdateInterConfigDTO{
 			ClientID:      &dto.ClientID,
@@ -111,7 +112,7 @@ func (c *Controller) GetConfig(ctx *gin.Context) {
 		c.logger.Errorw("Failed to fetch inter config", "orgId", orgID, "error", err)
 		// Assuming error means not found for now or actual error.
 		// Let's return null config
-		ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", nil))
+		ctx.JSON(http.StatusOK, utils.NewSuccessResponse[*InterConfig]("success", nil))
 		return
 	}
 
@@ -119,25 +120,50 @@ func (c *Controller) GetConfig(ctx *gin.Context) {
 }
 
 func (c *Controller) GenerateCharge(ctx *gin.Context) {
-    var dto GenerateChargeDTO
-    if err := ctx.ShouldBindJSON(&dto); err != nil {
-        ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
-        return
-    }
+	var dto GenerateChargeDTO
+	if err := ctx.ShouldBindJSON(&dto); err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
+		return
+	}
 
-    orgIDStr := ctx.Param("id")
+	orgIDStr := ctx.Param("id")
 	orgID, err := uuid.Parse(orgIDStr)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid organization ID"))
 		return
 	}
 
-    err = c.service.CreateCharge(ctx.Request.Context(), orgID, dto)
-    if err != nil {
-        c.logger.Errorw("Failed to create charge", "error", err)
-        ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
-        return
-    }
+	err = c.service.CreateCharge(ctx.Request.Context(), orgID, dto)
+	if err != nil {
+		c.logger.Errorw("Failed to create charge", "error", err)
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
 
-    ctx.JSON(http.StatusOK, utils.NewSuccessResponse("Charge created successfully", nil))
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("Charge created successfully", nil))
+}
+
+func (c *Controller) HandleWebhook(ctx *gin.Context) {
+	body, err := io.ReadAll(ctx.Request.Body)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("failed to read body"))
+		return
+	}
+
+	if len(body) == 0 {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("empty body"))
+		return
+	}
+
+	if err := c.service.HandleWebhook(ctx.Request.Context(), body); err != nil {
+		c.logger.Errorw("Failed to handle webhook", "error", err)
+		// Return 200 even on error to avoid Inter retrying endlessly if it's an internal error that won't be fixed by retrying same payload immediately?
+		// Or 500?
+		// Usually 500 triggers retry.
+		// If DB is down, we want retry.
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.Status(http.StatusOK)
 }

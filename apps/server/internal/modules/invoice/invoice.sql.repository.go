@@ -40,6 +40,14 @@ func (r *SQLRepository) GetByID(ctx context.Context, id uuid.UUID) (*Invoice, er
 	return entity, nil
 }
 
+func (r *SQLRepository) GetByBankID(ctx context.Context, bankID string) (*Invoice, error) {
+	entity := new(Invoice)
+	if err := r.db.NewSelect().Model(entity).Relation("Items").Where("bank_invoice_id = ?", bankID).Scan(ctx); err != nil {
+		return nil, err
+	}
+	return entity, nil
+}
+
 func (r *SQLRepository) GetByOrganizationID(ctx context.Context, orgID uuid.UUID, filter InvoiceFilter) ([]*Invoice, int, error) {
 	var entities []*Invoice
 	query := r.db.NewSelect().Model(&entities).Relation("Items").Where("organization_id = ?", orgID)

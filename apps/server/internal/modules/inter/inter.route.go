@@ -28,4 +28,8 @@ func (r *Route) ConnectRoute(rg *gin.RouterGroup) {
 	orgRouter.POST("", r.controller.SaveConfig)
 	orgRouter.GET("", r.controller.GetConfig)
 	orgRouter.POST("/charge", r.controller.GenerateCharge)
+
+	// Webhook route
+	webhookRouter := rg.Group("integrations/inter")
+	webhookRouter.POST("/webhook", r.controller.HandleWebhook)
 }

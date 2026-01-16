@@ -19,4 +19,9 @@ func RegisterDependencies(container *dig.Container) {
 	container.Provide(NewService)
 	container.Provide(NewController)
 	container.Provide(NewRoute)
+	container.Provide(NewSQLWebhookRepository)
+	container.Provide(func(r *SQLWebhookRepository) WebhookRepository {
+		return r
+	})
+
 }

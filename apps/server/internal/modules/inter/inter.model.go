@@ -46,3 +46,13 @@ func (c *InterConfig) BeforeAppendModel(ctx context.Context, query bun.Query) er
 	}
 	return nil
 }
+
+type InterWebhookEvent struct {
+	NossoNumero       string  `json:"nossoNumero"`
+	SeuNumero         string  `json:"seuNumero"`
+	Situacao          string  `json:"situacao"`
+	CodigoSolicitacao string  `json:"codigoSolicitacao"`
+	ValorNominal      float64 `json:"valorNominal"`
+}
+
+type InterWebhookPayload []InterWebhookEvent

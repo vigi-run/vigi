@@ -86,8 +86,7 @@ export function InvoiceForm({ defaultValues, onSubmit, isLoading, submitLabel }:
         items: sanitizedDefaultItems,
         nfId: defaultValues?.nfId || '',
         nfStatus: defaultValues?.nfStatus || '',
-        bankInvoiceId: defaultValues?.bankInvoiceId || '',
-        bankInvoiceStatus: defaultValues?.bankInvoiceStatus || '',
+        nfStatus: defaultValues?.nfStatus || '',
         nfLink: defaultValues?.nfLink || '',
         terms: defaultValues?.terms,
         notes: defaultValues?.notes,
@@ -381,50 +380,11 @@ export function InvoiceForm({ defaultValues, onSubmit, isLoading, submitLabel }:
                             />
                         </div>
 
-                        <div className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="bankInvoiceId"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>{t('invoice.form.bank_invoice_id')}</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} value={field.value || ''} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="bankInvoiceStatus"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>{t('invoice.form.bank_invoice_status')}</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder={t('invoice.form.select_status')} />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="PENDING">{t('invoice.status.pending')}</SelectItem>
-                                                <SelectItem value="SENT">{t('invoice.status.sent')}</SelectItem>
-                                                <SelectItem value="PAID">{t('invoice.status.paid')}</SelectItem>
-                                                <SelectItem value="CANCELLED">{t('invoice.status.cancelled')}</SelectItem>
-                                                <SelectItem value="ERROR">{t('invoice.status.error')}</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
                     </CardContent>
                 </Card>
 
                 {/* Invoice Items */}
-                <Card>
+                < Card >
                     <CardHeader className="flex flex-row items-center justify-between">
                         <CardTitle>{t('invoice.form.items')}</CardTitle>
                         <Button type="button" variant="secondary" size="sm" onClick={() => append({ description: '', quantity: 1, unitPrice: 0, discount: 0 })}>
@@ -596,7 +556,7 @@ export function InvoiceForm({ defaultValues, onSubmit, isLoading, submitLabel }:
 
                         </div>
                     </CardContent>
-                </Card>
+                </Card >
 
                 <div className="flex justify-end gap-4">
                     <Button
@@ -610,7 +570,7 @@ export function InvoiceForm({ defaultValues, onSubmit, isLoading, submitLabel }:
                         {isLoading ? t('common.saving') : submitLabel}
                     </Button>
                 </div>
-            </form>
-        </Form>
+            </form >
+        </Form >
     );
 }

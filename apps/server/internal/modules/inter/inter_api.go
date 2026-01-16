@@ -49,12 +49,21 @@ type InterPayer struct {
 	Telefone    string `json:"telefone"`
 }
 
+type InterDiscount struct {
+	Codigo         string  `json:"codigo"` // "NAOTEM", "VALORFIXODATAINFORMADA", "PERCENTUALDATAINFORMADA"
+	QuantidadeDias int     `json:"quantidadeDias"`
+	Taxa           float64 `json:"taxa"`
+	Valor          float64 `json:"valor"`
+	Data           string  `json:"data"`
+}
+
 type InterChargeRequest struct {
-	SeuNumero      string     `json:"seuNumero"`
-	ValorNominal   float64    `json:"valorNominal"` // Using float64, hopefully it marshals correctly or Inter accepts number
-	DataVencimento string     `json:"dataVencimento"`
-	NumDiasAgenda  int        `json:"numDiasAgenda"` // "30"
-	Pagador        InterPayer `json:"pagador"`
+	SeuNumero      string         `json:"seuNumero"`
+	ValorNominal   float64        `json:"valorNominal"` // Gross value
+	DataVencimento string         `json:"dataVencimento"`
+	NumDiasAgenda  int            `json:"numDiasAgenda"` // "30"
+	Pagador        InterPayer     `json:"pagador"`
+	Desconto       *InterDiscount `json:"desconto,omitempty"`
 }
 
 type InterChargeResponse struct {
@@ -181,4 +190,44 @@ func (c *InterClient) CreateCharge(reqData InterChargeRequest) (*InterChargeResp
 	}
 
 	return &chargeResp, nil
+}
+
+type WebhookRequest struct {
+	WebhookUrl string `json:"webhookUrl"`
+}
+
+func (c *InterClient) RegisterWebhook(webhookUrl string) error {
+	if err := c.Authenticate(); err != nil {
+		return err
+	}
+
+	reqData := WebhookRequest{
+		WebhookUrl: webhookUrl,
+	}
+
+	jsonData, err := json.Marshal(reqData)
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("PUT", c.baseURL+"/cobranca/v3/cobrancas/webhook", bytes.NewReader(jsonData))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("webhook registration failed: %d - %s", resp.StatusCode, string(respBody))
+	}
+
+	return nil
 }

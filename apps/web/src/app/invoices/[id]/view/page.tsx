@@ -18,6 +18,14 @@ import { client } from "@/api/client.gen";
 import { useOrganizationStore } from "@/store/organization";
 import { generateInterCharge } from "@/api/inter";
 import { useState } from "react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, Printer } from "lucide-react";
 
 export default function InvoiceDetailsPage() {
     const { id } = useParams<{ id: string }>();
@@ -114,17 +122,37 @@ export default function InvoiceDetailsPage() {
                         </SelectContent>
                     </Select>
 
-                    {!invoice.bankInvoiceId && (
-                        <Button variant="secondary" onClick={handleGenerateCharge} disabled={isGeneratingCharge}>
-                            {isGeneratingCharge ? "Generating..." : "Generate Charge"}
+                    <div className="flex items-center rounded-md shadow-sm">
+                        <Button
+                            className="rounded-r-none border-r-0"
+                            onClick={() => navigate("edit")}
+                        >
+                            {t("invoice.edit_and_actions")}
                         </Button>
-                    )}
-                    <Button onClick={() => navigate(`email`)}>
-                        <Mail className="h-4 w-4 mr-2" />
-                        {t("invoice.email.send")}
-                    </Button>
-                    <Button onClick={() => navigate("edit")}>{t("common.edit")}</Button>
-                    <Button variant="outline" onClick={() => window.print()}>{t("common.print")}</Button>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button className="px-3 rounded-l-none" variant="default">
+                                    <ChevronDown className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                {!invoice.bankInvoiceId && (
+                                    <DropdownMenuItem onClick={handleGenerateCharge} disabled={isGeneratingCharge}>
+                                        {isGeneratingCharge ? "Generating..." : "Generate Charge"}
+                                    </DropdownMenuItem>
+                                )}
+                                <DropdownMenuItem onClick={() => navigate(`email`)}>
+                                    <Mail className="h-4 w-4 mr-2" />
+                                    {t("invoice.email.send")}
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => window.print()}>
+                                    <Printer className="h-4 w-4 mr-2" />
+                                    {t("common.print")}
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
             </div>
 

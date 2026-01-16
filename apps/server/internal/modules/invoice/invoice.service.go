@@ -103,6 +103,10 @@ func (s *Service) GetByID(ctx context.Context, id uuid.UUID) (*Invoice, error) {
 	return s.repo.GetByID(ctx, id)
 }
 
+func (s *Service) GetByBankID(ctx context.Context, bankID string) (*Invoice, error) {
+	return s.repo.GetByBankID(ctx, bankID)
+}
+
 func (s *Service) GetByOrganizationID(ctx context.Context, orgID uuid.UUID, filter InvoiceFilter) ([]*Invoice, int, error) {
 	return s.repo.GetByOrganizationID(ctx, orgID, filter)
 }
