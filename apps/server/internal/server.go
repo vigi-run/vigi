@@ -5,6 +5,7 @@ import (
 	_ "vigi/docs"
 	"vigi/internal/config"
 	"vigi/internal/modules/api_key"
+	"vigi/internal/modules/asaas"
 	"vigi/internal/modules/auth"
 	"vigi/internal/modules/backoffice"
 	"vigi/internal/modules/badge"
@@ -31,6 +32,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -100,7 +102,16 @@ func ProvideServer(
 	invoiceRoute *invoice.Route,
 	interRoute *inter.Route,
 	recurringInvoiceRoute *recurring_invoice.Route,
+	// Dependencies for Asaas
+	db *bun.DB,
+	invoiceService *invoice.Service,
+	clientService *client.Service,
 ) *Server {
+	// Asaas Module
+	asaasRepo := asaas.NewRepository(db)
+	asaasService := asaas.NewService(asaasRepo, invoiceService, clientService, logger)
+	asaasController := asaas.NewController(asaasService, logger)
+	asaasRoute := asaas.NewRoute(asaasController, authChain)
 	// Initialize server based on mode
 	var server *gin.Engine
 	if cfg.Mode == "dev" {
@@ -150,6 +161,7 @@ func ProvideServer(
 	clientRoute.ConnectRoute(router)
 	organizationRoute.ConnectRoute(router)
 	interRoute.ConnectRoute(router)
+	asaasRoute.ConnectRoute(router)
 	backofficeRoute.ConnectRoute(router, backofficeController)
 	storageRoute.Register(router)
 
