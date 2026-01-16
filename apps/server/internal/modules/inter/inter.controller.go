@@ -30,61 +30,56 @@ func (c *Controller) SaveConfig(ctx *gin.Context) {
 		return
 	}
 
-	var dto CreateInterConfigDTO
+	// We bind to UpdateInterConfigDTO first because it allows optional fields (pointers).
+	// If it's a creation, we will manually validate that all required fields are present.
+	var dto UpdateInterConfigDTO
 	if err := ctx.ShouldBindJSON(&dto); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
 		return
 	}
 
-	if err := utils.Validate.Struct(dto); err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
-		return
-	}
-
+	// Check if config exists
 	existing, err := c.service.GetConfig(ctx.Request.Context(), orgID)
+	// We handle error/nil check below
 
 	var config *InterConfig
-	// Assuming GetConfig returns error if database failure, or nil/nil if not found but query success (depends on repo impl)
-	// My repo impl uses `Scan` which returns error if no rows usually in bun?
-	// bun.NewSelect().Scan returns sql.ErrNoRows if not found.
-	// So `err` will be sql.ErrNoRows.
 
-	if err != nil {
-		// Treat error as not found if it is indeed not found.
-		// For simplicity, let's try to create.
-		// If unique constraint fails, it means it existed (race condition or different error).
-		// A better approach is usually upsert (ON CONFLICT DO UPDATE).
-		// But let's stick to simple logic: Try create, if error, try update? No.
-		// Let's rely on `err` content.
-		// Since I cannot easily import `sql` or `bun` here without coupling, I will assume any error is potentially "not found" or DB error.
-		// But wait, `sql.ErrNoRows` is standard.
-		// Let's try create first.
-		config, err = c.service.CreateConfig(ctx.Request.Context(), orgID, dto)
-		if err != nil {
-			// If creation failed, maybe it exists? Try update.
-			// Or maybe `GetConfig` failed because of actual DB error.
-			// This logic is a bit flaky without checking error type.
-			// But let's assume if Create fails, we try Update.
-			updateDto := UpdateInterConfigDTO{
-				ClientID:      &dto.ClientID,
-				ClientSecret:  &dto.ClientSecret,
-				Certificate:   &dto.Certificate,
-				Key:           &dto.Key,
-				AccountNumber: dto.AccountNumber,
-				Environment:   &dto.Environment,
-			}
-			config, err = c.service.UpdateConfig(ctx.Request.Context(), orgID, updateDto)
+	if existing != nil {
+		// Update logic
+		config, err = c.service.UpdateConfig(ctx.Request.Context(), orgID, dto)
+	} else {
+		// Creation logic - Validate required fields
+		if dto.ClientID == nil || *dto.ClientID == "" {
+			ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("clientID is required for initial setup"))
+			return
 		}
-	} else if existing != nil {
-		updateDto := UpdateInterConfigDTO{
-			ClientID:      &dto.ClientID,
-			ClientSecret:  &dto.ClientSecret,
-			Certificate:   &dto.Certificate,
-			Key:           &dto.Key,
+		if dto.ClientSecret == nil || *dto.ClientSecret == "" {
+			ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("clientSecret is required for initial setup"))
+			return
+		}
+		if dto.Certificate == nil || *dto.Certificate == "" {
+			ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("certificate is required for initial setup"))
+			return
+		}
+		if dto.Key == nil || *dto.Key == "" {
+			ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("key is required for initial setup"))
+			return
+		}
+		if dto.Environment == nil {
+			ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("environment is required for initial setup"))
+			return
+		}
+
+		createDto := CreateInterConfigDTO{
+			ClientID:      *dto.ClientID,
+			ClientSecret:  *dto.ClientSecret,
+			Certificate:   *dto.Certificate,
+			Key:           *dto.Key,
 			AccountNumber: dto.AccountNumber,
-			Environment:   &dto.Environment,
+			Environment:   *dto.Environment,
 		}
-		config, err = c.service.UpdateConfig(ctx.Request.Context(), orgID, updateDto)
+
+		config, err = c.service.CreateConfig(ctx.Request.Context(), orgID, createDto)
 	}
 
 	if err != nil {

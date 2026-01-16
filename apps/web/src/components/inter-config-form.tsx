@@ -88,6 +88,10 @@ export function InterConfigForm() {
                 // @ts-ignore
                 delete payload.key;
             }
+            if (payload.clientSecret === "********") {
+                // @ts-ignore
+                delete payload.clientSecret;
+            }
             await saveInterConfig(currentOrganization.id, payload);
             toast.success(t("organization.integrations.form.toast_success"));
         } catch (error) {
@@ -158,7 +162,25 @@ export function InterConfigForm() {
                         <FormItem>
                             <FormLabel>{t("organization.integrations.form.client_secret")}</FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder={t("organization.integrations.form.client_secret")} {...field} />
+                                <div className="space-y-2">
+                                    {field.value === "********" ? (
+                                        <div className="flex items-center gap-4 p-4 border rounded-md bg-muted/20">
+                                            <div className="flex-1 text-sm text-muted-foreground italic">
+                                                {t("organization.integrations.form.encrypted_secret")}
+                                            </div>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => field.onChange("")}
+                                            >
+                                                {t("organization.integrations.form.replace_content")}
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <Input type="password" placeholder={t("organization.integrations.form.client_secret")} {...field} />
+                                    )}
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>

@@ -10,12 +10,43 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
+import { useOrganizationStore } from "@/store/organization";
+import { client } from "@/api/client.gen";
+import { toast } from "sonner";
+
 
 export default function IntegrationsPage() {
     const { t } = useTranslation();
+    const { currentOrganization, isLoading } = useOrganizationStore();
     const [selectedBank, setSelectedBank] = useState<string>("inter");
+    const [isUpdating, setIsUpdating] = useState(false);
+
+    useEffect(() => {
+        if (currentOrganization && (currentOrganization as any).bank_provider) {
+            setSelectedBank((currentOrganization as any).bank_provider);
+        }
+    }, [currentOrganization]);
+
+    const handleBankChange = async (value: string) => {
+        setSelectedBank(value);
+        if (!currentOrganization) return;
+
+        setIsUpdating(true);
+        try {
+            await client.patch({
+                url: `/organizations/${currentOrganization.id}`,
+                // @ts-ignore
+                body: { bank_provider: value }
+            });
+            toast.success(t("common.saved_successfully"));
+        } catch (error) {
+            toast.error(t("common.error_occurred"));
+        } finally {
+            setIsUpdating(false);
+        }
+    };
 
     return (
         <Layout pageName={t("organization.integrations.title")}>
@@ -47,7 +78,7 @@ export default function IntegrationsPage() {
                         <div className="space-y-4">
                             <div className="w-[300px] space-y-2">
                                 <Label>{t("organization.integrations.bank_select.label")}</Label>
-                                <Select value={selectedBank} onValueChange={setSelectedBank}>
+                                <Select value={selectedBank} onValueChange={handleBankChange} disabled={isUpdating}>
                                     <SelectTrigger>
                                         <SelectValue placeholder={t("organization.integrations.bank_select.placeholder")} />
                                     </SelectTrigger>

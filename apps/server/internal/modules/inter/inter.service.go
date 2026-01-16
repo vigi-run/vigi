@@ -77,6 +77,9 @@ func (s *Service) GetConfig(ctx context.Context, organizationID uuid.UUID) (*Int
 	}
 	if config != nil {
 		// Mask sensitive data
+		if config.ClientSecret != "" {
+			config.ClientSecret = "********"
+		}
 		if config.Certificate != "" {
 			config.Certificate = "********"
 		}
@@ -99,7 +102,8 @@ func (s *Service) UpdateConfig(ctx context.Context, organizationID uuid.UUID, dt
 	if dto.ClientID != nil {
 		config.ClientID = *dto.ClientID
 	}
-	if dto.ClientSecret != nil {
+	// Only update client secret if it's not the masked value
+	if dto.ClientSecret != nil && *dto.ClientSecret != "********" {
 		config.ClientSecret = *dto.ClientSecret
 	}
 	// Only update certificate if it's not the masked value
@@ -127,6 +131,9 @@ func (s *Service) UpdateConfig(ctx context.Context, organizationID uuid.UUID, dt
 	}
 
 	// Mask config before returning
+	if config.ClientSecret != "" {
+		config.ClientSecret = "********"
+	}
 	if config.Certificate != "" {
 		config.Certificate = "********"
 	}

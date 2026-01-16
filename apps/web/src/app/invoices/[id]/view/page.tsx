@@ -67,8 +67,16 @@ export default function InvoiceDetailsPage() {
         if (!organization || !id) return;
         setIsGeneratingCharge(true);
         try {
-            await generateInterCharge(organization.id!, id);
-            toast.success("Charge generated successfully");
+            const provider = (organization as any).bank_provider || 'inter';
+
+            if (provider === 'inter') {
+                await generateInterCharge(organization.id!, id);
+                toast.success("Charge generated successfully via Banco Inter");
+            } else {
+                toast.error(`Provider ${provider} not implemented yet`);
+                // Placeholder for other providers
+            }
+
             queryClient.invalidateQueries({ queryKey: getInvoiceOptions(id).queryKey });
         } catch (error) {
             console.error(error);
