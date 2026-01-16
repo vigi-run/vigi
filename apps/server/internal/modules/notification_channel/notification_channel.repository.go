@@ -11,4 +11,5 @@ type Repository interface {
 	UpdateFull(ctx context.Context, id string, entity *Model, orgID string) error
 	UpdatePartial(ctx context.Context, id string, entity *UpdateModel, orgID string) error
 	Delete(ctx context.Context, id string, orgID string) error
+	Count(ctx context.Context, orgID string) (int64, error)
 }

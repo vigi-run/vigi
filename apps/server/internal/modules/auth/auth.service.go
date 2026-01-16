@@ -69,11 +69,30 @@ func (s *ServiceImpl) Register(ctx context.Context, dto RegisterDto) (*LoginResp
 	}
 
 	// Create new admin
+	var role string
+	if s.cfg.EnableSingleAdmin {
+		// If single admin mode is enabled, the first user is admin
+		// logic already checked count above but let's be safe
+		role = RoleAdmin
+	} else {
+		// Check total user count to decide if this is the first user
+		count, err := s.repo.FindAllCount(ctx)
+		if err != nil {
+			return nil, err
+		}
+		if count == 0 {
+			role = RoleAdmin
+		} else {
+			role = RoleUser
+		}
+	}
+
 	user := &Model{
 		Email:     dto.Email,
 		Name:      dto.Name,
 		Password:  string(hashedPassword),
 		Active:    true,
+		Role:      role,
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 	}

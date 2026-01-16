@@ -169,6 +169,25 @@ func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string) error {
 	return err
 }
 
+func (r *SQLRepositoryImpl) FindAll(ctx context.Context) ([]*Organization, error) {
+	var models []*sqlModel
+	err := r.db.NewSelect().Model(&models).Scan(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var organizations []*Organization
+	for _, m := range models {
+		organizations = append(organizations, toDomainModel(m))
+	}
+	return organizations, nil
+}
+
+func (r *SQLRepositoryImpl) FindAllCount(ctx context.Context) (int64, error) {
+	count, err := r.db.NewSelect().Model((*sqlModel)(nil)).Count(ctx)
+	return int64(count), err
+}
+
 func (r *SQLRepositoryImpl) AddMember(ctx context.Context, orgUser *OrganizationUser) error {
 	sm := &organizationUserSQLModel{
 		OrganizationID: orgUser.OrganizationID,
