@@ -797,7 +797,42 @@
   "organization": {
     "logo_label": "Logo da Organização",
     "create_button": "Criar Organização",
-    "create_description": "Comece criando uma nova organização para seus monitores.",
+    "integrations": {
+      "title": "Integrações",
+      "description": "Gerencie suas integrações com serviços externos.",
+      "tabs": {
+        "invoices": "Notas Fiscais",
+        "banks": "Bancos",
+        "signatures": "Assinaturas",
+        "tickets": "Ticket Plataforma"
+      },
+      "common": {
+        "coming_soon": "Em breve"
+      },
+      "inter": {
+        "title": "Banco Inter",
+        "description": "Configure sua integração com o Banco Inter para boleto bancário."
+      },
+      "form": {
+        "client_id": "Client ID",
+        "client_secret": "Client Secret",
+        "certificate": "Certificado (CRT)",
+        "key": "Chave Privada (KEY)",
+        "account_number": "Número da Conta (x-conta-corrente)",
+        "environment": "Ambiente",
+        "sandbox": "Sandbox",
+        "production": "Produção",
+        "save": "Salvar Configuração",
+        "saving": "Salvando...",
+        "encrypted_certificate": "O conteúdo do certificado está oculto e criptografado.",
+        "encrypted_key": "O conteúdo da chave privada está oculto e criptografado.",
+        "replace_content": "Substituir conteúdo",
+        "toast_success": "Configuração salva com sucesso",
+        "toast_error": "Falha ao salvar configuração",
+        "optional_derived": "Opcional / Derivado",
+        "select_environment": "Selecione o ambiente"
+      }
+    },
     "create_title": "Criar Organização",
     "creation_error": "Falha ao criar organização",
     "creation_success": "Organização criada com sucesso",

@@ -71,7 +71,20 @@ func (s *Service) CreateConfig(ctx context.Context, organizationID uuid.UUID, dt
 }
 
 func (s *Service) GetConfig(ctx context.Context, organizationID uuid.UUID) (*InterConfig, error) {
-	return s.repo.GetByOrganizationID(ctx, organizationID)
+	config, err := s.repo.GetByOrganizationID(ctx, organizationID)
+	if err != nil {
+		return nil, err
+	}
+	if config != nil {
+		// Mask sensitive data
+		if config.Certificate != "" {
+			config.Certificate = "********"
+		}
+		if config.Key != "" {
+			config.Key = "********"
+		}
+	}
+	return config, nil
 }
 
 func (s *Service) UpdateConfig(ctx context.Context, organizationID uuid.UUID, dto UpdateInterConfigDTO) (*InterConfig, error) {
@@ -89,10 +102,12 @@ func (s *Service) UpdateConfig(ctx context.Context, organizationID uuid.UUID, dt
 	if dto.ClientSecret != nil {
 		config.ClientSecret = *dto.ClientSecret
 	}
-	if dto.Certificate != nil {
+	// Only update certificate if it's not the masked value
+	if dto.Certificate != nil && *dto.Certificate != "********" {
 		config.Certificate = *dto.Certificate
 	}
-	if dto.Key != nil {
+	// Only update key if it's not the masked value
+	if dto.Key != nil && *dto.Key != "********" {
 		config.Key = *dto.Key
 	}
 	if dto.AccountNumber != nil {
@@ -109,6 +124,14 @@ func (s *Service) UpdateConfig(ctx context.Context, organizationID uuid.UUID, dt
 	// Try to register webhook again on update
 	if err := s.registerWebhook(config); err != nil {
 		fmt.Printf("Warning: failed to register webhook: %v\n", err)
+	}
+
+	// Mask config before returning
+	if config.Certificate != "" {
+		config.Certificate = "********"
+	}
+	if config.Key != "" {
+		config.Key = "********"
 	}
 
 	return config, nil

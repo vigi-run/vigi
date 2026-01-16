@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { getInterConfig, saveInterConfig } from "@/api/inter";
 import { useOrganizationStore } from "@/store/organization";
+import { useTranslation } from "react-i18next";
 
 const formSchema = z.object({
     clientId: z.string().min(1, "Client ID is required"),
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 
 export function InterConfigForm() {
+    const { t } = useTranslation();
     const { currentOrganization } = useOrganizationStore();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -77,11 +79,20 @@ export function InterConfigForm() {
         if (!currentOrganization?.id) return;
         setIsLoading(true);
         try {
-            await saveInterConfig(currentOrganization.id, values);
-            toast.success("Inter configuration saved");
+            const payload = { ...values };
+            if (payload.certificate === "********") {
+                // @ts-ignore
+                delete payload.certificate;
+            }
+            if (payload.key === "********") {
+                // @ts-ignore
+                delete payload.key;
+            }
+            await saveInterConfig(currentOrganization.id, payload);
+            toast.success(t("organization.integrations.form.toast_success"));
         } catch (error) {
             console.error(error);
-            toast.error("Failed to save Inter configuration");
+            toast.error(t("organization.integrations.form.toast_error"));
         } finally {
             setIsLoading(false);
         }
@@ -96,16 +107,16 @@ export function InterConfigForm() {
                         name="environment"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Environment</FormLabel>
+                                <FormLabel>{t("organization.integrations.form.environment")}</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select environment" />
+                                            <SelectValue placeholder={t("organization.integrations.form.select_environment")} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="sandbox">Sandbox</SelectItem>
-                                        <SelectItem value="production">Production</SelectItem>
+                                        <SelectItem value="sandbox">{t("organization.integrations.form.sandbox")}</SelectItem>
+                                        <SelectItem value="production">{t("organization.integrations.form.production")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -117,11 +128,11 @@ export function InterConfigForm() {
                         name="accountNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Account Number (x-conta-corrente)</FormLabel>
+                                <FormLabel>{t("organization.integrations.form.account_number")}</FormLabel>
                                 <FormControl>
                                     <Input placeholder="12345678" {...field} />
                                 </FormControl>
-                                <FormDescription>Optional/Derived</FormDescription>
+                                <FormDescription>{t("organization.integrations.form.optional_derived")}</FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -132,9 +143,9 @@ export function InterConfigForm() {
                     name="clientId"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Client ID</FormLabel>
+                            <FormLabel>{t("organization.integrations.form.client_id")}</FormLabel>
                             <FormControl>
-                                <Input placeholder="Client ID" {...field} />
+                                <Input placeholder={t("organization.integrations.form.client_id")} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -145,9 +156,9 @@ export function InterConfigForm() {
                     name="clientSecret"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Client Secret</FormLabel>
+                            <FormLabel>{t("organization.integrations.form.client_secret")}</FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder="Client Secret" {...field} />
+                                <Input type="password" placeholder={t("organization.integrations.form.client_secret")} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -158,9 +169,32 @@ export function InterConfigForm() {
                     name="certificate"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Certificate (CRT)</FormLabel>
+                            <FormLabel>{t("organization.integrations.form.certificate")}</FormLabel>
                             <FormControl>
-                                <Textarea className="font-mono text-xs" rows={5} placeholder="-----BEGIN CERTIFICATE-----..." {...field} />
+                                <div className="space-y-2">
+                                    {field.value === "********" ? (
+                                        <div className="flex items-center gap-4 p-4 border rounded-md bg-muted/20">
+                                            <div className="flex-1 text-sm text-muted-foreground italic">
+                                                {t("organization.integrations.form.encrypted_certificate")}
+                                            </div>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => field.onChange("")}
+                                            >
+                                                {t("organization.integrations.form.replace_content")}
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <Textarea
+                                            className="font-mono text-xs"
+                                            rows={5}
+                                            placeholder="-----BEGIN CERTIFICATE-----..."
+                                            {...field}
+                                        />
+                                    )}
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -171,16 +205,39 @@ export function InterConfigForm() {
                     name="key"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Private Key (KEY)</FormLabel>
+                            <FormLabel>{t("organization.integrations.form.key")}</FormLabel>
                             <FormControl>
-                                <Textarea className="font-mono text-xs" rows={5} placeholder="-----BEGIN PRIVATE KEY-----..." {...field} />
+                                <div className="space-y-2">
+                                    {field.value === "********" ? (
+                                        <div className="flex items-center gap-4 p-4 border rounded-md bg-muted/20">
+                                            <div className="flex-1 text-sm text-muted-foreground italic">
+                                                {t("organization.integrations.form.encrypted_key")}
+                                            </div>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => field.onChange("")}
+                                            >
+                                                {t("organization.integrations.form.replace_content")}
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <Textarea
+                                            className="font-mono text-xs"
+                                            rows={5}
+                                            placeholder="-----BEGIN PRIVATE KEY-----..."
+                                            {...field}
+                                        />
+                                    )}
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
                 <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Saving..." : "Save Configuration"}
+                    {isLoading ? t("organization.integrations.form.saving") : t("organization.integrations.form.save")}
                 </Button>
             </form>
         </Form>
