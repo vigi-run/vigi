@@ -39,6 +39,7 @@ import InvoicesPage from "@/app/invoices/page";
 import NewInvoicePage from "@/app/invoices/new/page";
 import EditInvoicePage from "@/app/invoices/[id]/edit/page";
 import InvoiceDetailsPage from "@/app/invoices/[id]/view/page";
+import InvoiceEmailPage from "@/app/invoices/[id]/email/page";
 
 export const protectedRoutes = [
     <Route key="root" path="/" element={<RootRedirect />} />,
@@ -102,6 +103,7 @@ export const protectedRoutes = [
         <Route path="invoices/new" element={<NewInvoicePage />} />
         <Route path="invoices/:id" element={<InvoiceDetailsPage />} />
         <Route path="invoices/:id/edit" element={<EditInvoicePage />} />
+        <Route path="invoices/:id/email" element={<div className="w-full"><InvoiceEmailPage /></div>} />
 
 
 

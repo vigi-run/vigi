@@ -2780,7 +2780,7 @@ export type GetOrganizationsSlugBySlugData = {
         slug: string;
     };
     query?: never;
-    url: '/organizations/slug/{slug}';
+    url: '/organizations/by-slug/{slug}';
 };
 
 export type GetOrganizationsSlugBySlugErrors = {

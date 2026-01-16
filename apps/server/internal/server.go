@@ -135,10 +135,12 @@ func ProvideServer(
 	tagRoute.ConnectRoute(router, tagController)
 	badgeRoute.ConnectRoute(router, badgeController)
 	apiKeyRoute.ConnectRoute(router, apiKeyController)
-	organizationRoute.ConnectRoute(router)
-	clientRoute.ConnectRoute(router)
-	catalogItemRoute.ConnectRoute(router, authChain)
+	// Invoice routes MUST be registered before organization routes
+	// to avoid /organizations/:id matching /invoices path segments
 	invoiceRoute.ConnectRoute(router, authChain)
+	catalogItemRoute.ConnectRoute(router, authChain)
+	clientRoute.ConnectRoute(router)
+	organizationRoute.ConnectRoute(router)
 	storageRoute.Register(router)
 
 	// Register push endpoint

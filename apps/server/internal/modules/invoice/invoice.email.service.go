@@ -11,24 +11,24 @@ import (
 )
 
 func (s *Service) SendCreatedEmail(ctx context.Context, id uuid.UUID) error {
-	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeCreated, "Nova Fatura Gerada", "")
+	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeCreated, "Nova Fatura Gerada", "", false)
 }
 
 func (s *Service) SendFirstEmail(ctx context.Context, id uuid.UUID) error {
-	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeFirst, "Lembrete de Fatura", "")
+	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeFirst, "Lembrete de Fatura", "", false)
 }
 
 func (s *Service) SendSecondReminder(ctx context.Context, id uuid.UUID) error {
-	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeSecond, "Segundo Lembrete de Fatura", "")
+	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeSecond, "Segundo Lembrete de Fatura", "", false)
 }
 
 func (s *Service) SendThirdReminder(ctx context.Context, id uuid.UUID) error {
-	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeThird, "Último Lembrete de Fatura", "")
+	return s.sendInvoiceEmail(ctx, id, InvoiceEmailTypeThird, "Último Lembrete de Fatura", "", false)
 }
 
 // SendManualEmail allows sending any email type with custom content
 func (s *Service) SendManualEmail(ctx context.Context, id uuid.UUID, emailType InvoiceEmailType, subject string, htmlContent string) error {
-	return s.sendInvoiceEmail(ctx, id, emailType, subject, htmlContent)
+	return s.sendInvoiceEmail(ctx, id, emailType, subject, htmlContent, true)
 }
 
 func (s *Service) PreviewEmail(ctx context.Context, id uuid.UUID, emailType InvoiceEmailType, customMessage string) (string, string, string, error) {
@@ -55,15 +55,15 @@ func (s *Service) PreviewEmail(ctx context.Context, id uuid.UUID, emailType Invo
 		// Default messages key off type
 		switch emailType {
 		case InvoiceEmailTypeCreated:
-			messageBody = "<p>Uma nova fatura foi gerada para sua organização. Abaixo estão os detalhes:</p>"
+			messageBody = "Uma nova fatura foi gerada para você. Abaixo estão os detalhes:"
 		case InvoiceEmailTypeFirst:
-			messageBody = "<p>Este é um lembrete sobre sua fatura em aberto. Por favor, verifique os detalhes abaixo:</p>"
+			messageBody = "Este é um lembrete sobre sua fatura em aberto. Por favor, verifique os detalhes abaixo:"
 		case InvoiceEmailTypeSecond:
-			messageBody = "<p>Ainda não identificamos o pagamento da sua fatura. Caso já tenha efetuado, por favor desconsidere.</p>"
+			messageBody = "Ainda não identificamos o pagamento da sua fatura. Caso já tenha efetuado, por favor desconsidere."
 		case InvoiceEmailTypeThird:
-			messageBody = "<p>Esta é uma última notificação sobre sua fatura pendente. Por favor, regularize o quanto antes.</p>"
+			messageBody = "Esta é uma última notificação sobre sua fatura pendente. Por favor, regularize o quanto antes."
 		default:
-			messageBody = "<p>Seguem os detalhes da sua fatura:</p>"
+			messageBody = "Seguem os detalhes da sua fatura:"
 		}
 	}
 
@@ -84,7 +84,7 @@ func (s *Service) PreviewEmail(ctx context.Context, id uuid.UUID, emailType Invo
 	return subject, htmlContent, messageBody, nil
 }
 
-func (s *Service) sendInvoiceEmail(ctx context.Context, id uuid.UUID, emailType InvoiceEmailType, subject string, messageBody string) error {
+func (s *Service) sendInvoiceEmail(ctx context.Context, id uuid.UUID, emailType InvoiceEmailType, subject string, content string, isFullHTML bool) error {
 	invoice, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -107,10 +107,13 @@ func (s *Service) sendInvoiceEmail(ctx context.Context, id uuid.UUID, emailType 
 		return fmt.Errorf("client not found")
 	}
 
+	// Find contact with email
 	var toEmail string
+	var toName string
 	for _, contact := range clientEntity.Contacts {
 		if contact.Email != nil && *contact.Email != "" {
 			toEmail = *contact.Email
+			toName = contact.Name
 			break
 		}
 	}
@@ -119,12 +122,29 @@ func (s *Service) sendInvoiceEmail(ctx context.Context, id uuid.UUID, emailType 
 		return fmt.Errorf("client has no contact with email")
 	}
 
+	// Fallback to client name if contact name is empty
+	if toName == "" {
+		toName = clientEntity.Name
+	}
+
 	// Generate HTML body using messageBody as custom content if provided
-	htmlContent := s.generateEmailBody(invoice, subject, org.Name, emailType, messageBody)
+	var htmlContent string
+	if isFullHTML {
+		htmlContent = content
+	} else {
+		htmlContent = s.generateEmailBody(invoice, subject, org.Name, emailType, content)
+	}
+
+	toAddress := toEmail
+	if toName != "" {
+		toAddress = fmt.Sprintf("%s <%s>", toName, toEmail)
+	}
+
+	fromAddress := fmt.Sprintf("%s <financeiro@codgital.com>", org.Name)
 
 	req := usesend.SendEmailRequest{
-		To:      toEmail,
-		From:    "financeiro@codgital.com", // Reverted to verified domain
+		To:      toAddress,
+		From:    fromAddress, // Reverted to verified domain
 		Subject: subject,
 		HTML:    htmlContent,
 		Tags: map[string]string{
@@ -165,42 +185,64 @@ func (s *Service) generateEmailBody(invoice *Invoice, subject string, orgName st
 	} else {
 		switch emailType {
 		case InvoiceEmailTypeCreated:
-			messageBody = "<p>Uma nova fatura foi gerada para sua organização. Abaixo estão os detalhes:</p>"
+			messageBody = "Uma nova fatura foi gerada para você. Abaixo estão os detalhes:"
 		case InvoiceEmailTypeFirst:
-			messageBody = "<p>Este é um lembrete sobre sua fatura em aberto. Por favor, verifique os detalhes abaixo:</p>"
+			messageBody = "Este é um lembrete sobre sua fatura em aberto. Por favor, verifique os detalhes abaixo:"
 		case InvoiceEmailTypeSecond:
-			messageBody = "<p>Ainda não identificamos o pagamento da sua fatura. Caso já tenha efetuado, por favor desconsidere.</p>"
+			messageBody = "Ainda não identificamos o pagamento da sua fatura. Caso já tenha efetuado, por favor desconsidere."
 		case InvoiceEmailTypeThird:
-			messageBody = "<p>Esta é uma última notificação sobre sua fatura pendente. Por favor, regularize o quanto antes.</p>"
+			messageBody = "Esta é uma última notificação sobre sua fatura pendente. Por favor, regularize o quanto antes."
 		default:
-			messageBody = "<p>Seguem os detalhes da sua fatura:</p>"
+			messageBody = "Seguem os detalhes da sua fatura:"
 		}
 	}
 
-	// Ensure messageBody is wrapped if it's plain text (legacy safety)
-	if !strings.HasPrefix(messageBody, "<") {
-		messageBody = fmt.Sprintf("<p>%s</p>", messageBody)
+	// Badge color based on email type
+	badgeColor := "#0ea5e9" // Default blue
+	badgeText := "Nova Fatura"
+	switch emailType {
+	case InvoiceEmailTypeFirst:
+		badgeColor = "#f59e0b"
+		badgeText = "Lembrete"
+	case InvoiceEmailTypeSecond:
+		badgeColor = "#f97316"
+		badgeText = "2º Lembrete"
+	case InvoiceEmailTypeThird:
+		badgeColor = "#ef4444"
+		badgeText = "Urgente"
 	}
 
-	return fmt.Sprintf(`
-<h3>%s</h3>
-%s
-<p>
-	<strong>Fatura #%s</strong><br>
-	Valor: %s<br>
-	Vencimento: %s
-</p>
-<p>
-	<a href="%s" style="background-color:#007bff;color:#ffffff;padding:10px 20px;text-decoration:none;border-radius:4px;display:inline-block;">Visualizar Fatura</a>
-</p>
-<p>
-	<small>Link público: %s</small>
-</p>
-<hr>
-<p>
-	<small>&copy; %d %s. Todos os direitos reservados.</small>
-</p>
-	`, orgName, messageBody, invoice.Number, totalFormatted, dueDate, publicLink, publicLink, time.Now().Year(), orgName)
+	// Use Tiptap-compatible HTML structure for preview in editor
+	// The button uses data attributes that Tiptap Button extension expects
+	return fmt.Sprintf(`<h2 style="text-align: center; font-family: Inter, system-ui, sans-serif; color: #111827;">%s</h2>
+<p style="text-align: center; color: %s; font-weight: 600; font-family: Inter, system-ui, sans-serif; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; margin-top: 4px;">%s</p>
+<p style="text-align: center; font-family: Inter, system-ui, sans-serif; color: #4b5563; margin-top: 24px; margin-bottom: 24px; line-height: 1.5;">%s</p>
+<hr style="border-color: #e5e7eb; margin: 24px 0;">
+<h3 style="text-align: center; font-family: Inter, system-ui, sans-serif; color: #374151; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Fatura #%s</h3>
+<p style="text-align: center; margin-top: 8px;"><strong style="font-size: 32px; color: #0ea5e9; font-family: Inter, system-ui, sans-serif; letter-spacing: -0.02em;">%s</strong></p>
+<p style="text-align: center; font-family: Inter, system-ui, sans-serif; color: #4b5563; font-size: 14px;">Vencimento: <strong style="color: #111827;">%s</strong></p>
+<div data-type="button" data-text="Visualizar Fatura →" data-url="%s" data-alignment="center" data-variant="filled" data-button-color="#0ea5e9" data-text-color="#ffffff" data-border-radius="smooth"></div>
+<p style="text-align: center; margin-top: 32px;"><small style="color: #9ca3af; font-family: Inter, system-ui, sans-serif;">Dúvidas? Responda este email ou entre em contato conosco.</small></p>
+<hr style="border-color: #e5e7eb; margin: 24px 0;">
+<p style="text-align: center; margin-bottom: 0;"><small style="color: #9ca3af; font-family: Inter, system-ui, sans-serif;">© %d %s. Todos os direitos reservados.</small></p>
+`, orgName, badgeColor, badgeText, messageBody, invoice.Number, totalFormatted, dueDate, publicLink, time.Now().Year(), orgName)
+}
+
+// adjustColorBrightness creates a slightly darker shade for gradient effect
+func adjustColorBrightness(hexColor string) string {
+	// Simple darkening - for complex colors, this creates a nice gradient
+	switch hexColor {
+	case "#0ea5e9":
+		return "#0284c7" // Darker blue
+	case "#f59e0b":
+		return "#d97706" // Darker amber
+	case "#f97316":
+		return "#ea580c" // Darker orange
+	case "#ef4444":
+		return "#dc2626" // Darker red
+	default:
+		return hexColor
+	}
 }
 
 func (s *Service) GetEmailHistory(ctx context.Context, id uuid.UUID) ([]*InvoiceEmail, error) {

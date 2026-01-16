@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import Layout from "@/layout";
 import { BackButton } from "@/components/back-button";
 import { getInvoiceOptions, useUpdateInvoiceMutation, getInvoiceEmailsOptions } from "@/api/invoice-manual";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,17 +16,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { InvoiceStatus } from "@/types/invoice";
 import { client } from "@/api/client.gen";
 import { useOrganizationStore } from "@/store/organization";
-import { SendEmailDialog } from "../../components/send-email-dialog";
 
 export default function InvoiceDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const updateMutation = useUpdateInvoiceMutation();
-    const queryClient = useQueryClient();
     const { currentOrganization: organization } = useOrganizationStore();
-    const [isSendEmailOpen, setIsSendEmailOpen] = useState(false);
-
     const { data: invoice, isLoading } = useQuery(getInvoiceOptions(id!));
     const { data: emails } = useQuery(getInvoiceEmailsOptions(id!, !!id));
 
@@ -100,7 +95,7 @@ export default function InvoiceDetailsPage() {
                         </SelectContent>
                     </Select>
 
-                    <Button onClick={() => setIsSendEmailOpen(true)}>
+                    <Button onClick={() => navigate(`email`)}>
                         <Mail className="h-4 w-4 mr-2" />
                         {t("invoice.email.send")}
                     </Button>
@@ -109,14 +104,6 @@ export default function InvoiceDetailsPage() {
                 </div>
             </div>
 
-            <SendEmailDialog
-                open={isSendEmailOpen}
-                onOpenChange={setIsSendEmailOpen}
-                invoiceId={id!}
-                onSend={() => {
-                    queryClient.invalidateQueries({ queryKey: ['invoice-emails', id] });
-                }}
-            />
 
             <Card className="max-w-4xl mx-auto print:shadow-none print:border-none">
                 <CardHeader className="flex flex-row justify-between border-b pb-8">

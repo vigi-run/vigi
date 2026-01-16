@@ -121,6 +121,7 @@ export function SendEmailDialog({ open, onOpenChange, invoiceId, onSend }: SendE
 
               <div className="flex-1 overflow-auto border rounded-md mt-2 min-h-[300px]">
                 <RichEditor
+                  key={type} // Force re-mount when template type changes
                   value={html}
                   onChange={setHtml}
                   placeholder="Type '/' for commands..."
