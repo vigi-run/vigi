@@ -43,6 +43,7 @@ import (
 	"vigi/internal/modules/status_page"
 	"vigi/internal/modules/storage"
 	"vigi/internal/modules/tag"
+	"vigi/internal/modules/webhook"
 	"vigi/internal/modules/websocket"
 	"vigi/internal/utils"
 	"vigi/internal/version"
@@ -137,6 +138,7 @@ func main() {
 	client.RegisterDependencies(container, internalCfg)
 	catalog_item.RegisterDependencies(container, internalCfg)
 	invoice.RegisterDependencies(container, internalCfg)
+	webhook.RegisterDependencies(container, internalCfg)
 
 	middleware.RegisterDependencies(container)
 	storage.RegisterDependencies(container)

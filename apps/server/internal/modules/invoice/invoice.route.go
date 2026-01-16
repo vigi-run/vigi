@@ -30,5 +30,12 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.Auth
 		entityGroup.GET("/:id", r.controller.GetByID)
 		entityGroup.PATCH("/:id", r.controller.Update)
 		entityGroup.DELETE("/:id", r.controller.Delete)
+
+		entityGroup.POST("/:id/email/first", r.controller.SendFirstEmail)
+		entityGroup.POST("/:id/email/second", r.controller.SendSecondReminder)
+		entityGroup.POST("/:id/email/third", r.controller.SendThirdReminder)
+		entityGroup.POST("/:id/email/preview", r.controller.PreviewEmail)
+		entityGroup.POST("/:id/email/send", r.controller.SendManualEmail)
+		entityGroup.GET("/:id/emails", r.controller.GetEmailHistory)
 	}
 }

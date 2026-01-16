@@ -39,6 +39,8 @@ import InvoicesPage from "@/app/invoices/page";
 import NewInvoicePage from "@/app/invoices/new/page";
 import EditInvoicePage from "@/app/invoices/[id]/edit/page";
 import InvoiceDetailsPage from "@/app/invoices/[id]/view/page";
+import InvoiceEmailPage from "@/app/invoices/[id]/email/page";
+import DashboardPage from "@/app/dashboard/page";
 import { RequireAdmin } from "@/components/require-admin";
 import { BackofficeLayout } from "@/components/backoffice-layout";
 import BackofficeDashboardPage from "@/app/backoffice/page";
@@ -56,7 +58,7 @@ export const protectedRoutes = [
         <Route path="invitations" element={<UserInvitationsPage />} />
     </Route>,
     <Route key="slug" path="/:slug" element={<OrganizationLayout />}>
-        <Route index element={<Navigate to="monitors" replace />} />
+        <Route index element={<DashboardPage />} />
 
 
         {/* Monitor routes */}
@@ -93,7 +95,6 @@ export const protectedRoutes = [
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<NewClientPage />} />
         <Route path="clients/:id" element={<ClientDetailsPage />} />
-        <Route path="clients/:id" element={<ClientDetailsPage />} />
         <Route path="clients/:id/edit" element={<EditClientPage />} />
 
         {/* Catalog Item routes */}
@@ -107,6 +108,7 @@ export const protectedRoutes = [
         <Route path="invoices/new" element={<NewInvoicePage />} />
         <Route path="invoices/:id" element={<InvoiceDetailsPage />} />
         <Route path="invoices/:id/edit" element={<EditInvoicePage />} />
+        <Route path="invoices/:id/email" element={<div className="w-full"><InvoiceEmailPage /></div>} />
 
 
 
@@ -116,6 +118,7 @@ export const protectedRoutes = [
         <Route path="tags/:id/edit" element={<EditTag />} />
 
         {/* Default redirect */}
+        <Route path="*" element={<Navigate to="" replace />} />
         <Route path="*" element={<Navigate to="monitors" replace />} />
     </Route>,
 

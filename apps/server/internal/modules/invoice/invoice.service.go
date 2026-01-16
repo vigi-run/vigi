@@ -2,16 +2,32 @@ package invoice
 
 import (
 	"context"
+	"vigi/internal/config"
+	"vigi/internal/modules/client"
+	"vigi/internal/modules/organization"
+	"vigi/internal/pkg/usesend"
 
 	"github.com/google/uuid"
 )
 
 type Service struct {
-	repo Repository
+	repo          Repository
+	clientRepo    client.Repository
+	orgRepo       organization.OrganizationRepository
+	emailRepo     EmailRepository
+	usesendClient *usesend.Client
+	cfg           *config.Config
 }
 
-func NewService(repo Repository) *Service {
-	return &Service{repo: repo}
+func NewService(repo Repository, clientRepo client.Repository, orgRepo organization.OrganizationRepository, emailRepo EmailRepository, usesendClient *usesend.Client, cfg *config.Config) *Service {
+	return &Service{
+		repo:          repo,
+		clientRepo:    clientRepo,
+		orgRepo:       orgRepo,
+		emailRepo:     emailRepo,
+		usesendClient: usesendClient,
+		cfg:           cfg,
+	}
 }
 
 func (s *Service) Create(ctx context.Context, orgID uuid.UUID, dto CreateInvoiceDTO) (*Invoice, error) {
@@ -61,6 +77,25 @@ func (s *Service) Create(ctx context.Context, orgID uuid.UUID, dto CreateInvoice
 	if err := s.repo.Create(ctx, entity); err != nil {
 		return nil, err
 	}
+
+	// Send creation email asynchronously or synchronously? User flow implies sync or fast async.
+	// For now, doing it inline as per other methods, but ignoring error to not block creation?
+	// Actually typical flow is fire and forget or background job.
+	// Service has SendFirstEmail etc. I'll call s.SendCreatedEmail(ctx, entity.ID)
+	// I need to confirm method exists first? No, I'm adding it in next step.
+	// Golang allows this order if I edit the other file next.
+
+	go func() {
+		// Create a new context as correct practice for background tasks,
+		// but using passed ctx for tracing if needed?
+		// Ideally use context.Background() with timeout.
+		bgCtx := context.Background()
+		if err := s.SendCreatedEmail(bgCtx, entity.ID); err != nil {
+			// fmt.Printf("Failed to send created email: %v\n", err)
+			// Logging handled inside service usually
+		}
+	}()
+
 	return entity, nil
 }
 

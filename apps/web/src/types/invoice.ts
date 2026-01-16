@@ -1,5 +1,15 @@
 export type InvoiceStatus = 'DRAFT' | 'SENT' | 'PAID' | 'CANCELLED';
 
+export interface InvoiceEmail {
+    id: string;
+    invoiceId: string;
+    type: 'created' | 'first' | 'second' | 'third';
+    emailId: string;
+    status: string;
+    events: any[]; // refine if needed
+    createdAt: string;
+}
+
 export interface InvoiceItem {
     id: string;
     invoiceId: string;

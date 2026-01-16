@@ -1,10 +1,6 @@
 import {
     Home,
-    Network,
     HelpCircleIcon,
-    SettingsIcon,
-    Vibrate,
-    ListCheckIcon,
     Tag,
     Users,
     Building2,
@@ -47,34 +43,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         },
         navMain: [
             {
-                title: t("navigation.monitors"),
-                url: `${prefix}/monitors`,
+                title: t("navigation.home", "Home"),
+                url: `${prefix}`,
                 icon: Home,
-            },
-            {
-                title: t("navigation.maintenance"),
-                url: `${prefix}/maintenances`,
-                icon: SettingsIcon,
-            },
-            {
-                title: t("navigation.status_pages"),
-                url: `${prefix}/status-pages`,
-                icon: ListCheckIcon,
-            },
-            {
-                title: "Tags",
-                url: `${prefix}/tags`,
-                icon: Tag,
-            },
-            {
-                title: t("navigation.proxies"),
-                url: `${prefix}/proxies`,
-                icon: Network,
-            },
-            {
-                title: t("navigation.notification_channels"),
-                url: `${prefix}/notification-channels`,
-                icon: Vibrate,
             },
             {
                 title: t("clients.title", "Clients"),

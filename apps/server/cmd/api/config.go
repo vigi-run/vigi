@@ -54,6 +54,10 @@ type Config struct {
 	S3AccessKey  string `env:"S3_ACCESS_KEY"`
 	S3SecretKey  string `env:"S3_SECRET_KEY"`
 	S3DisableSSL bool   `env:"S3_DISABLE_SSL" default:"false"`
+
+	// Usesend Configuration
+	UsesendAPIKey string `env:"USESEND_API_KEY"`
+	UsesendDomain string `env:"USESEND_DOMAIN"`
 }
 
 // LoadAndValidate loads and validates the API service configuration
@@ -139,5 +143,7 @@ func (c *Config) ToInternalConfig() *config.Config {
 		S3AccessKey:           c.S3AccessKey,
 		S3SecretKey:           c.S3SecretKey,
 		S3DisableSSL:          c.S3DisableSSL,
+		UsesendAPIKey:         c.UsesendAPIKey,
+		UsesendDomain:         c.UsesendDomain,
 	}
 }

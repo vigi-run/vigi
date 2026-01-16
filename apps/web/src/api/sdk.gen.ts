@@ -891,7 +891,7 @@ export const postOrganizations = <ThrowOnError extends boolean = false>(options:
 export const getOrganizationsSlugBySlug = <ThrowOnError extends boolean = false>(options: Options<GetOrganizationsSlugBySlugData, ThrowOnError>) => {
     return (options.client ?? _heyApiClient).get<GetOrganizationsSlugBySlugResponses, GetOrganizationsSlugBySlugErrors, ThrowOnError>({
         responseType: 'json',
-        url: '/organizations/slug/{slug}',
+        url: '/organizations/by-slug/{slug}',
         ...options
     });
 };
