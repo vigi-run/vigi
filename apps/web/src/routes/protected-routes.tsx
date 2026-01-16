@@ -27,6 +27,11 @@ import OrganizationMembersPage from "@/app/organization/members/page";
 import { RootRedirect } from "@/components/root-redirect";
 import UserInvitationsPage from "@/app/user/invitations/page";
 import OnboardingPage from "@/app/onboarding/page";
+import { RequireAdmin } from "@/components/require-admin";
+import { BackofficeLayout } from "@/components/backoffice-layout";
+import BackofficeDashboardPage from "@/app/backoffice/page";
+import BackofficeUsersPage from "@/app/backoffice/users/page";
+import BackofficeOrgsPage from "@/app/backoffice/organizations/page";
 
 export const protectedRoutes = [
     <Route key="root" path="/" element={<RootRedirect />} />,
@@ -80,5 +85,14 @@ export const protectedRoutes = [
 
     // Default redirect
         <Route path="*" element={<Navigate to="monitors" replace />} />
+    </Route>,
+
+    // Backoffice routes (Global Admin)
+    <Route key="backoffice" path="/backoffice" element={<RequireAdmin />}>
+        <Route element={<BackofficeLayout />}>
+            <Route index element={<BackofficeDashboardPage />} />
+            <Route path="users" element={<BackofficeUsersPage />} />
+            <Route path="organizations" element={<BackofficeOrgsPage />} />
+        </Route>
     </Route>
 ]; 

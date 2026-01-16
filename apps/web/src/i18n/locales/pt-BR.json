@@ -108,7 +108,8 @@
             "monitor_name": "Meu monitor",
             "page_description": "Digite a descrição da página de status",
             "page_title": "Digite o título da página de status",
-            "slug": "slug-pagina-de-status"
+            "slug": "slug-pagina-de-status",
+            "name": "Seu nome completo"
         },
         "validation": {
             "email_invalid": "Por favor, insira um endereço de e‑mail válido",
@@ -640,6 +641,7 @@
     },
     "organization": {
         "create_button": "Criar Organização",
+        "logo_label": "Logo da Organização",
         "create_description": "Comece criando uma nova organização para seus monitores.",
         "create_title": "Criar Organização",
         "creation_error": "Falha ao criar organização",
