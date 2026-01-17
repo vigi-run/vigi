@@ -128,3 +128,7 @@ export const getPublicInvoiceOptions = (id: string, enabled = true) => queryOpti
     },
     enabled,
 });
+
+export const generatePublicCharge = async (invoiceId: string) => {
+    return mutationCall<void>(client.post({ url: `/public/invoices/${invoiceId}/charge`, body: {} }));
+};

@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { getPublicInvoiceOptions } from "@/api/invoice-manual";
+import { getPublicInvoiceOptions, generatePublicCharge } from "@/api/invoice-manual";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,14 +15,28 @@ import { useTranslation } from "react-i18next";
 
 export default function PublicInvoicePage() {
   // ...
+  const [isGenerating, setIsGenerating] = useState(false);
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { data: invoice, isLoading, error } = useQuery(getPublicInvoiceOptions(id!, !!id));
+  const { data: invoice, isLoading, error, refetch } = useQuery(getPublicInvoiceOptions(id!, !!id));
 
   const handleCopyPix = () => {
     if (invoice?.bankPixPayload) {
       navigator.clipboard.writeText(invoice.bankPixPayload);
       toast.success(t("common.link_copied"));
+    }
+  };
+
+  const handleGenerateCharge = async () => {
+    setIsGenerating(true);
+    try {
+      await generatePublicCharge(id!);
+      await refetch();
+      toast.success("Cobrança gerada com sucesso!");
+    } catch {
+      toast.error("Erro ao gerar cobrança. Tente novamente mais tarde.");
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -113,28 +128,40 @@ export default function PublicInvoicePage() {
 
           <CardContent className="p-8 space-y-8">
             {/* Payment Actions (If not paid) */}
-            {!isPaid && invoice.bankPixPayload && (
-              <div className="bg-background/50 p-6 rounded-xl border border-border flex flex-col items-center justify-center gap-6 print:hidden">
-                <div className="flex flex-col items-center text-center space-y-4 w-full max-w-sm">
-                  <div className="font-semibold text-lg flex items-center gap-2 text-foreground">
-                    <QRCode value={invoice.bankPixPayload} size={16} className="h-4 w-4 fill-white" />
-                    Pagamento via Pix
+            {!isPaid && (
+              invoice.bankPixPayload ? (
+                <div className="bg-background/50 p-6 rounded-xl border border-border flex flex-col items-center justify-center gap-6 print:hidden">
+                  <div className="flex flex-col items-center text-center space-y-4 w-full max-w-sm">
+                    <div className="font-semibold text-lg flex items-center gap-2 text-foreground">
+                      <QRCode value={invoice.bankPixPayload} size={16} className="h-4 w-4 fill-white" />
+                      Pagamento via Pix
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-border">
+                      <QRCode value={invoice.bankPixPayload} size={180} />
+                    </div>
+                    <div className="w-full">
+                      <Button
+                        variant="outline"
+                        className="w-full bg-secondary border-border text-secondary-foreground hover:bg-secondary/80"
+                        onClick={handleCopyPix}
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        Copiar "Copia e Cola"
+                      </Button>
+                    </div>
                   </div>
-                  <div className="bg-white p-4 rounded-lg shadow-sm border border-border">
-                    <QRCode value={invoice.bankPixPayload} size={180} />
-                  </div>
-                  <div className="w-full">
-                    <Button
-                      variant="outline"
-                      className="w-full bg-secondary border-border text-secondary-foreground hover:bg-secondary/80"
-                      onClick={handleCopyPix}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copiar "Copia e Cola"
+                </div>
+              ) : (
+                <div className="bg-background/50 p-6 rounded-xl border border-border flex flex-col items-center justify-center gap-6 print:hidden">
+                  <div className="text-center space-y-4 w-full max-w-md">
+                    <h3 className="text-lg font-medium">Pagamento Online</h3>
+                    <p className="text-sm text-muted-foreground">Clique abaixo para gerar o Pix para pagamento.</p>
+                    <Button onClick={handleGenerateCharge} disabled={isGenerating} size="lg" className="w-full md:w-auto font-semibold shadow-lg">
+                      {isGenerating ? "Gerando..." : "Gerar Pix"}
                     </Button>
                   </div>
                 </div>
-              </div>
+              )
             )}
 
             {/* Bill To */}

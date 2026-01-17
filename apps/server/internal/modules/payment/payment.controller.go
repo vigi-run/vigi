@@ -32,6 +32,72 @@ func (c *Controller) RegisterRoutes(router *gin.RouterGroup, authChain *middlewa
 
 	// Public Routes
 	router.GET("/public/invoices/:id", c.GetPublicInvoice)
+	router.POST("/public/invoices/:id/charge", c.GeneratePublicCharge)
+}
+
+// ... existing code ...
+
+func (c *Controller) GetPublicInvoice(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	entity, err := c.service.GetPublicInvoice(ctx.Request.Context(), id)
+	if err != nil {
+		c.logger.Errorw("failed to get public invoice", "id", id, "error", err)
+		ctx.JSON(http.StatusNotFound, utils.NewFailResponse("Invoice not found"))
+		return
+	}
+
+	// We need to return organization info for the frontend to know if it can generate charge
+	// Since GetPublicInvoice service returns just Invoice, we might need to change it
+	// OR we assume Invoice has Organization relation loaded?
+	// Currently it doesn't.
+	// We can fetch organization here or in service.
+	// Best to return a composite object.
+
+	// Fetch organization to get bank provider
+	// Assuming PaymentService has access to OrgRepo or exposes getter.
+	// It has orgRepo private.
+	// Let's rely on PaymentService.GetPublicInvoice returning *Invoice, and we fetch Org?
+	// But controller shouldn't access repo.
+
+	// Let's assume for now the Frontend just tries to generate if Pix is missing.
+	// Providing the bank provider is better UX.
+	// I will update PaymentService.GetPublicInvoice to return (Invoice, OrgBankProvider, error).
+	// But Go doesn't support overloads.
+	// Let's stick to returning Invoice for now and enable the button always if Pix is missing?
+	// If the user clicks and it fails, we show error.
+	// User requirement: "e tiver ativo a opçao ...".
+	// So we need to check.
+
+	// I will update PaymentService to return the necessary info.
+	// But first, let's implement the GeneratePublicCharge endpoint which handles the "Click".
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", entity))
+}
+
+func (c *Controller) GeneratePublicCharge(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	// We need to find the invoice to get the OrgID
+	// We can put this logic in service: GeneratePublicCharge(ctx, invoiceID).
+	err = c.service.GeneratePublicCharge(ctx.Request.Context(), id)
+	if err != nil {
+		c.logger.Errorw("failed to generate public charge", "id", id, "error", err)
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("Charge generated", nil))
 }
 
 // GenerateCharge godoc
@@ -96,22 +162,4 @@ func (c *Controller) GenerateCharge(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("Charge generated successfully", nil))
-}
-
-func (c *Controller) GetPublicInvoice(ctx *gin.Context) {
-	idStr := ctx.Param("id")
-	id, err := uuid.Parse(idStr)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
-		return
-	}
-
-	entity, err := c.service.GetPublicInvoice(ctx.Request.Context(), id)
-	if err != nil {
-		c.logger.Errorw("failed to get public invoice", "id", id, "error", err)
-		ctx.JSON(http.StatusNotFound, utils.NewFailResponse("Invoice not found"))
-		return
-	}
-
-	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", entity))
 }

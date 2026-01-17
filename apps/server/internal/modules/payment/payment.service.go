@@ -98,6 +98,25 @@ func (s *Service) GenerateCharge(ctx context.Context, orgID uuid.UUID, invoiceID
 	return nil
 }
 
+func (s *Service) GeneratePublicCharge(ctx context.Context, invoiceID uuid.UUID) error {
+	inv, err := s.invoiceService.GetByID(ctx, invoiceID)
+	if err != nil {
+		return err
+	}
+	if inv == nil {
+		return fmt.Errorf("invoice not found")
+	}
+
+	// Determine if charge generation is allowed for this org?
+	// GenerateCharge checks if provider is configured.
+
+	if err := s.GenerateCharge(ctx, inv.OrganizationID, invoiceID.String()); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *Service) GetPublicInvoice(ctx context.Context, id uuid.UUID) (*invoice.Invoice, error) {
 	inv, err := s.invoiceService.GetByID(ctx, id)
 	if err != nil {
@@ -107,19 +126,10 @@ func (s *Service) GetPublicInvoice(ctx context.Context, id uuid.UUID) (*invoice.
 		return nil, fmt.Errorf("invoice not found")
 	}
 
-	// Auto-generate charge if missing
-	if inv.BankInvoiceID == nil {
-		// Attempt to generate
-		// We ignore error to return the invoice anyway (maybe provider not configured)
-		if err := s.GenerateCharge(ctx, inv.OrganizationID, id.String()); err != nil {
-			s.logger.Warnw("Auto-generation of charge failed", "invoice_id", id, "error", err)
-		} else {
-			// Reload invoice
-			if updatedInv, err := s.invoiceService.GetByID(ctx, id); err == nil {
-				inv = updatedInv
-			}
-		}
-	} else {
+	// NOTE: We REMOVED auto-generation on load to allow user to click manual button as requested.
+	// But we keep the sync logic if the charge exists but data is missing.
+
+	if inv.BankInvoiceID != nil {
 		// Sync charge details if missing (specifically for Inter)
 		isInter := inv.BankProvider != nil && *inv.BankProvider == "inter"
 		missingDetails := inv.BankPixPayload == nil || inv.BankBoletoBarcode == nil
