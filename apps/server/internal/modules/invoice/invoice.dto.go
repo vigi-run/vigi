@@ -31,20 +31,24 @@ type CreateInvoiceDTO struct {
 }
 
 type UpdateInvoiceDTO struct {
-	ClientID          *uuid.UUID             `json:"clientId"`
-	Number            *string                `json:"number"`
-	Status            *InvoiceStatus         `json:"status"`
-	Date              *time.Time             `json:"date"`
-	DueDate           *time.Time             `json:"dueDate"`
-	Terms             *string                `json:"terms"`
-	Notes             *string                `json:"notes"`
-	NFID              *string                `json:"nfId"`
-	NFStatus          *string                `json:"nfStatus"`
-	NFLink            *string                `json:"nfLink"`
-	BankInvoiceID     *string                `json:"bankInvoiceId"`
-	BankInvoiceStatus *string                `json:"bankInvoiceStatus"`
-	Discount          *float64               `json:"discount" validate:"omitempty,gte=0"`
-	Items             []CreateInvoiceItemDTO `json:"items" validate:"omitempty,min=1,dive"`
+	ClientID                *uuid.UUID             `json:"clientId"`
+	Number                  *string                `json:"number"`
+	Status                  *InvoiceStatus         `json:"status"`
+	Date                    *time.Time             `json:"date"`
+	DueDate                 *time.Time             `json:"dueDate"`
+	Terms                   *string                `json:"terms"`
+	Notes                   *string                `json:"notes"`
+	NFID                    *string                `json:"nfId"`
+	NFStatus                *string                `json:"nfStatus"`
+	NFLink                  *string                `json:"nfLink"`
+	BankInvoiceID           *string                `json:"bankInvoiceId"`
+	BankInvoiceStatus       *string                `json:"bankInvoiceStatus"`
+	BankProvider            *string                `json:"bankProvider"`
+	BankPixPayload          *string                `json:"bankPixPayload"`
+	BankBoletoBarcode       *string                `json:"bankBoletoBarcode"`
+	BankBoletoDigitableLine *string                `json:"bankBoletoDigitableLine"`
+	Discount                *float64               `json:"discount" validate:"omitempty,gte=0"`
+	Items                   []CreateInvoiceItemDTO `json:"items" validate:"omitempty,min=1,dive"`
 }
 
 type InvoiceFilter struct {
@@ -53,4 +57,11 @@ type InvoiceFilter struct {
 	Search   *string        `form:"q"`
 	Status   *InvoiceStatus `form:"status"`
 	ClientID *uuid.UUID     `form:"clientId"`
+}
+
+type InvoiceStatsDTO struct {
+	DraftCount   int64 `json:"draftCount"`
+	SentCount    int64 `json:"sentCount"`
+	PaidCount    int64 `json:"paidCount"`
+	OverdueCount int64 `json:"overdueCount"`
 }

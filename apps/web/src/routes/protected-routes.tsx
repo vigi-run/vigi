@@ -24,6 +24,7 @@ import { OrganizationLayout } from "@/components/organization-layout";
 import CreateOrganizationPage from "@/app/create-organization/page";
 import OrganizationSettingsPage from "@/app/organization/settings/page";
 import OrganizationMembersPage from "@/app/organization/members/page";
+import IntegrationsPage from "@/app/organization/integrations/page";
 import { RootRedirect } from "@/components/root-redirect";
 import UserInvitationsPage from "@/app/user/invitations/page";
 import OnboardingPage from "@/app/onboarding/page";
@@ -40,6 +41,16 @@ import NewInvoicePage from "@/app/invoices/new/page";
 import EditInvoicePage from "@/app/invoices/[id]/edit/page";
 import InvoiceDetailsPage from "@/app/invoices/[id]/view/page";
 import InvoiceEmailPage from "@/app/invoices/[id]/email/page";
+import DashboardPage from "@/app/dashboard/page";
+import { RequireAdmin } from "@/components/require-admin";
+import { BackofficeLayout } from "@/components/backoffice-layout";
+import BackofficeDashboardPage from "@/app/backoffice/page";
+import BackofficeUsersPage from "@/app/backoffice/users/page";
+import BackofficeOrgsPage from "@/app/backoffice/organizations/page";
+import RecurringInvoicesPage from "@/app/recurring-invoices/page";
+import NewRecurringInvoicePage from "@/app/recurring-invoices/new/page";
+import EditRecurringInvoicePage from "@/app/recurring-invoices/[id]/edit/page";
+import RecurringInvoiceDetailsPage from "@/app/recurring-invoices/[id]/view/page";
 
 export const protectedRoutes = [
     <Route key="root" path="/" element={<RootRedirect />} />,
@@ -52,7 +63,7 @@ export const protectedRoutes = [
         <Route path="invitations" element={<UserInvitationsPage />} />
     </Route>,
     <Route key="slug" path="/:slug" element={<OrganizationLayout />}>
-        <Route index element={<Navigate to="monitors" replace />} />
+        <Route index element={<DashboardPage />} />
 
 
         {/* Monitor routes */}
@@ -84,11 +95,11 @@ export const protectedRoutes = [
         {/* Organization routes */}
         <Route path="settings/organization" element={<OrganizationSettingsPage />} />
         <Route path="settings/members" element={<OrganizationMembersPage />} />
+        <Route path="settings/integrations" element={<IntegrationsPage />} />
 
         {/* Client routes */}
         <Route path="clients" element={<ClientsPage />} />
         <Route path="clients/new" element={<NewClientPage />} />
-        <Route path="clients/:id" element={<ClientDetailsPage />} />
         <Route path="clients/:id" element={<ClientDetailsPage />} />
         <Route path="clients/:id/edit" element={<EditClientPage />} />
 
@@ -105,7 +116,11 @@ export const protectedRoutes = [
         <Route path="invoices/:id/edit" element={<EditInvoicePage />} />
         <Route path="invoices/:id/email" element={<div className="w-full"><InvoiceEmailPage /></div>} />
 
-
+        {/* Recurring Invoice routes */}
+        <Route path="recurring-invoices" element={<RecurringInvoicesPage />} />
+        <Route path="recurring-invoices/new" element={<NewRecurringInvoicePage />} />
+        <Route path="recurring-invoices/:id" element={<RecurringInvoiceDetailsPage />} />
+        <Route path="recurring-invoices/:id/edit" element={<EditRecurringInvoicePage />} />
 
         {/* Tag routes */}
         <Route path="tags" element={<TagsPage />} />
@@ -113,6 +128,15 @@ export const protectedRoutes = [
         <Route path="tags/:id/edit" element={<EditTag />} />
 
         {/* Default redirect */}
-        <Route path="*" element={<Navigate to="monitors" replace />} />
+        <Route path="*" element={<Navigate to="" replace />} />
+    </Route>,
+
+    // Backoffice routes (Global Admin)
+    <Route key="backoffice" path="/backoffice" element={<RequireAdmin />}>
+        <Route element={<BackofficeLayout />}>
+            <Route index element={<BackofficeDashboardPage />} />
+            <Route path="users" element={<BackofficeUsersPage />} />
+            <Route path="organizations" element={<BackofficeOrgsPage />} />
+        </Route>
     </Route>
 ]; 

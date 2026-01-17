@@ -1,0 +1,14 @@
+{
+    "average": "Average",
+    "last_24_hours": "Last 24 hours",
+    "last_3_hours": "Last 3 hours",
+    "last_3_months": "Last 3 months",
+    "last_30_minutes": "Last 30 minutes",
+    "last_6_hours": "Last 6 hours",
+    "last_7_days": "Last 7 days",
+    "maximum": "Maximum",
+    "minimum": "Minimum",
+    "ms": "ms",
+    "response_time": "Response Time",
+    "uptime": "Uptime"
+}

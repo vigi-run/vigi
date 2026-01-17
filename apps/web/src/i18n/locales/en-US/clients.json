@@ -1,0 +1,81 @@
+{
+    "title": "Clients",
+    "create": "Create Client",
+    "create_success": "Client created successfully",
+    "create_error": "Failed to create client",
+    "update_success": "Client updated successfully",
+    "update_error": "Failed to update client",
+    "name": "Name",
+    "city": "City",
+    "empty": {
+        "title": "No clients found",
+        "description": "Create your first client to get started."
+    },
+    "new": {
+        "title": "New Client"
+    },
+    "details": {
+        "loading": "Loading Client...",
+        "not_found": "Client Not Found",
+        "company_data": "Company Data",
+        "address_data": "Address Data"
+    },
+    "edit": {
+        "title": "Edit Client",
+        "loading": "Loading Client...",
+        "not_found": "Client Not Found"
+    },
+    "errors": {
+        "not_found_message": "The requested client does not exist."
+    },
+    "validation": {
+        "name_required": "Name is required",
+        "cpf_required": "CPF is required",
+        "cpf_invalid": "Invalid CPF",
+        "cnpj_invalid": "Invalid CNPJ",
+        "email_invalid": "Invalid Email",
+        "contact_required": "Email or Phone is required"
+    },
+    "form": {
+        "name": "Name",
+        "name_placeholder": "My Client",
+        "classification": "Classification",
+        "cpf": "CPF",
+        "cnpj": "CNPJ",
+        "vat_number": "VAT Number",
+        "address": "Address",
+        "address1": "Street",
+        "address_number": "Number",
+        "city": "City",
+        "state": "State",
+        "contact_info": "Contact Info",
+        "financial_contact": "Financial Contact",
+        "contacts": "Contacts",
+        "add_contact": "Add Contact",
+        "contact_name": "Contact Name",
+        "contact_email": "Email",
+        "contact_phone": "Phone",
+        "contact_role": "Role",
+        "postal_code": "Postal Code",
+        "no_contacts": "No contacts added"
+    },
+    "common": {
+        "no_results": "No results found.",
+        "cancel": "Cancel",
+        "saving": "Saving..."
+    },
+    "classification": {
+        "individual": "Individual",
+        "company": "Company"
+    },
+    "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "blocked": "Blocked"
+    },
+    "status_updated": "Status updated successfully",
+    "status_update_error": "Failed to update status",
+    "filters": {
+        "search_placeholder": "Search by name..."
+    }
+}

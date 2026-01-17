@@ -12,4 +12,5 @@ type Repository interface {
 
 	SetActive(ctx context.Context, id string, active bool, orgID string) (*Model, error)
 	GetMaintenancesByMonitorID(ctx context.Context, monitorID string) ([]*Model, error)
+	Count(ctx context.Context, orgID string) (int64, error)
 }

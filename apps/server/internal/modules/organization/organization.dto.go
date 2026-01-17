@@ -13,6 +13,7 @@ type UpdateOrganizationDto struct {
 	ImageURL            *string `json:"image_url" validate:"omitempty,url"`
 	Certificate         *string `json:"certificate" validate:"omitempty,base64"`
 	CertificatePassword *string `json:"certificate_password" validate:"omitempty"`
+	BankProvider        *string `json:"bank_provider"`
 }
 
 type AddMemberDto struct {
@@ -40,6 +41,13 @@ type OrganizationMemberResponseDto struct {
 	User             *UserResponseDto `json:"user,omitempty"`
 	Status           string           `json:"status"`                     // "active" or "pending"
 	InvitationToken  string           `json:"invitation_token,omitempty"` // Only for pending
+}
+
+type OrganizationStatsResponseDto struct {
+	DraftCount   int64 `json:"draftCount"`
+	SentCount    int64 `json:"sentCount"`
+	PaidCount    int64 `json:"paidCount"`
+	OverdueCount int64 `json:"overdueCount"`
 }
 
 type UserResponseDto struct {

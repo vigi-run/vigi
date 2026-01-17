@@ -53,7 +53,7 @@ export function OrganizationForm({
     const { t } = useLocalizedTranslation();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    const { setOrganizations, organizations, setCurrentOrganization } = useOrganizationStore();
+    const { setCurrentOrganization } = useOrganizationStore();
 
     const formSchema = organizationSchema(t);
 
@@ -80,8 +80,12 @@ export function OrganizationForm({
         onSuccess: (data) => {
             if (data?.data) {
                 const newOrg = data.data;
-                // Update store
-                setOrganizations([...organizations, newOrg]);
+                // Invalidate queries to refresh the list
+                queryClient.invalidateQueries({ queryKey: ["user", "organizations"] });
+
+                // We can't easily update the store because the store relies on OrganizationUser[] 
+                // and the API returns Organization. It's safer to just invalidate and let the switcher refetch.
+                // But we can set the current org.
                 setCurrentOrganization(newOrg);
 
                 toast.success(t("organization.creation_success"));
@@ -120,6 +124,7 @@ export function OrganizationForm({
         onSuccess: (data) => {
             toast.success(t("organization.update_success"));
             queryClient.invalidateQueries({ queryKey: ["organizations", organizationId] });
+            queryClient.invalidateQueries({ queryKey: ["user", "organizations"] });
 
             // Should also update the current organization in store if it's the one we modified
             // For now relying on invalidation or parent callback

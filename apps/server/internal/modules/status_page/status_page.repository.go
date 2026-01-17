@@ -15,4 +15,5 @@ type Repository interface {
 	) ([]*Model, error)
 	Update(ctx context.Context, id string, statusPage *UpdateModel, orgID string) error
 	Delete(ctx context.Context, id string, orgID string) error
+	Count(ctx context.Context, orgID string) (int64, error)
 }

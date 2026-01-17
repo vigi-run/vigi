@@ -1,0 +1,1 @@
+DROP TABLE asaas_configs;

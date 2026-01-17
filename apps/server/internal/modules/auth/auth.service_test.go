@@ -45,6 +45,14 @@ func (m *MockRepository) FindAllCount(ctx context.Context) (int64, error) {
 	return args.Get(0).(int64), args.Error(1)
 }
 
+func (m *MockRepository) FindAll(ctx context.Context) ([]*Model, error) {
+	args := m.Called(ctx)
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+	return args.Get(0).([]*Model), args.Error(1)
+}
+
 func (m *MockRepository) Update(ctx context.Context, id string, entity *UpdateModel) error {
 	args := m.Called(ctx, id, entity)
 	return args.Error(0)

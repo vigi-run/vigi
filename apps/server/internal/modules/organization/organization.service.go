@@ -151,6 +151,9 @@ func (s *ServiceImpl) Update(ctx context.Context, id string, dto *UpdateOrganiza
 		}
 		org.CertificatePassword = encryptedPass
 	}
+	if dto.BankProvider != nil {
+		org.BankProvider = dto.BankProvider
+	}
 
 	err = s.repo.Update(ctx, id, org)
 	if err != nil {

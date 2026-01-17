@@ -1,0 +1,20 @@
+{
+    "login_error": "An error occurred during login",
+    "login_no_tokens": "Login successful but no tokens received",
+    "login_success": "Logged in successfully",
+    "notifier_delete_error": "Failed to delete notifier",
+    "notifier_delete_success": "Notifier deleted successfully",
+    "register_error": "An error occurred during registration",
+    "register_no_tokens": "Registration successful but no tokens received",
+    "register_success": "Registered successfully",
+    "setting_update_error": "Failed to update setting",
+    "setting_update_success": "Setting updated successfully",
+    "tag_create_error": "Failed to create tag",
+    "tag_create_success": "Tag created successfully",
+    "tag_delete_error": "Failed to delete tag",
+    "tag_delete_success": "Tag deleted successfully",
+    "tag_update_error": "Failed to update tag",
+    "tag_update_success": "Tag updated successfully",
+    "unexpected_error": "An unexpected error occurred",
+    "version_mismatch": "Version mismatch detected"
+}

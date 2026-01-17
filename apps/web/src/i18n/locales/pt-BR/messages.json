@@ -1,0 +1,20 @@
+{
+    "login_error": "Ocorreu um erro durante o login.",
+    "login_no_tokens": "Login bem-sucedido, mas nenhum token recebido.",
+    "login_success": "Login realizado com sucesso",
+    "notifier_delete_error": "Falha ao excluir notificador",
+    "notifier_delete_success": "Notificador excluído com sucesso",
+    "register_error": "Ocorreu um erro durante o registro",
+    "register_no_tokens": "Registro concluído, mas nenhum token recebido.",
+    "register_success": "Registrado com sucesso",
+    "setting_update_error": "Falha ao atualizar a configuração",
+    "setting_update_success": "Configuração atualizada com sucesso",
+    "tag_create_error": "Falha ao criar tag",
+    "tag_create_success": "Tag criada com sucesso",
+    "tag_delete_error": "Falha ao excluir tag",
+    "tag_delete_success": "Tag excluída com sucesso",
+    "tag_update_error": "Falha ao atualizar tag",
+    "tag_update_success": "Tag atualizada com sucesso",
+    "unexpected_error": "Ocorreu um erro inesperado",
+    "version_mismatch": "Versão incompatível detectada"
+}

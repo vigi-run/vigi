@@ -2,30 +2,40 @@ package invoice
 
 import (
 	"vigi/internal/modules/middleware"
+	"vigi/internal/modules/organization"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Route struct {
-	controller *Controller
+	controller    *Controller
+	orgMiddleware *organization.Middleware
 }
 
-func NewRoute(controller *Controller) *Route {
-	return &Route{controller: controller}
+func NewRoute(controller *Controller, orgMiddleware *organization.Middleware) *Route {
+	return &Route{
+		controller:    controller,
+		orgMiddleware: orgMiddleware,
+	}
 }
 
 func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.AuthChain) {
+	// Public routes
+	// router.GET("/public/invoices/:id", r.controller.GetPublicInvoice)
+
 	// Organization-scoped routes
 	orgGroup := router.Group("/organizations/:id")
 	orgGroup.Use(authChain.AllAuth())
 	{
 		orgGroup.POST("/invoices", r.controller.Create)
 		orgGroup.GET("/invoices", r.controller.GetByOrganizationID)
+		orgGroup.GET("/invoices/stats", r.controller.GetStats)
 	}
 
 	// Entity routes
 	entityGroup := router.Group("/invoices")
 	entityGroup.Use(authChain.AllAuth())
+	entityGroup.Use(r.orgMiddleware.RequireOrganization())
 	{
 		entityGroup.GET("/:id", r.controller.GetByID)
 		entityGroup.PATCH("/:id", r.controller.Update)
@@ -38,5 +48,6 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.Auth
 		entityGroup.POST("/:id/email/send", r.controller.SendManualEmail)
 		entityGroup.GET("/:id/emails", r.controller.GetEmailHistory)
 		entityGroup.POST("/:id/emit", r.controller.EmitNFSe)
+		entityGroup.POST("/:id/clone", r.controller.CloneInvoice)
 	}
 }

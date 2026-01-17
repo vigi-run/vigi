@@ -18,6 +18,7 @@ type sqlModel struct {
 	ImageURL            string    `bun:"image_url"`
 	Certificate         string    `bun:"certificate"`
 	CertificatePassword string    `bun:"certificate_password"`
+	BankProvider        string    `bun:"bank_provider"`
 	CreatedAt           time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
 	UpdatedAt           time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
 }
@@ -100,7 +101,7 @@ func NewSQLRepository(db *bun.DB) OrganizationRepository {
 }
 
 func toDomainModel(sm *sqlModel) *Organization {
-	return &Organization{
+	o := &Organization{
 		ID:                  sm.ID,
 		Name:                sm.Name,
 		Slug:                sm.Slug,
@@ -111,10 +112,15 @@ func toDomainModel(sm *sqlModel) *Organization {
 		CreatedAt:           sm.CreatedAt,
 		UpdatedAt:           sm.UpdatedAt,
 	}
+
+	if sm.BankProvider != "" {
+		o.BankProvider = &sm.BankProvider
+	}
+	return o
 }
 
 func toSQLModel(m *Organization) *sqlModel {
-	return &sqlModel{
+	sm := &sqlModel{
 		ID:                  m.ID,
 		Name:                m.Name,
 		Slug:                m.Slug,
@@ -125,6 +131,11 @@ func toSQLModel(m *Organization) *sqlModel {
 		CreatedAt:           m.CreatedAt,
 		UpdatedAt:           m.UpdatedAt,
 	}
+
+	if m.BankProvider != nil {
+		sm.BankProvider = *m.BankProvider
+	}
+	return sm
 }
 
 func (r *SQLRepositoryImpl) Create(ctx context.Context, organization *Organization) (*Organization, error) {
@@ -176,6 +187,25 @@ func (r *SQLRepositoryImpl) Update(ctx context.Context, id string, organization 
 func (r *SQLRepositoryImpl) Delete(ctx context.Context, id string) error {
 	_, err := r.db.NewDelete().Model((*sqlModel)(nil)).Where("id = ?", id).Exec(ctx)
 	return err
+}
+
+func (r *SQLRepositoryImpl) FindAll(ctx context.Context) ([]*Organization, error) {
+	var models []*sqlModel
+	err := r.db.NewSelect().Model(&models).Scan(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	var organizations []*Organization
+	for _, m := range models {
+		organizations = append(organizations, toDomainModel(m))
+	}
+	return organizations, nil
+}
+
+func (r *SQLRepositoryImpl) FindAllCount(ctx context.Context) (int64, error) {
+	count, err := r.db.NewSelect().Model((*sqlModel)(nil)).Count(ctx)
+	return int64(count), err
 }
 
 func (r *SQLRepositoryImpl) AddMember(ctx context.Context, orgUser *OrganizationUser) error {

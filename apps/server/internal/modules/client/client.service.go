@@ -25,6 +25,7 @@ func (s *Service) Create(ctx context.Context, organizationID uuid.UUID, dto Crea
 		Address1:       dto.Address1,
 		AddressNumber:  dto.AddressNumber,
 		Address2:       dto.Address2,
+		Neighborhood:   dto.Neighborhood,
 		City:           dto.City,
 		State:          dto.State,
 		PostalCode:     dto.PostalCode,
@@ -85,6 +86,9 @@ func (s *Service) Update(ctx context.Context, id uuid.UUID, dto UpdateClientDTO)
 	}
 	if dto.Address2 != nil {
 		client.Address2 = dto.Address2
+	}
+	if dto.Neighborhood != nil {
+		client.Neighborhood = dto.Neighborhood
 	}
 	if dto.City != nil {
 		client.City = dto.City

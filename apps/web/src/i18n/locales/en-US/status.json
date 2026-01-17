@@ -1,0 +1,17 @@
+{
+    "messages": {
+        "all_systems_operational": "All Systems Operational",
+        "down": "Down",
+        "last_updated": "Last Updated",
+        "maintenance": "Maintenance",
+        "no_monitors_configured": "No monitors configured for this status page.",
+        "operational": "Operational",
+        "partial_system_outage": "Partial System Outage",
+        "powered_by": "Powered by",
+        "refresh_in": "Refresh in",
+        "refresh_now": "Refresh Now",
+        "status_page_not_found": "Status page not found or is not published.",
+        "under_maintenance": "Under Maintenance",
+        "unknown": "Unknown"
+    }
+}

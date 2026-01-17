@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     active BOOLEAN NOT NULL DEFAULT true,
+    role VARCHAR(50) NOT NULL DEFAULT 'USER',
     twofa_secret VARCHAR(64),
     twofa_status BOOLEAN NOT NULL DEFAULT false,
     twofa_last_token VARCHAR(6),

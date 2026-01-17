@@ -1,0 +1,41 @@
+{
+    "affected_monitors": "Affected Monitors",
+    "affected_monitors_info": "Select monitors that will be affected by this maintenance",
+    "auto_refresh_interval": "Auto Refresh Interval (seconds)",
+    "basic_information": "Basic Information",
+    "create_status_page": "Create Status Page",
+    "customization": "Customization",
+    "delete_dialog": {
+        "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+        "title": "Delete Status Page"
+    },
+    "description": "Enter status page description",
+    "domain_already_used": "Domain {{domain}} is already used by another status page",
+    "slug_already_used": "Slug {{slug}} is already used by another status page",
+    "domain_host_warning": "This domain is the same as your current host URL. This may cause conflicts.",
+    "domains": "Domains",
+    "domains_info_warning": "Don't forget to add the CNAME records to your DNS for each domain.",
+    "draft_status": "Draft",
+    "edit_page_name": "Edit Status Page",
+    "messages": {
+        "create_description": "Create a new status page to share your service status with users.",
+        "create_your_first_status_page": "Create your first status page",
+        "created_successfully": "Status page created successfully",
+        "delete_failed": "Failed to delete status page",
+        "deleted_successfully": "Status page deleted successfully",
+        "get_started_by_creating_your_first_status_page": "Get started by creating your first status page.",
+        "no_status_pages_found": "No status pages found",
+        "not_found": "Status page not found",
+        "update_description": "Update your status page settings and configuration.",
+        "updated_successfully": "Status page updated successfully"
+    },
+    "new_page_name": "New Status Page",
+    "page_name": "Status Pages",
+    "published": "Published",
+    "published_info": "Make this status page available publicly",
+    "published_status": "Published",
+    "search_label": "Search",
+    "search_placeholder": "Search status pages by title...",
+    "update_status_page": "Update Status Page",
+    "view_page": "View Page"
+}

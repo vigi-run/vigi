@@ -2,8 +2,8 @@ package auth
 
 import (
 	"net/http"
-	"vigi/internal/utils"
 	"strings"
+	"vigi/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -66,7 +66,28 @@ func (p *MiddlewareProvider) Auth() gin.HandlerFunc {
 		// Set user information in the context
 		c.Set("userId", claims.UserID)
 		c.Set("email", claims.Email)
+		c.Set("role", claims.Role)
 		c.Set("authType", "jwt")
+
+		c.Next()
+	}
+}
+
+// RequireAdmin verifies that the authenticated user has ADMIN role
+func (p *MiddlewareProvider) RequireAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role, exists := c.Get("role")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, utils.NewFailResponse("Unauthorized"))
+			c.Abort()
+			return
+		}
+
+		if role != RoleAdmin {
+			c.JSON(http.StatusForbidden, utils.NewFailResponse("Forbidden"))
+			c.Abort()
+			return
+		}
 
 		c.Next()
 	}

@@ -1,0 +1,12 @@
+{
+    "create_account_button": "Criar Conta",
+    "go_home": "Ir para o Início",
+    "invalid_description": "Este link de convite é inválido ou expirou.",
+    "invalid_title": "Convite Inválido",
+    "invited_title": "Você foi convidado!",
+    "join_description": "Junte-se a",
+    "logged_in_as": "Logado como",
+    "login_button": "Entrar para Aceitar",
+    "login_to_accept_text": "Faça login ou crie uma conta para aceitar.",
+    "or": "Ou"
+}

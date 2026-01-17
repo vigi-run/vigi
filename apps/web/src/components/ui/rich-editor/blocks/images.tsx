@@ -1,4 +1,4 @@
-import { BlockItem } from './types';
+import type { BlockItem } from './types';
 import { ImageIcon } from 'lucide-react';
 
 export const image: BlockItem = {

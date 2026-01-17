@@ -34,6 +34,7 @@ type Client struct {
 	Address1       *string              `bun:"address1" json:"address1"`
 	AddressNumber  *string              `bun:"address_number" json:"addressNumber"`
 	Address2       *string              `bun:"address2" json:"address2"`
+	Neighborhood   *string              `bun:"neighborhood" json:"neighborhood"`
 	City           *string              `bun:"city" json:"city"`
 	State          *string              `bun:"state" json:"state"`
 	PostalCode     *string              `bun:"postal_code" json:"postalCode"`

@@ -133,6 +133,15 @@ export function NavUser({
                                     </span>
                                 )}
                             </DropdownMenuItem>
+
+                            {/* Backoffice Link - Only for Admins */}
+                            {/* We need to get the user from the store to check the role, as the prop user might be incomplete */}
+                            {useAuthStore.getState().user?.role === "ADMIN" && (
+                                <DropdownMenuItem onClick={() => navigate("/backoffice")}>
+                                    <ShieldCheckIcon />
+                                    Backoffice
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuGroup>
 
                         <DropdownMenuSeparator />

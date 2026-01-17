@@ -1,0 +1,36 @@
+{
+    "delete_dialog": {
+        "description": "Esta ação não pode ser revertida. O proxy {{host}}:{{port}} será excluído permanentemente.",
+        "title": "Você tem certeza absoluta?"
+    },
+    "edit": {
+        "page_name": "Editar Proxy"
+    },
+    "empty_list": {
+        "action_text": "Crie seu primeiro proxy",
+        "text": "Comece criando seu primeiro proxy para usar nos seus monitores.",
+        "title": "Nenhum proxy encontrado"
+    },
+    "form": {
+        "auth_label": "O servidor proxy possui autenticação",
+        "port_placeholder": "Porta",
+        "protocol_label": "Protocolo de Proxy",
+        "protocol_placeholder": "Selecionar protocolo de proxy",
+        "server_label": "Servidor Proxy",
+        "server_placeholder": "Endereço do servidor",
+        "user": "Usuário"
+    },
+    "messages": {
+        "create_failed": "Falha ao criar proxy",
+        "created_success": "Proxy criado com sucesso",
+        "error_loading_proxy": "Erro ao carregar proxy",
+        "update_failed": "Falha ao atualizar o proxy",
+        "updated_success": "Proxy atualizado com sucesso"
+    },
+    "new": {
+        "page_name": "Novo Proxy"
+    },
+    "page_name": "Proxies",
+    "search_label": "Pesquisar",
+    "search_placeholder": "Pesquisar proxies por host..."
+}
