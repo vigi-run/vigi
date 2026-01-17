@@ -132,3 +132,12 @@ export const getPublicInvoiceOptions = (id: string, enabled = true) => queryOpti
 export const generatePublicCharge = async (invoiceId: string) => {
     return mutationCall<void>(client.post({ url: `/public/invoices/${invoiceId}/charge`, body: {} }));
 };
+
+export const getInvoiceStatsOptions = (orgId: string, enabled = true) => queryOptions({
+    queryKey: ['invoices-stats', orgId],
+    queryFn: async () => {
+        const res = await client.get({ url: `/organizations/${orgId}/invoices/stats` });
+        return (res.data as any).data as import('@/types/invoice').InvoiceStats;
+    },
+    enabled,
+});

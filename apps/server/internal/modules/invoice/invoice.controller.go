@@ -354,3 +354,20 @@ func (c *Controller) GetPublicInvoice(ctx *gin.Context) {
 	// For now, the Invoice entity is safe to expose for payment purposes
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", entity))
 }
+
+func (c *Controller) GetStats(ctx *gin.Context) {
+	orgIDStr := ctx.Param("id")
+	orgID, err := uuid.Parse(orgIDStr)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid organization ID"))
+		return
+	}
+
+	stats, err := c.service.GetStats(ctx.Request.Context(), orgID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse("Failed to fetch stats"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", stats))
+}

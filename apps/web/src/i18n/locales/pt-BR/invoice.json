@@ -65,6 +65,7 @@
     "paid": "Paga",
     "cancelled": "Cancelada",
     "pending": "Pendente",
+    "overdue": "Vencida",
     "error": "Erro"
   },
   "bank_status": {

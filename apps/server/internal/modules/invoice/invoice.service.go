@@ -312,3 +312,7 @@ func (s *Service) Clone(ctx context.Context, id uuid.UUID) (*Invoice, error) {
 
 	return newInvoice, nil
 }
+
+func (s *Service) GetStats(ctx context.Context, orgID uuid.UUID) (*InvoiceStatsDTO, error) {
+	return s.repo.GetStats(ctx, orgID)
+}

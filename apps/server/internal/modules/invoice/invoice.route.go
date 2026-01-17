@@ -29,6 +29,7 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.Auth
 	{
 		orgGroup.POST("/invoices", r.controller.Create)
 		orgGroup.GET("/invoices", r.controller.GetByOrganizationID)
+		orgGroup.GET("/invoices/stats", r.controller.GetStats)
 	}
 
 	// Entity routes

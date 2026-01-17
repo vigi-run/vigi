@@ -40,6 +40,13 @@ type OrganizationMemberResponseDto struct {
 	InvitationToken  string           `json:"invitation_token,omitempty"` // Only for pending
 }
 
+type OrganizationStatsResponseDto struct {
+	DraftCount   int64 `json:"draftCount"`
+	SentCount    int64 `json:"sentCount"`
+	PaidCount    int64 `json:"paidCount"`
+	OverdueCount int64 `json:"overdueCount"`
+}
+
 type UserResponseDto struct {
 	ID    string `json:"id"`
 	Email string `json:"email"`

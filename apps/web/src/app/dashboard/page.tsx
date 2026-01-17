@@ -5,45 +5,41 @@ import { FileText, Send, CheckCircle2, AlertTriangle, Briefcase, Plus } from "lu
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useOrganizationStore } from "@/store/organization";
+import { useQuery } from "@tanstack/react-query";
+import { getInvoiceStatsOptions } from "@/api/invoice-manual";
 
 export default function DashboardPage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { currentOrganization } = useOrganizationStore();
 
-    // Using dummy data for now, as we don't have a stats endpoint yet
-    // This can be connected to real data in the future
+    const { data: invoiceStats } = useQuery(getInvoiceStatsOptions(currentOrganization?.id || "", !!currentOrganization?.id));
+
     const stats = [
         {
             title: t("invoice.status.draft"),
-            value: "-",
+            value: invoiceStats?.draftCount ?? "-",
             icon: FileText,
             color: "text-muted-foreground",
         },
         {
             title: t("invoice.status.sent"),
-            value: "-",
+            value: invoiceStats?.sentCount ?? "-",
             icon: Send,
             color: "text-blue-500",
         },
         {
             title: t("invoice.status.paid"),
-            value: "-",
+            value: invoiceStats?.paidCount ?? "-",
             icon: CheckCircle2,
             color: "text-green-500",
         },
         {
             title: t("invoice.status.overdue"),
-            value: "-",
+            value: invoiceStats?.overdueCount ?? "-",
             icon: AlertTriangle,
             color: "text-amber-500",
         },
-        // {
-        //     title: t("invoice.status.cancelled"),
-        //     value: "0",
-        //     icon: XCircle,
-        //     color: "text-red-500",
-        // },
     ];
 
     return (

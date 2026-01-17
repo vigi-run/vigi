@@ -2,6 +2,7 @@ package invoice
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -105,4 +106,22 @@ func (r *SQLRepository) Update(ctx context.Context, entity *Invoice) error {
 func (r *SQLRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	_, err := r.db.NewDelete().Model((*Invoice)(nil)).Where("id = ?", id).Exec(ctx)
 	return err
+}
+
+func (r *SQLRepository) GetStats(ctx context.Context, orgID uuid.UUID) (*InvoiceStatsDTO, error) {
+	var stats InvoiceStatsDTO
+
+	// We use Scan into pointers to map columns manually since DTO doesn't have bun tags
+	err := r.db.NewSelect().Model((*Invoice)(nil)).
+		ColumnExpr("COALESCE(SUM(CASE WHEN status = ? THEN 1 ELSE 0 END), 0) AS draft_count", InvoiceStatusDraft).
+		ColumnExpr("COALESCE(SUM(CASE WHEN status = ? THEN 1 ELSE 0 END), 0) AS sent_count", InvoiceStatusSent).
+		ColumnExpr("COALESCE(SUM(CASE WHEN (status = ? OR bank_invoice_status = ?) THEN 1 ELSE 0 END), 0) AS paid_count", InvoiceStatusPaid, "PAID"). // Paid check: local status OR bank status
+		ColumnExpr("COALESCE(SUM(CASE WHEN status != ? AND status != ? AND status != ? AND due_date < ? THEN 1 ELSE 0 END), 0) AS overdue_count", InvoiceStatusPaid, InvoiceStatusCancelled, InvoiceStatusDraft, time.Now()).
+		Where("organization_id = ?", orgID).
+		Scan(ctx, &stats.DraftCount, &stats.SentCount, &stats.PaidCount, &stats.OverdueCount)
+
+	if err != nil {
+		return nil, err
+	}
+	return &stats, nil
 }

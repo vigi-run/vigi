@@ -86,3 +86,10 @@ export type InvoiceFilter = {
   status?: InvoiceStatus;
   clientId?: string;
 };
+
+export interface InvoiceStats {
+  draftCount: number;
+  sentCount: number;
+  paidCount: number;
+  overdueCount: number;
+}

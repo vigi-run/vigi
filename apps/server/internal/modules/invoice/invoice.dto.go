@@ -58,3 +58,10 @@ type InvoiceFilter struct {
 	Status   *InvoiceStatus `form:"status"`
 	ClientID *uuid.UUID     `form:"clientId"`
 }
+
+type InvoiceStatsDTO struct {
+	DraftCount   int64 `json:"draftCount"`
+	SentCount    int64 `json:"sentCount"`
+	PaidCount    int64 `json:"paidCount"`
+	OverdueCount int64 `json:"overdueCount"`
+}
