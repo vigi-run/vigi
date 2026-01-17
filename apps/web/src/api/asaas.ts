@@ -1,5 +1,4 @@
 import { client } from "./client.gen";
-import { toast } from "sonner";
 
 export interface AsaasConfig {
     apiKey?: string;

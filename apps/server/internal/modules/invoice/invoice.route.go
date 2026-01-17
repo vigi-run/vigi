@@ -20,6 +20,9 @@ func NewRoute(controller *Controller, orgMiddleware *organization.Middleware) *R
 }
 
 func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.AuthChain) {
+	// Public routes
+	// router.GET("/public/invoices/:id", r.controller.GetPublicInvoice)
+
 	// Organization-scoped routes
 	orgGroup := router.Group("/organizations/:id")
 	orgGroup.Use(authChain.AllAuth())

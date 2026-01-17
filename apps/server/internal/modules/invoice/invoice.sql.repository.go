@@ -34,7 +34,7 @@ func (r *SQLRepository) Create(ctx context.Context, entity *Invoice) error {
 
 func (r *SQLRepository) GetByID(ctx context.Context, id uuid.UUID) (*Invoice, error) {
 	entity := new(Invoice)
-	if err := r.db.NewSelect().Model(entity).Relation("Items").Where("inv.id = ?", id).Scan(ctx); err != nil {
+	if err := r.db.NewSelect().Model(entity).Relation("Items").Relation("Client").Where("inv.id = ?", id).Scan(ctx); err != nil {
 		return nil, err
 	}
 	return entity, nil

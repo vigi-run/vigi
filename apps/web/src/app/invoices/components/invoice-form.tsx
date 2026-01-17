@@ -86,7 +86,6 @@ export function InvoiceForm({ defaultValues, onSubmit, isLoading, submitLabel }:
         items: sanitizedDefaultItems,
         nfId: defaultValues?.nfId || '',
         nfStatus: defaultValues?.nfStatus || '',
-        nfStatus: defaultValues?.nfStatus || '',
         nfLink: defaultValues?.nfLink || '',
         terms: defaultValues?.terms,
         notes: defaultValues?.notes,

@@ -29,6 +29,9 @@ func (c *Controller) RegisterRoutes(router *gin.RouterGroup, authChain *middlewa
 
 	// POST /api/v1/invoices/:id/charge
 	group.POST("/:id/charge", c.GenerateCharge)
+
+	// Public Routes
+	router.GET("/public/invoices/:id", c.GetPublicInvoice)
 }
 
 // GenerateCharge godoc
@@ -93,4 +96,22 @@ func (c *Controller) GenerateCharge(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("Charge generated successfully", nil))
+}
+
+func (c *Controller) GetPublicInvoice(ctx *gin.Context) {
+	idStr := ctx.Param("id")
+	id, err := uuid.Parse(idStr)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	entity, err := c.service.GetPublicInvoice(ctx.Request.Context(), id)
+	if err != nil {
+		c.logger.Errorw("failed to get public invoice", "id", id, "error", err)
+		ctx.JSON(http.StatusNotFound, utils.NewFailResponse("Invoice not found"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", entity))
 }

@@ -20,7 +20,7 @@ import { toast } from "sonner";
 
 export default function IntegrationsPage() {
   const { t } = useTranslation();
-  const { currentOrganization, isLoading } = useOrganizationStore();
+  const { currentOrganization } = useOrganizationStore();
   const [selectedBank, setSelectedBank] = useState<string>("inter");
   const [isUpdating, setIsUpdating] = useState(false);
 

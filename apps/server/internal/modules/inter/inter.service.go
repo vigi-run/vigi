@@ -171,8 +171,8 @@ func (s *Service) CreateCharge(ctx context.Context, organizationID uuid.UUID, dt
 		return fmt.Errorf("client not found")
 	}
 
-	// Fetch Inter Config
-	config, err := s.GetConfig(ctx, organizationID)
+	// Fetch Inter Config (Raw)
+	config, err := s.repo.GetByOrganizationID(ctx, organizationID)
 	if err != nil {
 		return fmt.Errorf("failed to get inter config: %w", err)
 	}
@@ -299,8 +299,14 @@ func (s *Service) CreateCharge(ctx context.Context, organizationID uuid.UUID, dt
 	totalNet := float64(inv.Total)
 	valorNominal := totalNet + discountValue
 
+	// Truncate SeuNumero to 15 chars limit of Inter
+	seuNumero := inv.Number
+	if len(seuNumero) > 15 {
+		seuNumero = seuNumero[:15]
+	}
+
 	reqData := InterChargeRequest{
-		SeuNumero:      inv.Number,
+		SeuNumero:      seuNumero,
 		ValorNominal:   valorNominal,
 		DataVencimento: dueDate.Format("2006-01-02"),
 		NumDiasAgenda:  30,
@@ -457,6 +463,68 @@ func (s *Service) HandleWebhook(ctx context.Context, payload []byte) error {
 	event.Processed = true
 	if err := s.webhookRepo.Update(ctx, event); err != nil {
 		return fmt.Errorf("failed to update event status: %w", err)
+	}
+
+	return nil
+}
+
+func (s *Service) SyncCharge(ctx context.Context, organizationID uuid.UUID, invoiceID uuid.UUID) error {
+	inv, err := s.invoiceService.GetByID(ctx, invoiceID)
+	if err != nil {
+		return fmt.Errorf("failed to get invoice: %w", err)
+	}
+	if inv == nil {
+		return fmt.Errorf("invoice not found")
+	}
+	if inv.OrganizationID != organizationID {
+		return fmt.Errorf("invoice does not belong to organization")
+	}
+	if inv.BankInvoiceID == nil {
+		return fmt.Errorf("invoice has no bank invoice id")
+	}
+
+	// Fetch Inter Config (Raw)
+	config, err := s.repo.GetByOrganizationID(ctx, organizationID)
+	if err != nil {
+		return fmt.Errorf("failed to get inter config: %w", err)
+	}
+	if config == nil {
+		return fmt.Errorf("inter integration not configured")
+	}
+
+	// Prepare Inter Client
+	interClient, err := NewInterClient(config)
+	if err != nil {
+		return fmt.Errorf("failed to create inter client: %w", err)
+	}
+
+	// Fetch Charge Info
+	chargeInfo, err := interClient.GetCharge(*inv.BankInvoiceID)
+	if err != nil {
+		return fmt.Errorf("failed to get charge info from inter: %w", err)
+	}
+
+	// Update Invoice
+	updateDto := invoice.UpdateInvoiceDTO{}
+
+	if chargeInfo.Pix.PixCopiaECola != "" {
+		updateDto.BankPixPayload = &chargeInfo.Pix.PixCopiaECola
+	}
+
+	if chargeInfo.Boleto.CodigoBarras != "" {
+		updateDto.BankBoletoBarcode = &chargeInfo.Boleto.CodigoBarras
+	}
+	if chargeInfo.Boleto.LinhaDigitavel != "" {
+		updateDto.BankBoletoDigitableLine = &chargeInfo.Boleto.LinhaDigitavel
+	}
+
+	if chargeInfo.Cobranca.Situacao != "" {
+		updateDto.BankInvoiceStatus = &chargeInfo.Cobranca.Situacao
+		// Map Inter status to internal status if needed
+	}
+
+	if _, err := s.invoiceService.Update(ctx, invoiceID, updateDto); err != nil {
+		return fmt.Errorf("failed to update invoice details: %w", err)
 	}
 
 	return nil

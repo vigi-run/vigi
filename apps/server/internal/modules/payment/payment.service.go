@@ -97,3 +97,44 @@ func (s *Service) GenerateCharge(ctx context.Context, orgID uuid.UUID, invoiceID
 
 	return nil
 }
+
+func (s *Service) GetPublicInvoice(ctx context.Context, id uuid.UUID) (*invoice.Invoice, error) {
+	inv, err := s.invoiceService.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if inv == nil {
+		return nil, fmt.Errorf("invoice not found")
+	}
+
+	// Auto-generate charge if missing
+	if inv.BankInvoiceID == nil {
+		// Attempt to generate
+		// We ignore error to return the invoice anyway (maybe provider not configured)
+		if err := s.GenerateCharge(ctx, inv.OrganizationID, id.String()); err != nil {
+			s.logger.Warnw("Auto-generation of charge failed", "invoice_id", id, "error", err)
+		} else {
+			// Reload invoice
+			if updatedInv, err := s.invoiceService.GetByID(ctx, id); err == nil {
+				inv = updatedInv
+			}
+		}
+	} else {
+		// Sync charge details if missing (specifically for Inter)
+		isInter := inv.BankProvider != nil && *inv.BankProvider == "inter"
+		missingDetails := inv.BankPixPayload == nil || inv.BankBoletoBarcode == nil
+
+		if isInter && missingDetails {
+			if err := s.interService.SyncCharge(ctx, inv.OrganizationID, inv.ID); err != nil {
+				s.logger.Warnw("Sync of charge failed", "invoice_id", id, "error", err)
+			} else {
+				// Reload invoice
+				if updatedInv, err := s.invoiceService.GetByID(ctx, id); err == nil {
+					inv = updatedInv
+				}
+			}
+		}
+	}
+
+	return inv, nil
+}

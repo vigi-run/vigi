@@ -37,7 +37,8 @@
   "edit": "Editar",
   "actions": {
     "clone": "Clonar Fatura",
-    "generate_charge": "Gerar Cobrança"
+    "generate_charge": "Gerar Cobrança",
+    "copy_public_link": "Copiar Link Público"
   },
   "cloned_success": "Fatura clonada com sucesso",
   "cloned_error": "Erro ao clonar fatura",

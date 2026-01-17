@@ -197,10 +197,16 @@ type InterPixInfo struct {
 	PixCopiaECola string `json:"pixCopiaECola"`
 }
 
+type InterCobrancaInfo struct {
+	Situacao string `json:"situacao"`
+}
+
 type InterGetChargeResponse struct {
-	Boleto struct {
-		NossoNumero string `json:"nossoNumero"`
-		// other fields...
+	Cobranca InterCobrancaInfo `json:"cobranca"`
+	Boleto   struct {
+		NossoNumero    string `json:"nossoNumero"`
+		CodigoBarras   string `json:"codigoBarras"`
+		LinhaDigitavel string `json:"linhaDigitavel"`
 	} `json:"boleto"`
 	Pix InterPixInfo `json:"pix"`
 }

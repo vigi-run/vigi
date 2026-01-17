@@ -336,3 +336,21 @@ func (c *Controller) CloneInvoice(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, utils.NewSuccessResponse("Invoice cloned successfully", newInvoice))
 }
+
+func (c *Controller) GetPublicInvoice(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	entity, err := c.service.GetByID(ctx, id)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, utils.NewFailResponse("Invoice not found"))
+		return
+	}
+
+	// In the future, we might want to sanitize this response if there are internal fields
+	// For now, the Invoice entity is safe to expose for payment purposes
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse("success", entity))
+}

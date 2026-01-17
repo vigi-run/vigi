@@ -25,8 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, QrCode, Link as LinkIcon, Copy, Files } from "lucide-react";
-import QRCode from "react-qr-code";
+import { ChevronDown, Printer, QrCode, Link as LinkIcon, Files } from "lucide-react";
 
 export default function InvoiceDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -180,6 +179,14 @@ export default function InvoiceDetailsPage() {
                     {t("common.copy_link")}
                   </DropdownMenuItem>
                 )}
+                <DropdownMenuItem onClick={() => {
+                  const url = `${window.location.origin}/p/invoices/${id}`;
+                  navigator.clipboard.writeText(url);
+                  toast.success(t("common.link_copied"));
+                }}>
+                  <LinkIcon className="h-4 w-4 mr-2" />
+                  {t("invoice.actions.copy_public_link")}
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => window.print()}>
                   <Printer className="h-4 w-4 mr-2" />

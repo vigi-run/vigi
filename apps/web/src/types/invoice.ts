@@ -1,3 +1,5 @@
+import type { Client } from './client';
+
 export type InvoiceStatus = 'DRAFT' | 'SENT' | 'PAID' | 'CANCELLED';
 
 export interface InvoiceEmail {
@@ -26,6 +28,7 @@ export interface Invoice {
   id: string;
   organizationId: string;
   clientId: string;
+  client?: Client;
   number: string;
   status: InvoiceStatus;
   date?: string; // ISO Date

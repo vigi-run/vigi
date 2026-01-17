@@ -3,6 +3,9 @@ package invoice
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
 	"vigi/internal/config"
 	"vigi/internal/modules/client"
 	"vigi/internal/modules/organization"
@@ -10,6 +13,23 @@ import (
 
 	"github.com/google/uuid"
 )
+
+var copyRegex = regexp.MustCompile(`^(.*?) ?\(Copy(?: (\d+))?\)$`)
+
+func generateCopyNumber(original string) string {
+	matches := copyRegex.FindStringSubmatch(original)
+	if len(matches) > 0 {
+		base := strings.TrimSpace(matches[1])
+		n := 2
+		if matches[2] != "" {
+			if val, err := strconv.Atoi(matches[2]); err == nil {
+				n = val + 1
+			}
+		}
+		return fmt.Sprintf("%s (Copy %d)", base, n)
+	}
+	return fmt.Sprintf("%s (Copy)", original)
+}
 
 type Service struct {
 	repo          Repository
@@ -161,6 +181,12 @@ func (s *Service) Update(ctx context.Context, id uuid.UUID, dto UpdateInvoiceDTO
 	if dto.BankPixPayload != nil {
 		entity.BankPixPayload = dto.BankPixPayload
 	}
+	if dto.BankBoletoBarcode != nil {
+		entity.BankBoletoBarcode = dto.BankBoletoBarcode
+	}
+	if dto.BankBoletoDigitableLine != nil {
+		entity.BankBoletoDigitableLine = dto.BankBoletoDigitableLine
+	}
 	if dto.Discount != nil {
 		entity.Discount = SafeFloat(*dto.Discount)
 	}
@@ -257,7 +283,7 @@ func (s *Service) Clone(ctx context.Context, id uuid.UUID) (*Invoice, error) {
 	newInvoice := &Invoice{
 		OrganizationID: original.OrganizationID,
 		ClientID:       original.ClientID,
-		Number:         original.Number + " (Copy)",
+		Number:         generateCopyNumber(original.Number),
 		Status:         InvoiceStatusDraft,
 		Date:           nil, // Reset dates? Or keep? Usually reset to today or null. Let's keep null as draft.
 		DueDate:        nil,
@@ -268,13 +294,15 @@ func (s *Service) Clone(ctx context.Context, id uuid.UUID) (*Invoice, error) {
 		Currency:       original.Currency,
 		Items:          newItems,
 		// Explicitly clear fiscal/bank info
-		NFID:              nil,
-		NFStatus:          nil,
-		NFLink:            nil,
-		BankInvoiceID:     nil,
-		BankInvoiceStatus: nil,
-		BankProvider:      nil,
-		BankPixPayload:    nil,
+		NFID:                    nil,
+		NFStatus:                nil,
+		NFLink:                  nil,
+		BankInvoiceID:           nil,
+		BankInvoiceStatus:       nil,
+		BankProvider:            nil,
+		BankPixPayload:          nil,
+		BankBoletoBarcode:       nil,
+		BankBoletoDigitableLine: nil,
 	}
 
 	// 4. Save

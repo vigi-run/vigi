@@ -119,3 +119,12 @@ export const generateCharge = async (invoiceId: string) => {
 export const cloneInvoice = async (invoiceId: string) => {
     return mutationCall<Invoice>(client.post({ url: `/invoices/${invoiceId}/clone`, body: {} }));
 };
+
+export const getPublicInvoiceOptions = (id: string, enabled = true) => queryOptions({
+    queryKey: ['public-invoice', id],
+    queryFn: async () => {
+        const res = await client.get({ url: `/public/invoices/${id}` });
+        return (res.data as any).data as Invoice;
+    },
+    enabled,
+});
