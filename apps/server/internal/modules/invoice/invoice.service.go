@@ -2,6 +2,7 @@ package invoice
 
 import (
 	"context"
+	"fmt"
 	"vigi/internal/config"
 	"vigi/internal/modules/client"
 	"vigi/internal/modules/organization"
@@ -227,4 +228,59 @@ func (s *Service) Update(ctx context.Context, id uuid.UUID, dto UpdateInvoiceDTO
 
 func (s *Service) Delete(ctx context.Context, id uuid.UUID) error {
 	return s.repo.Delete(ctx, id)
+}
+
+func (s *Service) Clone(ctx context.Context, id uuid.UUID) (*Invoice, error) {
+	// 1. Get existing invoice
+	original, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if original == nil {
+		return nil, fmt.Errorf("invoice not found")
+	}
+
+	// 2. Prepare new items
+	newItems := make([]*InvoiceItem, 0, len(original.Items))
+	for _, item := range original.Items {
+		newItems = append(newItems, &InvoiceItem{
+			CatalogItemID: item.CatalogItemID,
+			Description:   item.Description,
+			Quantity:      item.Quantity,
+			UnitPrice:     item.UnitPrice,
+			Discount:      item.Discount,
+			Total:         item.Total,
+		})
+	}
+
+	// 3. Create new invoice entity
+	newInvoice := &Invoice{
+		OrganizationID: original.OrganizationID,
+		ClientID:       original.ClientID,
+		Number:         original.Number + " (Copy)",
+		Status:         InvoiceStatusDraft,
+		Date:           nil, // Reset dates? Or keep? Usually reset to today or null. Let's keep null as draft.
+		DueDate:        nil,
+		Terms:          original.Terms,
+		Notes:          original.Notes,
+		Total:          original.Total,
+		Discount:       original.Discount,
+		Currency:       original.Currency,
+		Items:          newItems,
+		// Explicitly clear fiscal/bank info
+		NFID:              nil,
+		NFStatus:          nil,
+		NFLink:            nil,
+		BankInvoiceID:     nil,
+		BankInvoiceStatus: nil,
+		BankProvider:      nil,
+		BankPixPayload:    nil,
+	}
+
+	// 4. Save
+	if err := s.repo.Create(ctx, newInvoice); err != nil {
+		return nil, err
+	}
+
+	return newInvoice, nil
 }

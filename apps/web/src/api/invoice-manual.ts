@@ -115,3 +115,7 @@ export const usePreviewInvoiceEmailMutation = () => {
 export const generateCharge = async (invoiceId: string) => {
     return mutationCall<void>(client.post({ url: `/invoices/${invoiceId}/charge`, body: {} }));
 };
+
+export const cloneInvoice = async (invoiceId: string) => {
+    return mutationCall<Invoice>(client.post({ url: `/invoices/${invoiceId}/clone`, body: {} }));
+};

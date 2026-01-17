@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import Layout from "@/layout";
 import { BackButton } from "@/components/back-button";
-import { getInvoiceOptions, useUpdateInvoiceMutation, getInvoiceEmailsOptions } from "@/api/invoice-manual";
+import { getInvoiceOptions, useUpdateInvoiceMutation, getInvoiceEmailsOptions, cloneInvoice } from "@/api/invoice-manual";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
@@ -25,7 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, QrCode, Link as LinkIcon, Copy } from "lucide-react";
+import { ChevronDown, Printer, QrCode, Link as LinkIcon, Copy, Files } from "lucide-react";
 import QRCode from "react-qr-code";
 
 export default function InvoiceDetailsPage() {
@@ -79,6 +79,17 @@ export default function InvoiceDetailsPage() {
       toast.error(t("invoices.view.charge_generated_error"));
     } finally {
       setIsGeneratingCharge(false);
+    }
+  };
+
+  const handleCloneInvoice = async () => {
+    if (!id) return;
+    try {
+      const newInvoice = await cloneInvoice(id);
+      toast.success(t("invoice.cloned_success"));
+      navigate(`/${organization?.slug}/invoices/${newInvoice.id}/edit`);
+    } catch (error) {
+      toast.error(t("invoice.cloned_error"));
     }
   };
 
@@ -149,6 +160,10 @@ export default function InvoiceDetailsPage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleCloneInvoice}>
+                  <Files className="h-4 w-4 mr-2" />
+                  {t("invoice.actions.clone")}
+                </DropdownMenuItem>
                 {!invoice.bankInvoiceId && (
                   <DropdownMenuItem onClick={handleGenerateCharge} disabled={isGeneratingCharge}>
                     <QrCode className="h-4 w-4 mr-2" />

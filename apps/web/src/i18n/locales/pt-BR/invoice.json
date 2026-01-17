@@ -1,5 +1,8 @@
 {
   "recurring_title": "Faturas Recorrentes",
+  "recurring_empty_title": "Nenhuma fatura recorrente encontrada",
+  "recurring_empty_description": "Crie sua primeira fatura recorrente para começar.",
+  "create_recurring": "Criar Fatura Recorrente",
   "email_sent": "Email enviado com sucesso",
   "email": {
     "send": "Enviar Email",
@@ -33,8 +36,11 @@
   "edit_invoice": "Editar Fatura",
   "edit": "Editar",
   "actions": {
+    "clone": "Clonar Fatura",
     "generate_charge": "Gerar Cobrança"
   },
+  "cloned_success": "Fatura clonada com sucesso",
+  "cloned_error": "Erro ao clonar fatura",
   "create": "Criar Fatura",
   "details": "Detalhes da Fatura",
   "bill_to": "Faturar Para",

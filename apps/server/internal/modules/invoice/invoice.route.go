@@ -2,16 +2,21 @@ package invoice
 
 import (
 	"vigi/internal/modules/middleware"
+	"vigi/internal/modules/organization"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Route struct {
-	controller *Controller
+	controller    *Controller
+	orgMiddleware *organization.Middleware
 }
 
-func NewRoute(controller *Controller) *Route {
-	return &Route{controller: controller}
+func NewRoute(controller *Controller, orgMiddleware *organization.Middleware) *Route {
+	return &Route{
+		controller:    controller,
+		orgMiddleware: orgMiddleware,
+	}
 }
 
 func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.AuthChain) {
@@ -26,6 +31,7 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.Auth
 	// Entity routes
 	entityGroup := router.Group("/invoices")
 	entityGroup.Use(authChain.AllAuth())
+	entityGroup.Use(r.orgMiddleware.RequireOrganization())
 	{
 		entityGroup.GET("/:id", r.controller.GetByID)
 		entityGroup.PATCH("/:id", r.controller.Update)
@@ -37,5 +43,7 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.Auth
 		entityGroup.POST("/:id/email/preview", r.controller.PreviewEmail)
 		entityGroup.POST("/:id/email/send", r.controller.SendManualEmail)
 		entityGroup.GET("/:id/emails", r.controller.GetEmailHistory)
+
+		entityGroup.POST("/:id/clone", r.controller.CloneInvoice)
 	}
 }
