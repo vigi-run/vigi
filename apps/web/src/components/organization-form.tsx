@@ -29,7 +29,10 @@ const organizationSchema = (t: (key: string, options?: any) => string) => z.obje
         .regex(/^[a-z0-9-]+$/, t("organization.validation.slug_format"))
         .optional()
         .or(z.literal("")),
+    document: z.string().optional(),
     image_url: z.string().optional(),
+    certificate: z.string().optional(),
+    certificate_password: z.string().optional(),
 });
 
 export type OrganizationFormValues = z.infer<ReturnType<typeof organizationSchema>>;
@@ -97,11 +100,21 @@ export function OrganizationForm({
     const updateMutation = useMutation({
         mutationFn: async (values: OrganizationFormValues) => {
             if (!organizationId) throw new Error("Organization ID required for update");
-            const response = await client.instance.patch(`/organizations/${organizationId}`, {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const payload: any = {
                 name: values.name,
                 slug: values.slug || undefined,
+                document: values.document || undefined,
                 image_url: values.image_url || undefined,
-            });
+            };
+            if (values.certificate) {
+                payload.certificate = values.certificate;
+            }
+            if (values.certificate_password) {
+                payload.certificate_password = values.certificate_password;
+            }
+
+            const response = await client.instance.patch(`/organizations/${organizationId}`, payload);
             return response.data;
         },
         onSuccess: (data) => {
@@ -188,6 +201,67 @@ export function OrganizationForm({
                         </FormItem>
                     )}
                 />
+
+                <FormField
+                    control={form.control}
+                    name="document"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{t("organization.document_label") || "CNPJ"}</FormLabel>
+                            <FormControl>
+                                <Input placeholder={t("organization.placeholders.document") || "00.000.000/0000-00"} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {mode === "edit" && (
+                    <>
+                        <div className="space-y-2">
+                            <FormLabel>{t("organization.certificate_label") || "Digital Certificate (.pfx, .p12)"}</FormLabel>
+                            <Input
+                                type="file"
+                                accept=".pfx,.p12"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = (event) => {
+                                            if (event.target?.result) {
+                                                const base64 = (event.target.result as string).split(",")[1];
+                                                form.setValue("certificate", base64);
+                                            }
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }}
+                            />
+                            <p className="text-xs text-muted-foreground">
+                                {t("organization.certificate_help") || "Upload your A1 certificate for NFSe issuance."}
+                            </p>
+                        </div>
+
+                        <FormField
+                            control={form.control}
+                            name="certificate_password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{t("organization.certificate_password_label") || "Certificate Password"}</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="password"
+                                            placeholder={t("organization.placeholders.certificate_password") || "Enter certificate password"}
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </>
+                )}
+
                 <Button type="submit" className="w-full" disabled={createMutation.isPending || updateMutation.isPending}>
                     {mode === "create" ? t("organization.create_button") : t("organization.update_button")}
                 </Button>

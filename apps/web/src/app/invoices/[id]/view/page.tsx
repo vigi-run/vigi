@@ -4,12 +4,12 @@ import { toast } from "sonner";
 import Layout from "@/layout";
 import { BackButton } from "@/components/back-button";
 import { getInvoiceOptions, useUpdateInvoiceMutation, getInvoiceEmailsOptions } from "@/api/invoice-manual";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Mail } from "lucide-react";
+import { Mail, FileText, Loader2 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,6 +21,7 @@ export default function InvoiceDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const updateMutation = useUpdateInvoiceMutation();
     const { currentOrganization: organization } = useOrganizationStore();
     const { data: invoice, isLoading } = useQuery(getInvoiceOptions(id!));
@@ -37,6 +38,19 @@ export default function InvoiceDetailsPage() {
         enabled: !!invoice?.clientId
     });
 
+    const emitMutation = useMutation({
+        mutationFn: async () => {
+            if (!id) return;
+            await client.instance.post(`/invoices/${id}/emit`);
+        },
+        onSuccess: () => {
+            toast.success(t("invoice.emit_success") || "NFS-e issuance requested");
+            queryClient.invalidateQueries({ queryKey: ['invoice', id] });
+        },
+        onError: (error) => {
+            toast.error(t("invoice.emit_error") || "Failed to emit NFS-e");
+        }
+    });
 
     const handleStatusChange = async (newStatus: InvoiceStatus) => {
         if (!id) return;
@@ -98,6 +112,14 @@ export default function InvoiceDetailsPage() {
                     <Button onClick={() => navigate(`email`)}>
                         <Mail className="h-4 w-4 mr-2" />
                         {t("invoice.email.send")}
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        onClick={() => emitMutation.mutate()}
+                        disabled={emitMutation.isPending || !invoice.organizationId} // Basic checks
+                    >
+                         {emitMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileText className="mr-2 h-4 w-4" />}
+                        {t("invoice.emit_nfse") || "Emitir NFS-e"}
                     </Button>
                     <Button onClick={() => navigate("edit")}>{t("common.edit")}</Button>
                     <Button variant="outline" onClick={() => window.print()}>{t("common.print")}</Button>

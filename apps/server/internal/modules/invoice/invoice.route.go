@@ -37,5 +37,6 @@ func (r *Route) ConnectRoute(router *gin.RouterGroup, authChain *middleware.Auth
 		entityGroup.POST("/:id/email/preview", r.controller.PreviewEmail)
 		entityGroup.POST("/:id/email/send", r.controller.SendManualEmail)
 		entityGroup.GET("/:id/emails", r.controller.GetEmailHistory)
+		entityGroup.POST("/:id/emit", r.controller.EmitNFSe)
 	}
 }

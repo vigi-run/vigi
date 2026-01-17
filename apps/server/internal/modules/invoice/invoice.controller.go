@@ -146,6 +146,21 @@ func (c *Controller) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("success", nil))
 }
 
+func (c *Controller) EmitNFSe(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewFailResponse("Invalid ID"))
+		return
+	}
+
+	if err := c.service.EmitNFSe(ctx.Request.Context(), id); err != nil {
+		ctx.JSON(http.StatusInternalServerError, utils.NewFailResponse(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, utils.NewSuccessResponse[any]("success", nil))
+}
+
 func (c *Controller) SendFirstEmail(ctx *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {

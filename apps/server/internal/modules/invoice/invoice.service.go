@@ -1,11 +1,19 @@
 package invoice
 
 import (
+	"bytes"
 	"context"
+	"encoding/xml"
+	"fmt"
+	"io"
+	"net/http"
+	"time"
 	"vigi/internal/config"
 	"vigi/internal/modules/client"
 	"vigi/internal/modules/organization"
 	"vigi/internal/pkg/usesend"
+	"vigi/internal/utils"
+	"vigi/internal/utils/signer"
 
 	"github.com/google/uuid"
 )
@@ -217,4 +225,176 @@ func (s *Service) Update(ctx context.Context, id uuid.UUID, dto UpdateInvoiceDTO
 
 func (s *Service) Delete(ctx context.Context, id uuid.UUID) error {
 	return s.repo.Delete(ctx, id)
+}
+
+func (s *Service) EmitNFSe(ctx context.Context, id uuid.UUID) error {
+	invoice, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	org, err := s.orgRepo.FindByID(ctx, invoice.OrganizationID.String())
+	if err != nil {
+		return err
+	}
+
+	if org.Certificate == "" {
+		return fmt.Errorf("organization has no certificate uploaded")
+	}
+
+	pass, err := utils.Decrypt(org.CertificatePassword, s.cfg.AppKey)
+	if err != nil {
+		return fmt.Errorf("failed to decrypt certificate password: %w", err)
+	}
+
+	cert, key, err := signer.LoadCertificate(org.Certificate, pass)
+	if err != nil {
+		return fmt.Errorf("failed to load certificate: %w", err)
+	}
+
+	clientData, err := s.clientRepo.GetByID(ctx, invoice.ClientID)
+	if err != nil {
+		return fmt.Errorf("failed to get client data: %w", err)
+	}
+
+	// Generate XML
+	xmlBytes, _, err := s.generateDPSXML(invoice, org, clientData)
+	if err != nil {
+		return fmt.Errorf("failed to generate XML: %w", err)
+	}
+
+	// Sign XML
+	signedXML, err := signer.SignXML(xmlBytes, "infDPS", cert, key)
+	if err != nil {
+		return fmt.Errorf("failed to sign XML: %w", err)
+	}
+
+	// Determine URL
+	url := s.cfg.ADNSandboxURL
+	if s.cfg.Mode == "prod" {
+		url = s.cfg.ADNProdURL
+	}
+
+	// Send to ADN
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewReader(signedXML))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/xml")
+
+	client := &http.Client{Timeout: 30 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to send to ADN: %w", err)
+	}
+	defer resp.Body.Close()
+
+	respBody, _ := io.ReadAll(resp.Body)
+
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
+		return fmt.Errorf("ADN returned error %d: %s", resp.StatusCode, string(respBody))
+	}
+
+	// Update Invoice
+	// In a real scenario, we parse the response to get the NFSe Number and Link.
+	// For now, we simulate success or parse a dummy response.
+	// Assuming response contains the NFSe number/ID.
+
+	sentStatus := "SENT"
+	nfStatus := "PROCESSING"
+
+	// We should parse the XML response here.
+	// But given lack of specs, we just mark it as SENT.
+
+	invoice.Status = InvoiceStatus(sentStatus)
+	invoice.NFStatus = &nfStatus
+
+	// We would update NFID and Link here if parsed.
+
+	return s.repo.Update(ctx, invoice)
+}
+
+// DPS XML Structure (Simplified)
+type DPS struct {
+	XMLName xml.Name `xml:"DPS"`
+	Xmlns   string   `xml:"xmlns,attr"`
+	InfDPS  InfDPS   `xml:"infDPS"`
+}
+
+type InfDPS struct {
+	Id     string `xml:"Id,attr"`
+	DhEmi  string `xml:"dhEmi"`
+	Serie  string `xml:"serie"`
+	NDPS   string `xml:"nDPS"`
+	Prest  Prest  `xml:"prest"`
+	Tom    Tom    `xml:"tom"`
+	Serv   Serv   `xml:"serv"`
+	Valores Valores `xml:"valores"`
+}
+
+type Prest struct {
+	CNPJ string `xml:"CNPJ"`
+}
+
+type Tom struct {
+	CNPJ string `xml:"CNPJ,omitempty"`
+	CPF  string `xml:"CPF,omitempty"`
+	XNome string `xml:"xNome"`
+}
+
+type Serv struct {
+	CItemTrib string `xml:"cItemTrib"` // Service code
+	XDescServ string `xml:"xDescServ"`
+}
+
+type Valores struct {
+	VServ float64 `xml:"vServ"`
+}
+
+func (s *Service) generateDPSXML(invoice *Invoice, org *organization.Organization, client *client.Client) ([]byte, string, error) {
+	infID := fmt.Sprintf("DPS%s", invoice.ID.String())
+
+	// Format Date
+	dateStr := time.Now().Format("2006-01-02T15:04:05")
+	if invoice.Date != nil {
+		dateStr = invoice.Date.Format("2006-01-02T15:04:05")
+	}
+
+	dps := DPS{
+		Xmlns: "http://www.sped.fazenda.gov.br/nfse",
+		InfDPS: InfDPS{
+			Id:    infID,
+			DhEmi: dateStr,
+			Serie: "1",
+			NDPS:  invoice.Number,
+			Prest: Prest{
+				CNPJ: org.Document,
+			},
+			Tom: Tom{
+				XNome: client.Name,
+			},
+			Serv: Serv{
+				XDescServ: "Serviços prestados", // Should come from items
+			},
+			Valores: Valores{
+				VServ: float64(invoice.Total),
+			},
+		},
+	}
+
+	if client.IDNumber != nil {
+		// Basic heuristic for CPF/CNPJ
+		doc := *client.IDNumber
+		if len(doc) == 14 {
+			dps.InfDPS.Tom.CNPJ = doc
+		} else {
+			dps.InfDPS.Tom.CPF = doc
+		}
+	}
+
+	// Add xmlns manually or via struct tag if needed.
+	// But usually xmlns is on root.
+
+	bytes, err := xml.Marshal(dps)
+	return bytes, infID, err
 }

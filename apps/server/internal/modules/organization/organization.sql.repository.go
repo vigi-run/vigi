@@ -11,12 +11,15 @@ import (
 type sqlModel struct {
 	bun.BaseModel `bun:"table:organizations,alias:o"`
 
-	ID        string    `bun:"id,pk"`
-	Name      string    `bun:"name,notnull"`
-	Slug      string    `bun:"slug,unique,notnull"`
-	ImageURL  string    `bun:"image_url"`
-	CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
-	UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
+	ID                  string    `bun:"id,pk"`
+	Name                string    `bun:"name,notnull"`
+	Slug                string    `bun:"slug,unique,notnull"`
+	Document            string    `bun:"document"`
+	ImageURL            string    `bun:"image_url"`
+	Certificate         string    `bun:"certificate"`
+	CertificatePassword string    `bun:"certificate_password"`
+	CreatedAt           time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+	UpdatedAt           time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
 }
 
 type userSQLModel struct {
@@ -98,23 +101,29 @@ func NewSQLRepository(db *bun.DB) OrganizationRepository {
 
 func toDomainModel(sm *sqlModel) *Organization {
 	return &Organization{
-		ID:        sm.ID,
-		Name:      sm.Name,
-		Slug:      sm.Slug,
-		ImageURL:  sm.ImageURL,
-		CreatedAt: sm.CreatedAt,
-		UpdatedAt: sm.UpdatedAt,
+		ID:                  sm.ID,
+		Name:                sm.Name,
+		Slug:                sm.Slug,
+		Document:            sm.Document,
+		ImageURL:            sm.ImageURL,
+		Certificate:         sm.Certificate,
+		CertificatePassword: sm.CertificatePassword,
+		CreatedAt:           sm.CreatedAt,
+		UpdatedAt:           sm.UpdatedAt,
 	}
 }
 
 func toSQLModel(m *Organization) *sqlModel {
 	return &sqlModel{
-		ID:        m.ID,
-		Name:      m.Name,
-		Slug:      m.Slug,
-		ImageURL:  m.ImageURL,
-		CreatedAt: m.CreatedAt,
-		UpdatedAt: m.UpdatedAt,
+		ID:                  m.ID,
+		Name:                m.Name,
+		Slug:                m.Slug,
+		Document:            m.Document,
+		ImageURL:            m.ImageURL,
+		Certificate:         m.Certificate,
+		CertificatePassword: m.CertificatePassword,
+		CreatedAt:           m.CreatedAt,
+		UpdatedAt:           m.UpdatedAt,
 	}
 }
 

@@ -34,6 +34,8 @@ export default function OrganizationSettingsPage() {
                             initialValues={{
                                 name: currentOrganization.name || "",
                                 slug: currentOrganization.slug || "",
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                document: (currentOrganization as any).document || "",
                                 image_url: currentOrganization.image_url || "",
                             }}
                             organizationId={currentOrganization.id}

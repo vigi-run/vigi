@@ -83,6 +83,13 @@ type Config struct {
 	// Usesend Configuration
 	UsesendAPIKey string `env:"USESEND_API_KEY"`
 	UsesendDomain string `env:"USESEND_DOMAIN"`
+
+	// Encryption Key (32 chars for AES-256)
+	AppKey string `env:"APP_KEY" validate:"omitempty,min=32"`
+
+	// NFSe (ADN) Configuration
+	ADNProdURL    string `env:"ADN_PROD_URL" default:"https://adn.nfse.gov.br/contribuintes/v1/nfse"`
+	ADNSandboxURL string `env:"ADN_SANDBOX_URL" default:"https://adn.producaorestrita.nfse.gov.br/contribuintes/v1/nfse"`
 }
 
 var validate = validator.New()

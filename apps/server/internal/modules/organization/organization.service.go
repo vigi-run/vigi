@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"vigi/internal/config"
+	"vigi/internal/utils"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
@@ -36,12 +38,14 @@ type Service interface {
 type ServiceImpl struct {
 	repo   OrganizationRepository
 	logger *zap.SugaredLogger
+	cfg    *config.Config
 }
 
-func NewService(repo OrganizationRepository, logger *zap.SugaredLogger) Service {
+func NewService(repo OrganizationRepository, logger *zap.SugaredLogger, cfg *config.Config) Service {
 	return &ServiceImpl{
 		repo:   repo,
 		logger: logger.Named("[organization-service]"),
+		cfg:    cfg,
 	}
 }
 
@@ -131,8 +135,21 @@ func (s *ServiceImpl) Update(ctx context.Context, id string, dto *UpdateOrganiza
 		}
 		org.Slug = *dto.Slug
 	}
+	if dto.Document != nil {
+		org.Document = *dto.Document
+	}
 	if dto.ImageURL != nil {
 		org.ImageURL = *dto.ImageURL
+	}
+	if dto.Certificate != nil {
+		org.Certificate = *dto.Certificate
+	}
+	if dto.CertificatePassword != nil && *dto.CertificatePassword != "" {
+		encryptedPass, err := utils.Encrypt(*dto.CertificatePassword, s.cfg.AppKey)
+		if err != nil {
+			return nil, fmt.Errorf("failed to encrypt certificate password: %w", err)
+		}
+		org.CertificatePassword = encryptedPass
 	}
 
 	err = s.repo.Update(ctx, id, org)

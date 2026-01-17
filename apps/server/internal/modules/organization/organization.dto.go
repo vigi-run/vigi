@@ -7,9 +7,12 @@ type CreateOrganizationDto struct {
 }
 
 type UpdateOrganizationDto struct {
-	Name     *string `json:"name" validate:"min=3" example:"Updated Organization Name"`
-	Slug     *string `json:"slug" validate:"omitempty,min=3" example:"updated-slug"`
-	ImageURL *string `json:"image_url" validate:"omitempty,url"`
+	Name                *string `json:"name" validate:"min=3" example:"Updated Organization Name"`
+	Slug                *string `json:"slug" validate:"omitempty,min=3" example:"updated-slug"`
+	Document            *string `json:"document" validate:"omitempty"`
+	ImageURL            *string `json:"image_url" validate:"omitempty,url"`
+	Certificate         *string `json:"certificate" validate:"omitempty,base64"`
+	CertificatePassword *string `json:"certificate_password" validate:"omitempty"`
 }
 
 type AddMemberDto struct {
