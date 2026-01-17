@@ -134,6 +134,9 @@ func (s *ServiceImpl) Update(ctx context.Context, id string, dto *UpdateOrganiza
 	if dto.ImageURL != nil {
 		org.ImageURL = *dto.ImageURL
 	}
+	if dto.BankProvider != nil {
+		org.BankProvider = dto.BankProvider
+	}
 
 	err = s.repo.Update(ctx, id, org)
 	if err != nil {

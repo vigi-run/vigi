@@ -1,0 +1,18 @@
+{
+    "api_key_description": "Sua chave de API SendGrid. Você pode criar uma na sua conta SendGrid em Configurações → Chaves de API. Certifique-se de que ela tenha permissões \"Mail Send\".",
+    "api_key_label": "Chave da API",
+    "bcc_email_description": "Destinatários em cópia oculta. Separe múltiplos e‑mails com vírgulas.",
+    "bcc_email_label": "E-mail CCO (Opcional)",
+    "cc_email_description": "Destinatários em cópia. Separe vários e-mails por vírgulas.",
+    "cc_email_label": "Email em CC (Opcional)",
+    "from_email_description": "O endereço de e‑mail do remetente. Este deve ser um remetente verificado na sua conta SendGrid.",
+    "from_email_label": "E-mail do remetente",
+    "subject_description": "Linha de assunto do e‑mail. Suporta templates Liquid.",
+    "subject_label": "Assunto Personalizado (Opcional)",
+    "subject_variables_label": "Variáveis disponíveis:",
+    "subject_variables_msg": "mensagem da notificação",
+    "subject_variables_name": "nome do serviço",
+    "subject_variables_status": "status do serviço (ATIVO/INATIVO)",
+    "to_email_description": "Endereço de e‑mail do destinatário principal. Para múltiplos destinatários, use os campos CC ou BCC.",
+    "to_email_label": "Para e-mail"
+}

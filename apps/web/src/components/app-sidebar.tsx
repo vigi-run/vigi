@@ -6,6 +6,7 @@ import {
     Building2,
     Briefcase,
     FileText,
+    Blocks,
     Repeat,
 } from "lucide-react";
 
@@ -52,21 +53,25 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 title: t("clients.title", "Clients"),
                 url: `${prefix}/clients`,
                 icon: Briefcase,
+                createUrl: `${prefix}/clients/new`,
             },
             {
                 title: t("catalog_item.title", "Catalog Items"),
                 url: `${prefix}/catalog-items`,
                 icon: Tag,
+                createUrl: `${prefix}/catalog-items/new`,
             },
             {
                 title: t("invoice.title", "Invoices"),
                 url: `${prefix}/invoices`,
                 icon: FileText,
+                createUrl: `${prefix}/invoices/new`,
             },
             {
                 title: t("invoice.recurring_title", "Recurring Invoices"),
                 url: `${prefix}/recurring-invoices`,
                 icon: Repeat,
+                createUrl: `${prefix}/recurring-invoices/new`,
             },
         ],
         navSecondary: [
@@ -89,6 +94,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
             title: t("navigation.organization_settings"),
             url: `${prefix}/settings/organization`,
             icon: Building2,
+        },
+        {
+            title: t("navigation.integrations", "Integrations"),
+            url: `${prefix}/settings/integrations`,
+            icon: Blocks,
         },
     ]
 

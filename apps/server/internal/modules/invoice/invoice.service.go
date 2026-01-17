@@ -2,6 +2,10 @@ package invoice
 
 import (
 	"context"
+	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
 	"vigi/internal/config"
 	"vigi/internal/modules/client"
 	"vigi/internal/modules/organization"
@@ -9,6 +13,23 @@ import (
 
 	"github.com/google/uuid"
 )
+
+var copyRegex = regexp.MustCompile(`^(.*?) ?\(Copy(?: (\d+))?\)$`)
+
+func generateCopyNumber(original string) string {
+	matches := copyRegex.FindStringSubmatch(original)
+	if len(matches) > 0 {
+		base := strings.TrimSpace(matches[1])
+		n := 2
+		if matches[2] != "" {
+			if val, err := strconv.Atoi(matches[2]); err == nil {
+				n = val + 1
+			}
+		}
+		return fmt.Sprintf("%s (Copy %d)", base, n)
+	}
+	return fmt.Sprintf("%s (Copy)", original)
+}
 
 type Service struct {
 	repo          Repository
@@ -103,6 +124,10 @@ func (s *Service) GetByID(ctx context.Context, id uuid.UUID) (*Invoice, error) {
 	return s.repo.GetByID(ctx, id)
 }
 
+func (s *Service) GetByBankID(ctx context.Context, bankID string) (*Invoice, error) {
+	return s.repo.GetByBankID(ctx, bankID)
+}
+
 func (s *Service) GetByOrganizationID(ctx context.Context, orgID uuid.UUID, filter InvoiceFilter) ([]*Invoice, int, error) {
 	return s.repo.GetByOrganizationID(ctx, orgID, filter)
 }
@@ -149,6 +174,18 @@ func (s *Service) Update(ctx context.Context, id uuid.UUID, dto UpdateInvoiceDTO
 	}
 	if dto.BankInvoiceStatus != nil {
 		entity.BankInvoiceStatus = dto.BankInvoiceStatus
+	}
+	if dto.BankProvider != nil {
+		entity.BankProvider = dto.BankProvider
+	}
+	if dto.BankPixPayload != nil {
+		entity.BankPixPayload = dto.BankPixPayload
+	}
+	if dto.BankBoletoBarcode != nil {
+		entity.BankBoletoBarcode = dto.BankBoletoBarcode
+	}
+	if dto.BankBoletoDigitableLine != nil {
+		entity.BankBoletoDigitableLine = dto.BankBoletoDigitableLine
 	}
 	if dto.Discount != nil {
 		entity.Discount = SafeFloat(*dto.Discount)
@@ -217,4 +254,65 @@ func (s *Service) Update(ctx context.Context, id uuid.UUID, dto UpdateInvoiceDTO
 
 func (s *Service) Delete(ctx context.Context, id uuid.UUID) error {
 	return s.repo.Delete(ctx, id)
+}
+
+func (s *Service) Clone(ctx context.Context, id uuid.UUID) (*Invoice, error) {
+	// 1. Get existing invoice
+	original, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if original == nil {
+		return nil, fmt.Errorf("invoice not found")
+	}
+
+	// 2. Prepare new items
+	newItems := make([]*InvoiceItem, 0, len(original.Items))
+	for _, item := range original.Items {
+		newItems = append(newItems, &InvoiceItem{
+			CatalogItemID: item.CatalogItemID,
+			Description:   item.Description,
+			Quantity:      item.Quantity,
+			UnitPrice:     item.UnitPrice,
+			Discount:      item.Discount,
+			Total:         item.Total,
+		})
+	}
+
+	// 3. Create new invoice entity
+	newInvoice := &Invoice{
+		OrganizationID: original.OrganizationID,
+		ClientID:       original.ClientID,
+		Number:         generateCopyNumber(original.Number),
+		Status:         InvoiceStatusDraft,
+		Date:           nil, // Reset dates? Or keep? Usually reset to today or null. Let's keep null as draft.
+		DueDate:        nil,
+		Terms:          original.Terms,
+		Notes:          original.Notes,
+		Total:          original.Total,
+		Discount:       original.Discount,
+		Currency:       original.Currency,
+		Items:          newItems,
+		// Explicitly clear fiscal/bank info
+		NFID:                    nil,
+		NFStatus:                nil,
+		NFLink:                  nil,
+		BankInvoiceID:           nil,
+		BankInvoiceStatus:       nil,
+		BankProvider:            nil,
+		BankPixPayload:          nil,
+		BankBoletoBarcode:       nil,
+		BankBoletoDigitableLine: nil,
+	}
+
+	// 4. Save
+	if err := s.repo.Create(ctx, newInvoice); err != nil {
+		return nil, err
+	}
+
+	return newInvoice, nil
+}
+
+func (s *Service) GetStats(ctx context.Context, orgID uuid.UUID) (*InvoiceStatsDTO, error) {
+	return s.repo.GetStats(ctx, orgID)
 }

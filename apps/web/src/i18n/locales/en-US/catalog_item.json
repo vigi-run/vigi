@@ -1,0 +1,71 @@
+{
+    "title": "Catalog Items",
+    "create": "Create Item",
+    "create_success": "Catalog item created successfully",
+    "create_error": "Failed to create catalog item",
+    "update_success": "Catalog item updated successfully",
+    "update_error": "Failed to update catalog item",
+    "delete_success": "Catalog item deleted successfully",
+    "delete_error": "Failed to delete catalog item",
+    "empty": {
+        "title": "No catalog items found",
+        "description": "Create your first product or service."
+    },
+    "new": {
+        "title": "New Catalog Item"
+    },
+    "edit": {
+        "title": "Edit Catalog Item"
+    },
+    "details": {
+        "title": "Item Details",
+        "loading": "Loading Item...",
+        "not_found": "Item Not Found",
+        "general": "General Information",
+        "stock": "Stock Information"
+    },
+    "fields": {
+        "name": "Name",
+        "type": "Type",
+        "productKey": "Product Key",
+        "price": "Price",
+        "cost": "Cost",
+        "unit": "Unit",
+        "ncmNbs": "NCM / NBS",
+        "taxRate": "Tax Rate",
+        "inStockQuantity": "In Stock",
+        "stockThreshold": "Stock Threshold",
+        "stockNotification": "Stock Notification",
+        "notes": "Notes"
+    },
+    "form": {
+        "name": "Name",
+        "name_placeholder": "Product or Service Name",
+        "type": "Type",
+        "type_placeholder": "Select type",
+        "product_key": "Product Key / SKU",
+        "notes": "Notes",
+        "price": "Price",
+        "cost": "Cost",
+        "unit": "Unit",
+        "unit_placeholder": "Select unit",
+        "ncm_nbs": "NCM / NBS",
+        "tax_rate": "Tax Rate (%)",
+        "in_stock_quantity": "In Stock Quantity",
+        "stock_notification": "Stock Notification",
+        "stock_threshold": "Stock Threshold"
+    },
+    "type": {
+        "product": "Product",
+        "service": "Service"
+    },
+    "filters": {
+        "search_placeholder": "Search items...",
+        "type_placeholder": "All Types"
+    },
+    "validation": {
+        "name_required": "Name is required",
+        "product_key_required": "Product Key/SKU is required",
+        "unit_required": "Please select a valid unit"
+    }
+}

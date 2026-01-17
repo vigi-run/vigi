@@ -11,12 +11,13 @@ import (
 type sqlModel struct {
 	bun.BaseModel `bun:"table:organizations,alias:o"`
 
-	ID        string    `bun:"id,pk"`
-	Name      string    `bun:"name,notnull"`
-	Slug      string    `bun:"slug,unique,notnull"`
-	ImageURL  string    `bun:"image_url"`
-	CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
-	UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
+	ID           string    `bun:"id,pk"`
+	Name         string    `bun:"name,notnull"`
+	Slug         string    `bun:"slug,unique,notnull"`
+	ImageURL     string    `bun:"image_url"`
+	BankProvider string    `bun:"bank_provider"`
+	CreatedAt    time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+	UpdatedAt    time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
 }
 
 type userSQLModel struct {
@@ -97,7 +98,7 @@ func NewSQLRepository(db *bun.DB) OrganizationRepository {
 }
 
 func toDomainModel(sm *sqlModel) *Organization {
-	return &Organization{
+	o := &Organization{
 		ID:        sm.ID,
 		Name:      sm.Name,
 		Slug:      sm.Slug,
@@ -105,10 +106,14 @@ func toDomainModel(sm *sqlModel) *Organization {
 		CreatedAt: sm.CreatedAt,
 		UpdatedAt: sm.UpdatedAt,
 	}
+	if sm.BankProvider != "" {
+		o.BankProvider = &sm.BankProvider
+	}
+	return o
 }
 
 func toSQLModel(m *Organization) *sqlModel {
-	return &sqlModel{
+	sm := &sqlModel{
 		ID:        m.ID,
 		Name:      m.Name,
 		Slug:      m.Slug,
@@ -116,6 +121,10 @@ func toSQLModel(m *Organization) *sqlModel {
 		CreatedAt: m.CreatedAt,
 		UpdatedAt: m.UpdatedAt,
 	}
+	if m.BankProvider != nil {
+		sm.BankProvider = *m.BankProvider
+	}
+	return sm
 }
 
 func (r *SQLRepositoryImpl) Create(ctx context.Context, organization *Organization) (*Organization, error) {

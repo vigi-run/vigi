@@ -1,0 +1,27 @@
+{
+    "confirm_delete_description": "Esta ação não pode ser desfeita. Isso excluirá permanentemente a tag \"{{name}}\" e a removerá de todos os monitores.",
+    "edit_page_name": "Editar Tag",
+    "empty_state": {
+        "action": "Crie sua primeira tag",
+        "description": "Comece criando sua primeira tag para organizar seus monitores.",
+        "title": "Nenhuma tag encontrada"
+    },
+    "form": {
+        "color_description": "Escolha uma cor para sua tag",
+        "color_label": "Cor",
+        "create_button": "Criar Tag",
+        "description_label": "Descrição",
+        "description_placeholder": "Digite a descrição da tag (opcional)",
+        "name_label": "Nome",
+        "name_placeholder": "Digite o nome da tag",
+        "update_button": "Atualizar Tag"
+    },
+    "messages": {
+        "create_description": "Crie uma nova tag para organizar e categorizar seus monitores.",
+        "failed_to_load_tag": "Falha ao carregar a tag. A tag pode não existir ou você pode não ter permissão para visualizá-la.",
+        "tag_id_required": "ID da tag é obrigatório",
+        "update_description": "Atualize os detalhes da tag para organizar melhor seus monitores."
+    },
+    "new_page_name": "Nova Tag",
+    "search_placeholder": "Pesquisar tags..."
+}

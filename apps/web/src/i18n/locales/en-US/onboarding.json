@@ -1,0 +1,17 @@
+{
+    "accept_invitation": "Accept Invitation",
+    "already_member": "You are already a member of {{count}} organization.",
+    "already_member_plural": "You are already a member of {{count}} organizations.",
+    "create_new_organization_desc": "Start fresh with a new organization for your team.",
+    "create_new_organization_title": "Create New Organization",
+    "create_organization_button": "Create Organization",
+    "get_started": "Get Started",
+    "invitation_accepted": "Invitation accepted!",
+    "invitation_failed": "Failed to accept invitation",
+    "invited_as": "Invited as",
+    "no_invitations": "No pending invitations.",
+    "pending_invitations": "Pending Invitations",
+    "skip_to_dashboard": "Skip to Dashboard",
+    "welcome_description": "You have pending invitations. Accept one to join a team, or create your own organization.",
+    "welcome_title": "Welcome to Vigi"
+}

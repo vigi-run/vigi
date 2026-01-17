@@ -1,0 +1,8 @@
+{
+    "accept": "Accept",
+    "description": "Manage your pending invitations to organizations.",
+    "invited_to_join_as": "Invited to join as",
+    "no_invitations": "No pending invitations found.",
+    "page_title": "My Invitations",
+    "title": "Pending Invitations"
+}

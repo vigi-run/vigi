@@ -40,8 +40,8 @@ func (c *Controller) RegisterRoutes(router *gin.RouterGroup) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} StatsDto
-// @Failure 401 {object} utils.FailResponse
-// @Failure 403 {object} utils.FailResponse
+// @Failure 401 {object} utils.ApiResponse
+// @Failure 403 {object} utils.ApiResponse
 // @Router /backoffice/stats [get]
 func (c *Controller) GetStats(ctx *gin.Context) {
 	stats, err := c.service.GetStats(ctx)
@@ -59,8 +59,8 @@ func (c *Controller) GetStats(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} UserListDto
-// @Failure 401 {object} utils.FailResponse
-// @Failure 403 {object} utils.FailResponse
+// @Failure 401 {object} utils.ApiResponse
+// @Failure 403 {object} utils.ApiResponse
 // @Router /backoffice/users [get]
 func (c *Controller) ListUsers(ctx *gin.Context) {
 	users, err := c.service.ListUsers(ctx)
@@ -78,8 +78,8 @@ func (c *Controller) ListUsers(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} OrgListDto
-// @Failure 401 {object} utils.FailResponse
-// @Failure 403 {object} utils.FailResponse
+// @Failure 401 {object} utils.ApiResponse
+// @Failure 403 {object} utils.ApiResponse
 // @Router /backoffice/organizations [get]
 func (c *Controller) ListOrganizations(ctx *gin.Context) {
 	orgs, err := c.service.ListOrganizations(ctx)
@@ -98,9 +98,9 @@ func (c *Controller) ListOrganizations(ctx *gin.Context) {
 // @Produce json
 // @Param id path string true "Organization ID"
 // @Success 200 {object} OrgDetailDto
-// @Failure 401 {object} utils.FailResponse
-// @Failure 403 {object} utils.FailResponse
-// @Failure 404 {object} utils.FailResponse
+// @Failure 401 {object} utils.ApiResponse
+// @Failure 403 {object} utils.ApiResponse
+// @Failure 404 {object} utils.ApiResponse
 // @Router /backoffice/organizations/{id} [get]
 func (c *Controller) GetOrgDetails(ctx *gin.Context) {
 	id := ctx.Param("id")

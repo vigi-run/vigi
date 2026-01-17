@@ -24,8 +24,8 @@ import (
 	"vigi/internal/modules/events"
 	"vigi/internal/modules/healthcheck"
 	"vigi/internal/modules/heartbeat"
+	"vigi/internal/modules/inter"
 	"vigi/internal/modules/invoice"
-	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/maintenance"
 	"vigi/internal/modules/middleware"
 	"vigi/internal/modules/monitor"
@@ -39,6 +39,7 @@ import (
 	"vigi/internal/modules/organization"
 	"vigi/internal/modules/proxy"
 	"vigi/internal/modules/queue"
+	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/setting"
 	"vigi/internal/modules/stats"
 	"vigi/internal/modules/status_page"
@@ -139,6 +140,7 @@ func main() {
 	client.RegisterDependencies(container, internalCfg)
 	catalog_item.RegisterDependencies(container, internalCfg)
 	invoice.RegisterDependencies(container, internalCfg)
+	inter.RegisterDependencies(container)
 	recurring_invoice.RegisterDependencies(container, internalCfg)
 	webhook.RegisterDependencies(container, internalCfg)
 

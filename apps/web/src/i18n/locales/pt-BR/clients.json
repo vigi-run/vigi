@@ -1,0 +1,81 @@
+{
+    "title": "Clientes",
+    "create": "Criar Cliente",
+    "create_success": "Cliente criado com sucesso",
+    "create_error": "Falha ao criar cliente",
+    "update_success": "Cliente atualizado com sucesso",
+    "update_error": "Falha ao atualizar cliente",
+    "name": "Nome",
+    "city": "Cidade",
+    "empty": {
+        "title": "Nenhum cliente encontrado",
+        "description": "Crie seu primeiro cliente para começar."
+    },
+    "new": {
+        "title": "Novo Cliente"
+    },
+    "edit": {
+        "title": "Editar Cliente",
+        "loading": "Carregando Cliente...",
+        "not_found": "Cliente Não Encontrado"
+    },
+    "details": {
+        "loading": "Carregando Cliente...",
+        "not_found": "Cliente Não Encontrado",
+        "company_data": "Dados da Empresa",
+        "address_data": "Dados de Endereço"
+    },
+    "errors": {
+        "not_found_message": "O cliente solicitado não existe."
+    },
+    "validation": {
+        "name_required": "Nome é obrigatório",
+        "cpf_required": "CPF é obrigatório",
+        "cpf_invalid": "CPF inválido",
+        "cnpj_invalid": "CNPJ inválido",
+        "email_invalid": "Email inválido",
+        "contact_required": "Email ou Telefone é obrigatório"
+    },
+    "form": {
+        "name": "Nome",
+        "name_placeholder": "Meu Cliente",
+        "classification": "Classificação",
+        "cpf": "CPF",
+        "cnpj": "CNPJ",
+        "vat_number": "IE / IM",
+        "address": "Endereço",
+        "address1": "Logradouro",
+        "address_number": "Número",
+        "city": "Cidade",
+        "state": "Estado",
+        "postal_code": "CEP",
+        "contact_info": "Informações de Contato",
+        "financial_contact": "Contato Financeiro",
+        "contacts": "Contatos",
+        "add_contact": "Adicionar Contato",
+        "contact_name": "Nome do Contato",
+        "contact_email": "E-mail",
+        "contact_phone": "Telefone",
+        "contact_role": "Cargo / Função",
+        "no_contacts": "Nenhum contato adicionado"
+    },
+    "common": {
+        "no_results": "Nenhum resultado encontrado.",
+        "cancel": "Cancelar",
+        "saving": "Salvando..."
+    },
+    "classification": {
+        "individual": "Pessoa Física",
+        "company": "Pessoa Jurídica"
+    },
+    "status": {
+        "active": "Ativo",
+        "inactive": "Inativo",
+        "blocked": "Bloqueado"
+    },
+    "status_updated": "Status atualizado com sucesso",
+    "status_update_error": "Falha ao atualizar status",
+    "filters": {
+        "search_placeholder": "Buscar por nome..."
+    }
+}

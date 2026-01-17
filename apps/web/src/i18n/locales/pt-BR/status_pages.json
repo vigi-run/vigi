@@ -1,0 +1,41 @@
+{
+    "affected_monitors": "Monitores afetados",
+    "affected_monitors_info": "Selecione os monitores que serão afetados por esta manutenção",
+    "auto_refresh_interval": "Intervalo de Atualização Automática (segundos)",
+    "basic_information": "Informações básicas",
+    "create_status_page": "Criar Página de Status",
+    "customization": "Personalização",
+    "delete_dialog": {
+        "description": "Tem certeza de que deseja excluir \"{{title}}\"? Esta ação não pode ser desfeita.",
+        "title": "Excluir página de status"
+    },
+    "description": "Digite a descrição da página de status",
+    "domain_already_used": "O domínio {{domain}} já está em uso por outra página de status",
+    "slug_already_used": "O slug {{slug}} já está em uso por outra página de status",
+    "domain_host_warning": "Este domínio é o mesmo que a URL do seu host atual. Isso pode causar conflitos.",
+    "domains": "Domínios",
+    "domains_info_warning": "Não esqueça de adicionar os registros CNAME ao seu DNS para cada domínio.",
+    "draft_status": "Rascunho",
+    "edit_page_name": "Editar Página de Status",
+    "messages": {
+        "create_description": "Crie uma nova página de status para compartilhar o status do seu serviço com os usuários.",
+        "create_your_first_status_page": "Criar sua primeira página de status",
+        "created_successfully": "Página de status criada com sucesso",
+        "delete_failed": "Falha ao excluir a página de status",
+        "deleted_successfully": "Página de status excluída com sucesso",
+        "get_started_by_creating_your_first_status_page": "Comece criando sua primeira página de status.",
+        "no_status_pages_found": "Nenhuma página de status encontrada",
+        "not_found": "Página de status não encontrada",
+        "update_description": "Atualize as configurações e a configuração da sua página de status.",
+        "updated_successfully": "Página de status atualizada com sucesso"
+    },
+    "new_page_name": "Nova Página de Status",
+    "page_name": "Páginas de Status",
+    "published": "Publicado",
+    "published_info": "Disponibilizar esta página de status publicamente",
+    "published_status": "Publicado",
+    "search_label": "Pesquisar",
+    "search_placeholder": "Pesquisar páginas de status por título...",
+    "update_status_page": "Atualizar Página de Status",
+    "view_page": "Ver Página"
+}

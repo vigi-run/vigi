@@ -60,7 +60,7 @@ export default function RecurringInvoicesPage() {
     const entities = data?.pages.flatMap((page) => page.data).filter((e) => !!e) || [];
 
     return (
-        <Layout pageName="Recurring Invoices" onCreate={() => navigate("new")}>
+        <Layout pageName={t("invoice.recurring_title")} onCreate={() => navigate("new")}>
             {/* Filters */}
             <div className="mb-6">
                 <div className="flex flex-col gap-4 md:flex-row sm:justify-end items-end">
@@ -104,9 +104,9 @@ export default function RecurringInvoicesPage() {
             {/* Empty */}
             {!isLoading && entities.length === 0 && (
                 <EmptyList
-                    title="No recurring invoices found"
-                    text="Create your first recurring invoice to get started."
-                    actionText="Create Recurring Invoice"
+                    title={t("invoice.recurring_empty_title")}
+                    text={t("invoice.recurring_empty_description")}
+                    actionText={t("invoice.create_recurring")}
                     onClick={() => navigate("new")}
                 />
             )}

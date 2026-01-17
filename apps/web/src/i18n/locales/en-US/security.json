@@ -1,0 +1,112 @@
+{
+    "enable_2fa": {
+        "form": {
+            "authenticator_code_label": "Authenticator Code",
+            "authenticator_code_placeholder": "Enter the 6-digit code",
+            "current_password_label": "Current Password",
+            "current_password_placeholder": "Enter your current password",
+            "enable_2fa_button": "Enable 2FA"
+        },
+        "messages": {
+            "2fa_active": "2FA Active",
+            "2fa_disabled_successfully": "2FA disabled successfully",
+            "2fa_enabled_successfully": "2FA enabled successfully",
+            "account_is_protected_with_2fa": "Your account is protected with 2FA.",
+            "disable_2fa": "Disable 2FA",
+            "enter_password_to_disable_2fa": "Enter your password to disable 2FA",
+            "failed_to_disable_2fa": "Failed to disable 2FA",
+            "failed_to_verify_2fa_code": "Failed to verify 2FA code",
+            "failed_to_verify_password": "Failed to verify password or start 2FA setup",
+            "have_enabled_2fa": "You have enabled two-factor authentication (2FA) for your account. This adds an extra layer of security.",
+            "or_enter_secret_manually": "Or enter this secret manually",
+            "scan_qr_code_with_authenticator_app": "Scan this QR code with your authenticator app",
+            "two_factor_authentication_enabled": "Two-Factor Authentication Enabled",
+            "user_email_not_found": "User email not found"
+        }
+    },
+    "page_name": "Security",
+    "update_password": {
+        "form": {
+            "confirm_new_password_label": "Confirm New Password",
+            "confirm_new_password_placeholder": "Re-enter new password",
+            "new_password_label": "New Password",
+            "new_password_placeholder": "Enter a new password",
+            "old_password_label": "Old Password",
+            "old_password_placeholder": "Enter your current password",
+            "update_password_button": "Update Password"
+        },
+        "messages": {
+            "failed_to_update_password": "Failed to update password",
+            "password_updated_successfully": "Password updated successfully"
+        },
+        "title": "Update Password"
+    },
+    "api_keys": {
+        "title": "API Keys",
+        "description": "Manage your API keys for third-party integrations",
+        "create_button": "Create API Key",
+        "no_keys_title": "No API Keys",
+        "no_keys_description": "Create your first API key to start integrating with external services.",
+        "create_dialog": {
+            "title": "Create New API Key",
+            "description": "Create a new API key for third-party integrations. The key will be shown only once.",
+            "form": {
+                "name_label": "Name",
+                "name_placeholder": "e.g., Homepage Integration",
+                "expires_at_label": "Expiration Date (Optional)",
+                "max_usage_label": "Max Usage Count (Optional)",
+                "max_usage_placeholder": "e.g., 1000"
+            },
+            "buttons": {
+                "cancel": "Cancel",
+                "create": "Create API Key",
+                "creating": "Creating..."
+            }
+        },
+        "success_alert": {
+            "title": "API Key Created Successfully",
+            "description": "Your API key has been created. Copy it now as it won't be shown again:"
+        },
+        "table": {
+            "headers": {
+                "name": "Name",
+                "key": "Key",
+                "usage": "Usage",
+                "last_used": "Last Used",
+                "expires": "Expires",
+                "status": "Status",
+                "actions": "Actions"
+            },
+            "status": {
+                "active": "Active",
+                "expired": "Expired",
+                "limit_exceeded": "Limit Exceeded"
+            },
+            "never": "Never"
+        },
+        "validation": {
+            "name_required": "Name is required",
+            "cpf_required": "CPF is required",
+            "cpf_invalid": "Invalid CPF",
+            "cnpj_invalid": "Invalid CNPJ",
+            "email_invalid": "Invalid email",
+            "contact_required": "Email or Phone is required"
+        },
+        "delete_dialog": {
+            "title": "Delete API Key",
+            "description": "Are you sure you want to delete the API key \"{{name}}\"? This action cannot be undone.",
+            "buttons": {
+                "cancel": "Cancel",
+                "delete": "Delete"
+            }
+        },
+        "messages": {
+            "created_successfully": "API key created successfully",
+            "deleted_successfully": "API key deleted successfully",
+            "failed_to_create": "Failed to create API key",
+            "failed_to_delete": "Failed to delete API key",
+            "copy_success": "Copied to clipboard",
+            "delete_confirm": "Are you sure you want to delete this API key? This action cannot be undone."
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "data_retention": {
+        "days_label": "Days",
+        "description": "Set how many days to keep data (KEEP_DATA_PERIOD_DAYS).",
+        "title": "Data Retention Period"
+    },
+    "timezone": {
+        "description": "Select your preferred timezone for displaying all times in the app.",
+        "label": "Timezone",
+        "no_timezone_found": "No timezone found.",
+        "search_placeholder": "Search timezone...",
+        "select_placeholder": "Select timezone...",
+        "title": "Timezone"
+    },
+    "validation": {
+        "min_days": "Must be at least 1 day"
+    }
+}

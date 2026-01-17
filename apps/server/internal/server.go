@@ -5,6 +5,7 @@ import (
 	_ "vigi/docs"
 	"vigi/internal/config"
 	"vigi/internal/modules/api_key"
+	"vigi/internal/modules/asaas"
 	"vigi/internal/modules/auth"
 	"vigi/internal/modules/backoffice"
 	"vigi/internal/modules/badge"
@@ -12,15 +13,17 @@ import (
 	"vigi/internal/modules/client"
 	"vigi/internal/modules/healthcheck"
 	"vigi/internal/modules/heartbeat"
+	"vigi/internal/modules/inter"
 	"vigi/internal/modules/invoice"
 	"vigi/internal/modules/maintenance"
-	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/middleware"
 	"vigi/internal/modules/monitor"
 	"vigi/internal/modules/notification_channel"
 	"vigi/internal/modules/organization"
+	"vigi/internal/modules/payment"
 	"vigi/internal/modules/proxy"
 	"vigi/internal/modules/queue"
+	"vigi/internal/modules/recurring_invoice"
 	"vigi/internal/modules/setting"
 	"vigi/internal/modules/status_page"
 	"vigi/internal/modules/storage"
@@ -30,6 +33,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/uptrace/bun"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -97,8 +101,26 @@ func ProvideServer(
 	authChain *middleware.AuthChain,
 	catalogItemRoute *catalog_item.Route,
 	invoiceRoute *invoice.Route,
+	interRoute *inter.Route,
 	recurringInvoiceRoute *recurring_invoice.Route,
+	// Dependencies for Asaas
+	db *bun.DB,
+	invoiceService *invoice.Service,
+	clientService *client.Service,
+	organizationRepo organization.OrganizationRepository, // Added dependency for PaymentService
+	interService *inter.Service, // Added dependency for PaymentService
 ) *Server {
+	// Asaas Module
+	asaasRepo := asaas.NewRepository(db)
+	asaasService := asaas.NewService(asaasRepo, invoiceService, clientService, logger)
+	asaasController := asaas.NewController(asaasService, logger)
+	asaasRoute := asaas.NewRoute(asaasController, authChain)
+
+	// Payment Module (Unified Charge Generation)
+	// We need config to check enabled providers if needed, or organization repo to check org settings
+	// paymentRepo? No repo for logical service.
+	paymentService := payment.NewService(organizationRepo, invoiceService, interService, asaasService, logger)
+	paymentController := payment.NewController(paymentService, logger)
 	// Initialize server based on mode
 	var server *gin.Engine
 	if cfg.Mode == "dev" {
@@ -147,6 +169,9 @@ func ProvideServer(
 	catalogItemRoute.ConnectRoute(router, authChain)
 	clientRoute.ConnectRoute(router)
 	organizationRoute.ConnectRoute(router)
+	interRoute.ConnectRoute(router)
+	asaasRoute.ConnectRoute(router)
+	paymentController.RegisterRoutes(router, authChain)
 	backofficeRoute.ConnectRoute(router, backofficeController)
 	storageRoute.Register(router)
 

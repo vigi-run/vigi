@@ -24,6 +24,7 @@ import { OrganizationLayout } from "@/components/organization-layout";
 import CreateOrganizationPage from "@/app/create-organization/page";
 import OrganizationSettingsPage from "@/app/organization/settings/page";
 import OrganizationMembersPage from "@/app/organization/members/page";
+import IntegrationsPage from "@/app/organization/integrations/page";
 import { RootRedirect } from "@/components/root-redirect";
 import UserInvitationsPage from "@/app/user/invitations/page";
 import OnboardingPage from "@/app/onboarding/page";
@@ -52,90 +53,90 @@ import EditRecurringInvoicePage from "@/app/recurring-invoices/[id]/edit/page";
 import RecurringInvoiceDetailsPage from "@/app/recurring-invoices/[id]/view/page";
 
 export const protectedRoutes = [
-  <Route key="root" path="/" element={<RootRedirect />} />,
-  <Route key="onboarding" path="/onboarding" element={<OnboardingPage />} />,
-  <Route key="create-organization" path="/create-organization" element={<CreateOrganizationPage />} />,
-  // Account routes (Global)
-  <Route key="account" path="/account" element={<OrganizationLayout isGlobal={true} />}>
-    <Route path="settings" element={<SettingsPage />} />
-    <Route path="security" element={<SecurityPage />} />
-    <Route path="invitations" element={<UserInvitationsPage />} />
-  </Route>,
-  <Route key="slug" path="/:slug" element={<OrganizationLayout />}>
-    <Route index element={<DashboardPage />} />
+    <Route key="root" path="/" element={<RootRedirect />} />,
+    <Route key="onboarding" path="/onboarding" element={<OnboardingPage />} />,
+    <Route key="create-organization" path="/create-organization" element={<CreateOrganizationPage />} />,
+    // Account routes (Global)
+    <Route key="account" path="/account" element={<OrganizationLayout isGlobal={true} />}>
+        <Route path="settings" element={<SettingsPage />} />
+        <Route path="security" element={<SecurityPage />} />
+        <Route path="invitations" element={<UserInvitationsPage />} />
+    </Route>,
+    <Route key="slug" path="/:slug" element={<OrganizationLayout />}>
+        <Route index element={<DashboardPage />} />
 
 
-    {/* Monitor routes */}
-    <Route path="monitors" element={<MonitorsPage />} />
-    <Route path="monitors/:id" element={<MonitorPage />} />
-    <Route path="monitors/new" element={<NewMonitor />} />
-    <Route path="monitors/:id/edit" element={<EditMonitor />} />
+        {/* Monitor routes */}
+        <Route path="monitors" element={<MonitorsPage />} />
+        <Route path="monitors/:id" element={<MonitorPage />} />
+        <Route path="monitors/new" element={<NewMonitor />} />
+        <Route path="monitors/:id/edit" element={<EditMonitor />} />
 
-    {/* Status page routes */}
-    <Route path="status-pages" element={<StatusPagesPage />} />
-    <Route path="status-pages/new" element={<NewStatusPage />} />
-    <Route path="status-pages/:id/edit" element={<EditStatusPage />} />
+        {/* Status page routes */}
+        <Route path="status-pages" element={<StatusPagesPage />} />
+        <Route path="status-pages/new" element={<NewStatusPage />} />
+        <Route path="status-pages/:id/edit" element={<EditStatusPage />} />
 
-    {/* Proxy routes */}
-    <Route path="proxies" element={<ProxiesPage />} />
-    <Route path="proxies/new" element={<NewProxy />} />
-    <Route path="proxies/:id/edit" element={<EditProxy />} />
+        {/* Proxy routes */}
+        <Route path="proxies" element={<ProxiesPage />} />
+        <Route path="proxies/new" element={<NewProxy />} />
+        <Route path="proxies/:id/edit" element={<EditProxy />} />
 
-    {/* Notification channel routes */}
-    <Route path="notification-channels" element={<NotificationChannelsPage />} />
-    <Route path="notification-channels/new" element={<NewNotificationChannel />} />
-    <Route path="notification-channels/:id/edit" element={<EditNotificationChannel />} />
+        {/* Notification channel routes */}
+        <Route path="notification-channels" element={<NotificationChannelsPage />} />
+        <Route path="notification-channels/new" element={<NewNotificationChannel />} />
+        <Route path="notification-channels/:id/edit" element={<EditNotificationChannel />} />
 
-    {/* Maintenance routes */}
-    <Route path="maintenances" element={<MaintenancePage />} />
-    <Route path="maintenances/new" element={<NewMaintenance />} />
-    <Route path="maintenances/:id/edit" element={<EditMaintenance />} />
+        {/* Maintenance routes */}
+        <Route path="maintenances" element={<MaintenancePage />} />
+        <Route path="maintenances/new" element={<NewMaintenance />} />
+        <Route path="maintenances/:id/edit" element={<EditMaintenance />} />
 
-    {/* Organization routes */}
-    <Route path="settings/organization" element={<OrganizationSettingsPage />} />
-    <Route path="settings/members" element={<OrganizationMembersPage />} />
+        {/* Organization routes */}
+        <Route path="settings/organization" element={<OrganizationSettingsPage />} />
+        <Route path="settings/members" element={<OrganizationMembersPage />} />
+        <Route path="settings/integrations" element={<IntegrationsPage />} />
 
-    {/* Client routes */}
-    <Route path="clients" element={<ClientsPage />} />
-    <Route path="clients/new" element={<NewClientPage />} />
-    <Route path="clients/:id" element={<ClientDetailsPage />} />
-    <Route path="clients/:id/edit" element={<EditClientPage />} />
+        {/* Client routes */}
+        <Route path="clients" element={<ClientsPage />} />
+        <Route path="clients/new" element={<NewClientPage />} />
+        <Route path="clients/:id" element={<ClientDetailsPage />} />
+        <Route path="clients/:id/edit" element={<EditClientPage />} />
 
-    {/* Catalog Item routes */}
-    <Route path="catalog-items" element={<CatalogItemsPage />} />
-    <Route path="catalog-items/new" element={<NewCatalogItemPage />} />
-    <Route path="catalog-items/:id" element={<CatalogItemDetailsPage />} />
-    <Route path="catalog-items/:id/edit" element={<EditCatalogItemPage />} />
+        {/* Catalog Item routes */}
+        <Route path="catalog-items" element={<CatalogItemsPage />} />
+        <Route path="catalog-items/new" element={<NewCatalogItemPage />} />
+        <Route path="catalog-items/:id" element={<CatalogItemDetailsPage />} />
+        <Route path="catalog-items/:id/edit" element={<EditCatalogItemPage />} />
 
-    {/* Invoice routes */}
-    <Route path="invoices" element={<InvoicesPage />} />
-    <Route path="invoices/new" element={<NewInvoicePage />} />
-    <Route path="invoices/:id" element={<InvoiceDetailsPage />} />
-    <Route path="invoices/:id/edit" element={<EditInvoicePage />} />
-    <Route path="invoices/:id/email" element={<div className="w-full"><InvoiceEmailPage /></div>} />
+        {/* Invoice routes */}
+        <Route path="invoices" element={<InvoicesPage />} />
+        <Route path="invoices/new" element={<NewInvoicePage />} />
+        <Route path="invoices/:id" element={<InvoiceDetailsPage />} />
+        <Route path="invoices/:id/edit" element={<EditInvoicePage />} />
+        <Route path="invoices/:id/email" element={<div className="w-full"><InvoiceEmailPage /></div>} />
 
-    {/* Recurring Invoice routes */}
-    <Route path="recurring-invoices" element={<RecurringInvoicesPage />} />
-    <Route path="recurring-invoices/new" element={<NewRecurringInvoicePage />} />
-    <Route path="recurring-invoices/:id" element={<RecurringInvoiceDetailsPage />} />
-    <Route path="recurring-invoices/:id/edit" element={<EditRecurringInvoicePage />} />
+        {/* Recurring Invoice routes */}
+        <Route path="recurring-invoices" element={<RecurringInvoicesPage />} />
+        <Route path="recurring-invoices/new" element={<NewRecurringInvoicePage />} />
+        <Route path="recurring-invoices/:id" element={<RecurringInvoiceDetailsPage />} />
+        <Route path="recurring-invoices/:id/edit" element={<EditRecurringInvoicePage />} />
 
-    {/* Tag routes */}
-    <Route path="tags" element={<TagsPage />} />
-    <Route path="tags/new" element={<NewTag />} />
-    <Route path="tags/:id/edit" element={<EditTag />} />
+        {/* Tag routes */}
+        <Route path="tags" element={<TagsPage />} />
+        <Route path="tags/new" element={<NewTag />} />
+        <Route path="tags/:id/edit" element={<EditTag />} />
 
-    {/* Default redirect */}
-    <Route path="*" element={<Navigate to="" replace />} />
-    <Route path="*" element={<Navigate to="monitors" replace />} />
-  </Route>,
+        {/* Default redirect */}
+        <Route path="*" element={<Navigate to="" replace />} />
+    </Route>,
 
-  // Backoffice routes (Global Admin)
-  <Route key="backoffice" path="/backoffice" element={<RequireAdmin />}>
-    <Route element={<BackofficeLayout />}>
-      <Route index element={<BackofficeDashboardPage />} />
-      <Route path="users" element={<BackofficeUsersPage />} />
-      <Route path="organizations" element={<BackofficeOrgsPage />} />
+    // Backoffice routes (Global Admin)
+    <Route key="backoffice" path="/backoffice" element={<RequireAdmin />}>
+        <Route element={<BackofficeLayout />}>
+            <Route index element={<BackofficeDashboardPage />} />
+            <Route path="users" element={<BackofficeUsersPage />} />
+            <Route path="organizations" element={<BackofficeOrgsPage />} />
+        </Route>
     </Route>
-  </Route>
 ]; 

@@ -1,0 +1,36 @@
+{
+    "delete_dialog": {
+        "description": "This action cannot be undone. This will permanently delete the proxy {{host}}:{{port}}.",
+        "title": "Are you absolutely sure?"
+    },
+    "edit": {
+        "page_name": "Edit Proxy"
+    },
+    "empty_list": {
+        "action_text": "Create your first proxy",
+        "text": "Get started by creating your first proxy to use in your monitors.",
+        "title": "No proxies found"
+    },
+    "form": {
+        "auth_label": "Proxy server has authentication",
+        "port_placeholder": "Port",
+        "protocol_label": "Proxy Protocol",
+        "protocol_placeholder": "Select proxy protocol",
+        "server_label": "Proxy Server",
+        "server_placeholder": "Server address",
+        "user": "User"
+    },
+    "messages": {
+        "create_failed": "Failed to create proxy",
+        "created_success": "Proxy created successfully",
+        "error_loading_proxy": "Error loading proxy",
+        "update_failed": "Failed to update proxy",
+        "updated_success": "Proxy updated successfully"
+    },
+    "new": {
+        "page_name": "New Proxy"
+    },
+    "page_name": "Proxies",
+    "search_label": "Search",
+    "search_placeholder": "Search proxies by host..."
+}

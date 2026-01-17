@@ -1,0 +1,105 @@
+{
+    "card": {
+        "aria": {
+            "delete": "Excluir {{title}}",
+            "pause": "Pausar manutenção",
+            "resume": "Retomar manutenção"
+        },
+        "labels": {
+            "duration": "{{duration}} min",
+            "end": "Fim: {{date}}",
+            "start": "Início: {{date}}"
+        },
+        "status": {
+            "active": "Ativo",
+            "ended": "Encerrado",
+            "inactive": "Inativo"
+        }
+    },
+    "edit_title": "Editar Manutenção",
+    "form": {
+        "affected_monitors_description": "Selecione os monitores que serão afetados por esta manutenção",
+        "affected_monitors_title": "Monitores Afetados",
+        "cron_description": "Insira uma expressão cron válida",
+        "cron_expression": "Expressão Cron",
+        "date_time_title": "Data e Hora",
+        "day_of_month": "Dia do Mês",
+        "day_of_week": "Dia da Semana",
+        "description_label": "Descrição",
+        "description_placeholder": "Descrição da manutenção...",
+        "duration_minutes": "Duração (Minutos)",
+        "effective_date_range": "Período de Vigência (Opcional)",
+        "end_date_time": "Data e hora de término",
+        "end_time": "Hora de término",
+        "interval_label": "Intervalo (Executar uma vez por dia)",
+        "last_day": "Último Dia",
+        "last_day_of_month": "Último dia do mês",
+        "maintenance_time_window": "Janela de Manutenção Diária",
+        "markdown_supported": "Markdown é suportado",
+        "same_as_server": "Mesmo fuso horário do servidor",
+        "start_date_time": "Data e hora de início",
+        "start_time": "Horário de Início",
+        "strategy_label": "Estratégia",
+        "strategy_placeholder": "Selecionar estratégia",
+        "timezone_label": "Fuso horário",
+        "timezone_placeholder": "Selecionar fuso horário",
+        "title_label": "Título",
+        "title_placeholder": "Título da manutenção"
+    },
+    "page": {
+        "clear_filters": "Limpar todos os filtros",
+        "dialogs": {
+            "confirm_action": {
+                "pause_description": "Tem certeza de que deseja pausar esta manutenção?",
+                "resume_description": "Você tem certeza de que deseja retomar esta manutenção?",
+                "title": "Confirmar ação"
+            },
+            "confirm_delete": {
+                "description": "Tem certeza de que deseja excluir esta janela de manutenção? Esta ação não pode ser desfeita.",
+                "title": "Confirmar exclusão"
+            }
+        },
+        "edit_maintenance": "Editar Manutenção: {{title}}",
+        "empty_state": {
+            "action": "Crie sua primeira janela de manutenção",
+            "description": "Comece criando sua primeira janela de manutenção para evitar interrupções programadas.",
+            "title": "Nenhuma janela de manutenção encontrada"
+        },
+        "error_loading": "Erro ao carregar a manutenção",
+        "loading": "Carregando...",
+        "loading_monitors": "Carregando monitores...",
+        "search_placeholder": "Pesquisar manutenções…"
+    },
+    "page_title": "Janelas de Manutenção",
+    "schedule_title": "Agendar Manutenção",
+    "strategy": {
+        "cron": "Expressão cron",
+        "manual": "Ativar/Desativar manualmente",
+        "recurring_day_of_month": "Recorrente - Dia do Mês",
+        "recurring_interval": "Recorrente - Intervalo",
+        "recurring_weekday": "Recorrente - Dia da Semana",
+        "single": "Janela Única de Manutenção"
+    },
+    "toasts": {
+        "create_error": "Falha ao criar manutenção",
+        "created_success": "Manutenção criada com sucesso",
+        "delete_error": "Falha ao excluir manutenção",
+        "deleted_success": "Manutenção excluída com sucesso",
+        "pause_error": "Falha ao pausar a manutenção",
+        "paused_success": "Manutenção pausada com sucesso",
+        "resume_error": "Falha ao retomar a manutenção",
+        "resumed_success": "Manutenção retomada com sucesso",
+        "toggle_error": "Não foi possível alternar o status de manutenção: ID ausente",
+        "update_error": "Falha ao atualizar a manutenção",
+        "updated_success": "Manutenção atualizada com sucesso"
+    },
+    "weekdays": {
+        "fri": "Sex",
+        "mon": "Seg",
+        "sat": "Sáb",
+        "sun": "Dom",
+        "thu": "Qui",
+        "tue": "Ter",
+        "wed": "Qua"
+    }
+}

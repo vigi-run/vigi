@@ -1,0 +1,18 @@
+{
+    "data_retention": {
+        "days_label": "Dias",
+        "description": "Defina quantos dias manter os dados (KEEP_DATA_PERIOD_DAYS).",
+        "title": "Período de Retenção de Dados"
+    },
+    "timezone": {
+        "description": "Selecione seu fuso horário preferido para exibir todos os horários no aplicativo.",
+        "label": "Fuso horário",
+        "no_timezone_found": "Nenhum fuso horário encontrado.",
+        "search_placeholder": "Pesquisar fuso horário...",
+        "select_placeholder": "Selecione fuso horário...",
+        "title": "Fuso horário"
+    },
+    "validation": {
+        "min_days": "Deve ter no mínimo 1 dia"
+    }
+}

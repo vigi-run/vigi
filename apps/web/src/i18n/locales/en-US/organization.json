@@ -1,0 +1,80 @@
+{
+    "logo_label": "Organization Logo",
+    "create_button": "Create Organization",
+    "integrations": {
+        "title": "Integrations",
+        "description": "Manage your integrations with external services.",
+        "tabs": {
+            "invoices": "Invoices",
+            "banks": "Banks",
+            "signatures": "Subscriptions",
+            "tickets": "Platform Ticket"
+        },
+        "bank_select": {
+            "label": "Select Bank",
+            "placeholder": "Select a bank...",
+            "inter": "Inter Bank"
+        },
+        "common": {
+            "coming_soon": "Coming soon"
+        },
+        "inter": {
+            "title": "Inter Bank",
+            "description": "Configure your integration with Inter Bank for bank slips."
+        },
+        "form": {
+            "client_id": "Client ID",
+            "client_secret": "Client Secret",
+            "certificate": "Certificate (CRT)",
+            "key": "Private Key (KEY)",
+            "account_number": "Account Number (x-conta-corrente)",
+            "environment": "Environment",
+            "sandbox": "Sandbox",
+            "production": "Production",
+            "save": "Save Configuration",
+            "saving": "Saving...",
+            "encrypted_certificate": "The certificate content is hidden and encrypted.",
+            "encrypted_key": "The private key content is hidden and encrypted.",
+            "encrypted_secret": "The secret content is hidden and encrypted.",
+            "replace_content": "Replace content",
+            "toast_success": "Configuration saved successfully",
+            "toast_error": "Failed to save configuration",
+            "optional_derived": "Optional / Derived",
+            "select_environment": "Select environment"
+        }
+    },
+    "create_description": "Start by creating a new organization for your monitors.",
+    "create_title": "Create Organization",
+    "creation_error": "Failed to create organization",
+    "creation_success": "Organization created successfully",
+    "name_label": "Organization Name",
+    "placeholders": {
+        "name": "Acme Corp",
+        "slug": "acme-corp"
+    },
+    "slug_already_used": "Slug '{{slug}}' is already used",
+    "slug_label": "Slug (Optional)",
+    "update_button": "Update Organization",
+    "update_error": "Failed to update organization",
+    "update_success": "Organization updated successfully",
+    "validation": {
+        "name_min_length": "Name must be at least 3 characters",
+        "slug_format": "Slug must contain only lowercase letters, numbers, and hyphens",
+        "slug_min_length": "Slug must be at least 3 characters"
+    },
+    "switcher": {
+        "add_organization": "Add organization",
+        "label": "Organization",
+        "organizations_label": "Organizations"
+    },
+    "settings_title": "Settings",
+    "settings_description": "Manage your organization details and monitors.",
+    "general_title": "General",
+    "general_description": "Update your organization's name and slug.",
+    "members_title": "Organization Members",
+    "members_description": "Manage members and invitations.",
+    "invite_member_title": "Invite Member",
+    "invite_member_description": "Invite a new member by email.",
+    "invite_button": "Invite",
+    "members_list_title": "Members"
+}

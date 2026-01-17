@@ -15,6 +15,7 @@ type CreateClientDTO struct {
 	Address1       *string              `json:"address1"`
 	AddressNumber  *string              `json:"addressNumber"`
 	Address2       *string              `json:"address2"`
+	Neighborhood   *string              `json:"neighborhood"`
 	City           *string              `json:"city"`
 	State          *string              `json:"state"`
 	PostalCode     *string              `json:"postalCode"`
@@ -30,6 +31,7 @@ type UpdateClientDTO struct {
 	Address1       *string               `json:"address1"`
 	AddressNumber  *string               `json:"addressNumber"`
 	Address2       *string               `json:"address2"`
+	Neighborhood   *string               `json:"neighborhood"`
 	City           *string               `json:"city"`
 	State          *string               `json:"state"`
 	PostalCode     *string               `json:"postalCode"`

@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"time"
 
+	"vigi/internal/modules/client"
+
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
@@ -56,23 +58,28 @@ const (
 type Invoice struct {
 	bun.BaseModel `bun:"table:invoices,alias:inv"`
 
-	ID                uuid.UUID     `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
-	OrganizationID    uuid.UUID     `bun:"organization_id,type:uuid" json:"organizationId"`
-	ClientID          uuid.UUID     `bun:"client_id,type:uuid" json:"clientId"`
-	Number            string        `bun:"number,notnull" json:"number"`
-	Status            InvoiceStatus `bun:"status,notnull,default:'DRAFT'" json:"status"`
-	Date              *time.Time    `bun:"date" json:"date"`
-	DueDate           *time.Time    `bun:"due_date" json:"dueDate"`
-	Terms             string        `bun:"terms" json:"terms"`
-	Notes             string        `bun:"notes" json:"notes"`
-	Total             SafeFloat     `bun:"total,notnull" json:"total"`
-	Discount          SafeFloat     `bun:"discount,notnull" json:"discount"`
-	NFID              *string       `bun:"nf_id" json:"nfId"`
-	NFStatus          *string       `bun:"nf_status" json:"nfStatus"`
-	NFLink            *string       `bun:"nf_link" json:"nfLink"`
-	BankInvoiceID     *string       `bun:"bank_invoice_id" json:"bankInvoiceId"`
-	BankInvoiceStatus *string       `bun:"bank_invoice_status" json:"bankInvoiceStatus"`
-	Currency          string        `bun:"currency,notnull,default:'BRL'" json:"currency"`
+	ID                      uuid.UUID      `bun:"id,pk,type:uuid,default:uuid_generate_v4()" json:"id"`
+	OrganizationID          uuid.UUID      `bun:"organization_id,type:uuid" json:"organizationId"`
+	ClientID                uuid.UUID      `bun:"client_id,type:uuid" json:"clientId"`
+	Client                  *client.Client `bun:"rel:belongs-to,join:client_id=id" json:"client"`
+	Number                  string         `bun:"number,notnull" json:"number"`
+	Status                  InvoiceStatus  `bun:"status,notnull,default:'DRAFT'" json:"status"`
+	Date                    *time.Time     `bun:"date" json:"date"`
+	DueDate                 *time.Time     `bun:"due_date" json:"dueDate"`
+	Terms                   string         `bun:"terms" json:"terms"`
+	Notes                   string         `bun:"notes" json:"notes"`
+	Total                   SafeFloat      `bun:"total,notnull" json:"total"`
+	Discount                SafeFloat      `bun:"discount,notnull" json:"discount"`
+	NFID                    *string        `bun:"nf_id" json:"nfId"`
+	NFStatus                *string        `bun:"nf_status" json:"nfStatus"`
+	NFLink                  *string        `bun:"nf_link" json:"nfLink"`
+	BankInvoiceID           *string        `bun:"bank_invoice_id" json:"bankInvoiceId"`
+	BankInvoiceStatus       *string        `bun:"bank_invoice_status" json:"bankInvoiceStatus"`
+	BankProvider            *string        `bun:"bank_provider" json:"bankProvider"`
+	BankPixPayload          *string        `bun:"bank_pix_payload" json:"bankPixPayload"`
+	BankBoletoBarcode       *string        `bun:"bank_boleto_barcode" json:"bankBoletoBarcode"`
+	BankBoletoDigitableLine *string        `bun:"bank_boleto_digitable_line" json:"bankBoletoDigitableLine"`
+	Currency                string         `bun:"currency,notnull,default:'BRL'" json:"currency"`
 
 	Items []*InvoiceItem `bun:"rel:has-many,join:id=invoice_id" json:"items"`
 
