@@ -43,6 +43,8 @@ type UpdateInvoiceDTO struct {
 	NFLink            *string                `json:"nfLink"`
 	BankInvoiceID     *string                `json:"bankInvoiceId"`
 	BankInvoiceStatus *string                `json:"bankInvoiceStatus"`
+	BankProvider      *string                `json:"bankProvider"`
+	BankPixPayload    *string                `json:"bankPixPayload"`
 	Discount          *float64               `json:"discount" validate:"omitempty,gte=0"`
 	Items             []CreateInvoiceItemDTO `json:"items" validate:"omitempty,min=1,dive"`
 }

@@ -16,8 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { InvoiceStatus } from "@/types/invoice";
 import { client } from "@/api/client.gen";
 import { useOrganizationStore } from "@/store/organization";
-import { generateInterCharge } from "@/api/inter";
-import { generateAsaasCharge } from "@/api/asaas";
+import { generateCharge } from "@/api/invoice-manual";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -26,7 +25,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Printer, QrCode } from "lucide-react";
+import { ChevronDown, Printer, QrCode, Link as LinkIcon, Copy } from "lucide-react";
+import QRCode from "react-qr-code";
 
 export default function InvoiceDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -69,35 +69,25 @@ export default function InvoiceDetailsPage() {
   };
 
   const handleGenerateCharge = async () => {
-    if (!organization || !id || !invoice) return; // Added !invoice check
+    if (!organization || !id || !invoice) return;
     setIsGeneratingCharge(true);
     try {
-      if ((organization as any).bank_provider === "inter") {
-        try {
-          await generateInterCharge(organization.id!, invoice.id);
-          toast.success(t("invoices.view.charge_generated_success"));
-          reloadInvoice();
-        } catch (error) {
-          toast.error(t("invoices.view.charge_generated_error"));
-        }
-      } else if ((organization as any).bank_provider === "asaas") {
-        try {
-          await generateAsaasCharge(organization.id!, invoice.id);
-          toast.success(t("invoices.view.charge_generated_success"));
-          reloadInvoice();
-        } catch (error) {
-          toast.error(t("invoices.view.charge_generated_error"));
-        }
-      } else {
-        toast.error(t("invoices.view.provider_not_implemented"));
-      }
-
-      queryClient.invalidateQueries({ queryKey: getInvoiceOptions(id).queryKey });
+      await generateCharge(id);
+      toast.success(t("invoices.view.charge_generated_success"));
+      reloadInvoice();
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to generate charge");
+      toast.error(t("invoices.view.charge_generated_error"));
     } finally {
       setIsGeneratingCharge(false);
+    }
+  };
+
+  const handleCopyLink = () => {
+    if (invoice?.nfLink) {
+      navigator.clipboard.writeText(invoice.nfLink);
+      toast.success(t("common.link_copied"));
+    } else {
+      toast.error(t("invoices.view.no_link"));
     }
   };
 
@@ -169,6 +159,12 @@ export default function InvoiceDetailsPage() {
                   <Mail className="h-4 w-4 mr-2" />
                   {t("invoice.email.send")}
                 </DropdownMenuItem>
+                {invoice.nfLink && (
+                  <DropdownMenuItem onClick={handleCopyLink}>
+                    <LinkIcon className="h-4 w-4 mr-2" />
+                    {t("common.copy_link")}
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => window.print()}>
                   <Printer className="h-4 w-4 mr-2" />
@@ -222,22 +218,25 @@ export default function InvoiceDetailsPage() {
           </div>
 
           {/* Fiscal Information */}
-          {(invoice.nfId || invoice.bankInvoiceId || invoice.nfLink) && (
+          {(invoice.nfId || invoice.bankInvoiceId || invoice.nfLink || invoice.bankProvider) && (
             <div className="mt-6 mb-6">
               <h3 className="text-lg font-semibold mb-2">{t("invoice.form.fiscal_info")}</h3>
-              <div className="grid grid-cols-2 gap-4 border p-4 rounded-md bg-muted/20">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {(invoice.nfId || invoice.nfLink) && (
-                  <div>
-                    <div className="text-xs font-semibold text-muted-foreground uppercase">{t("invoice.form.fiscal_info")}</div>
+                  <div className="border p-4 rounded-md bg-muted/20">
+                    <div className="text-xs font-semibold text-muted-foreground uppercase mb-1">{t("invoice.form.fiscal_info")}</div>
                     {invoice.nfId && <div className="text-sm font-medium">{invoice.nfId}</div>}
                     {invoice.nfStatus && (
-                      <div className="text-xs text-muted-foreground">
-                        {t(`invoice.status.${invoice.nfStatus.toLowerCase()}`)}
+                      <div className="text-xs text-muted-foreground mt-1">
+                        <Badge variant="outline" className="text-xs font-normal">
+                          {t(`invoice.nf_status.${invoice.nfStatus.toLowerCase()}`, invoice.nfStatus)}
+                        </Badge>
                       </div>
                     )}
                     {invoice.nfLink && (
-                      <div className="mt-1">
+                      <div className="mt-2">
                         <a href={invoice.nfLink} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline flex items-center gap-1">
+                          <LinkIcon className="h-3 w-3" />
                           {t("invoice.form.nf_link")}
                         </a>
                       </div>
@@ -245,14 +244,22 @@ export default function InvoiceDetailsPage() {
                   </div>
                 )}
                 {invoice.bankInvoiceId && (
-                  <div>
-                    <div className="text-xs font-semibold text-muted-foreground uppercase">{t("invoice.form.bank_invoice_id")}</div>
-                    <div className="text-sm font-medium">{invoice.bankInvoiceId}</div>
-                    {invoice.bankInvoiceStatus && (
-                      <div className="text-xs text-muted-foreground">
-                        {t(`invoice.status.${invoice.bankInvoiceStatus.toLowerCase()}`)}
-                      </div>
-                    )}
+                  <div className="border p-4 rounded-md bg-muted/20">
+                    <div className="text-xs font-semibold text-muted-foreground uppercase mb-1">{t("invoice.form.bank_invoice_id")}</div>
+                    <div className="text-sm font-medium break-all">{invoice.bankInvoiceId}</div>
+
+                    <div className="flex items-center gap-2 mt-2">
+                      {invoice.bankProvider && (
+                        <Badge variant="secondary" className="text-xs capitalize">
+                          {invoice.bankProvider}
+                        </Badge>
+                      )}
+                      {invoice.bankInvoiceStatus && (
+                        <Badge variant={invoice.bankInvoiceStatus === 'PAID' || invoice.bankInvoiceStatus === 'RECEIVED' ? 'default' : 'outline'} className="text-xs font-normal">
+                          {t(`invoice.bank_status.${invoice.bankInvoiceStatus.toLowerCase()}`, { defaultValue: invoice.bankInvoiceStatus })}
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

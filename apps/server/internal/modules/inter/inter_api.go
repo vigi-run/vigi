@@ -192,6 +192,50 @@ func (c *InterClient) CreateCharge(reqData InterChargeRequest) (*InterChargeResp
 	return &chargeResp, nil
 }
 
+type InterPixInfo struct {
+	Txid          string `json:"txid"`
+	PixCopiaECola string `json:"pixCopiaECola"`
+}
+
+type InterGetChargeResponse struct {
+	Boleto struct {
+		NossoNumero string `json:"nossoNumero"`
+		// other fields...
+	} `json:"boleto"`
+	Pix InterPixInfo `json:"pix"`
+}
+
+func (c *InterClient) GetCharge(requestCode string) (*InterGetChargeResponse, error) {
+	if err := c.Authenticate(); err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", c.baseURL+"/cobranca/v3/cobrancas/"+requestCode, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("failed to get charge: %d - %s", resp.StatusCode, string(body))
+	}
+
+	var result InterGetChargeResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
 type WebhookRequest struct {
 	WebhookUrl string `json:"webhookUrl"`
 }

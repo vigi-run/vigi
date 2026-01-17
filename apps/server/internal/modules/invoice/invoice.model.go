@@ -72,6 +72,8 @@ type Invoice struct {
 	NFLink            *string       `bun:"nf_link" json:"nfLink"`
 	BankInvoiceID     *string       `bun:"bank_invoice_id" json:"bankInvoiceId"`
 	BankInvoiceStatus *string       `bun:"bank_invoice_status" json:"bankInvoiceStatus"`
+	BankProvider      *string       `bun:"bank_provider" json:"bankProvider"`
+	BankPixPayload    *string       `bun:"bank_pix_payload" json:"bankPixPayload"`
 	Currency          string        `bun:"currency,notnull,default:'BRL'" json:"currency"`
 
 	Items []*InvoiceItem `bun:"rel:has-many,join:id=invoice_id" json:"items"`

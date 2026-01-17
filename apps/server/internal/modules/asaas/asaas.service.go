@@ -134,8 +134,9 @@ func (s *Service) CreateCharge(ctx context.Context, organizationID uuid.UUID, dt
 	if customer == nil {
 		// Create
 		newCustomer := AsaasCustomer{
-			Name:    cli.Name,
-			CpfCnpj: cpfCnpj,
+			Name:                 cli.Name,
+			CpfCnpj:              cpfCnpj,
+			NotificationDisabled: true, // Disable notifications by default
 		}
 		if len(cli.Contacts) > 0 {
 			if cli.Contacts[0].Email != nil {
@@ -172,7 +173,7 @@ func (s *Service) CreateCharge(ctx context.Context, organizationID uuid.UUID, dt
 
 	paymentReq := AsaasPaymentRequest{
 		Customer:          customer.ID,
-		BillingType:       "BOLETO",
+		BillingType:       "PIX", // Use PIX
 		Value:             valorNominal,
 		DueDate:           dueDate.Format("2006-01-02"),
 		Description:       fmt.Sprintf("Invoice #%s", inv.Number),
@@ -184,11 +185,27 @@ func (s *Service) CreateCharge(ctx context.Context, organizationID uuid.UUID, dt
 		return fmt.Errorf("failed to create asaas payment: %w", err)
 	}
 
-	// 5. Update Invoice
+	// 5. Fetch QR Code for PIX
+	var pixPayload *string
+	pixInfo, err := apiClient.GetPixQrCode(resp.ID)
+	if err != nil {
+		// Log error but don't fail generic flow? Or fail?
+		// If we can't get the QR code, the user can't pay via the public link PIX we wanted.
+		// Let's log and proceed, but maybe we should fail.
+		// For now, let's return error as this is crucial for the requirement.
+		s.logger.Errorw("failed to get pix qr code", "payment_id", resp.ID, "error", err)
+		// Try to continue, maybe later we can retry?
+		// Actually, let's treat it as non-fatal but highly undesirable.
+	} else {
+		pixPayload = &pixInfo.Payload
+	}
+
+	// 6. Update Invoice
 	bankStatus := "CREATED"
 	updateDto := invoice.UpdateInvoiceDTO{
 		BankInvoiceID:     &resp.ID,
 		BankInvoiceStatus: &bankStatus,
+		BankPixPayload:    pixPayload,
 	}
 
 	if _, err := s.invoiceService.Update(ctx, invoiceID, updateDto); err != nil {

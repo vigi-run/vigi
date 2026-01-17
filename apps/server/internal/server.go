@@ -20,6 +20,7 @@ import (
 	"vigi/internal/modules/monitor"
 	"vigi/internal/modules/notification_channel"
 	"vigi/internal/modules/organization"
+	"vigi/internal/modules/payment"
 	"vigi/internal/modules/proxy"
 	"vigi/internal/modules/queue"
 	"vigi/internal/modules/recurring_invoice"
@@ -106,12 +107,20 @@ func ProvideServer(
 	db *bun.DB,
 	invoiceService *invoice.Service,
 	clientService *client.Service,
+	organizationRepo organization.OrganizationRepository, // Added dependency for PaymentService
+	interService *inter.Service, // Added dependency for PaymentService
 ) *Server {
 	// Asaas Module
 	asaasRepo := asaas.NewRepository(db)
 	asaasService := asaas.NewService(asaasRepo, invoiceService, clientService, logger)
 	asaasController := asaas.NewController(asaasService, logger)
 	asaasRoute := asaas.NewRoute(asaasController, authChain)
+
+	// Payment Module (Unified Charge Generation)
+	// We need config to check enabled providers if needed, or organization repo to check org settings
+	// paymentRepo? No repo for logical service.
+	paymentService := payment.NewService(organizationRepo, invoiceService, interService, asaasService, logger)
+	paymentController := payment.NewController(paymentService, logger)
 	// Initialize server based on mode
 	var server *gin.Engine
 	if cfg.Mode == "dev" {
@@ -162,6 +171,7 @@ func ProvideServer(
 	organizationRoute.ConnectRoute(router)
 	interRoute.ConnectRoute(router)
 	asaasRoute.ConnectRoute(router)
+	paymentController.RegisterRoutes(router, authChain)
 	backofficeRoute.ConnectRoute(router, backofficeController)
 	storageRoute.Register(router)
 

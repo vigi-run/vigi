@@ -24,15 +24,16 @@ func NewAsaasClient(config *AsaasConfig) *AsaasClient {
 // --- DTOs for API ---
 
 type AsaasCustomer struct {
-	ID            string `json:"id"`
-	Name          string `json:"name"`
-	Email         string `json:"email"`
-	CpfCnpj       string `json:"cpfCnpj"`
-	MobilePhone   string `json:"mobilePhone,omitempty"`
-	Address       string `json:"address,omitempty"`
-	AddressNumber string `json:"addressNumber,omitempty"`
-	Province      string `json:"province,omitempty"` // Bairro
-	PostalCode    string `json:"postalCode,omitempty"`
+	ID                   string `json:"id"`
+	Name                 string `json:"name"`
+	Email                string `json:"email"`
+	CpfCnpj              string `json:"cpfCnpj"`
+	MobilePhone          string `json:"mobilePhone,omitempty"`
+	Address              string `json:"address,omitempty"`
+	AddressNumber        string `json:"addressNumber,omitempty"`
+	Province             string `json:"province,omitempty"` // Bairro
+	PostalCode           string `json:"postalCode,omitempty"`
+	NotificationDisabled bool   `json:"notificationDisabled,omitempty"`
 }
 
 type AsaasCustomerResponse struct {
@@ -143,6 +144,38 @@ func (c *AsaasClient) CreatePayment(payment AsaasPaymentRequest) (*AsaasPaymentR
 	}
 
 	return &created, nil
+}
+
+type AsaasPixQrCodeResponse struct {
+	EncodedImage string `json:"encodedImage"`
+	Payload      string `json:"payload"`
+	Expiration   string `json:"expirationDate"`
+}
+
+func (c *AsaasClient) GetPixQrCode(paymentID string) (*AsaasPixQrCodeResponse, error) {
+	reqUrl := fmt.Sprintf("%s/payments/%s/pixQrCode", c.baseURL, paymentID)
+	req, err := http.NewRequest("GET", reqUrl, nil)
+	if err != nil {
+		return nil, err
+	}
+	c.setHeaders(req)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("asaas api get pix qr code error: %s", resp.Status)
+	}
+
+	var result AsaasPixQrCodeResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return &result, nil
 }
 
 func (c *AsaasClient) setHeaders(req *http.Request) {

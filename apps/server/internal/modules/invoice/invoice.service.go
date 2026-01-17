@@ -154,6 +154,12 @@ func (s *Service) Update(ctx context.Context, id uuid.UUID, dto UpdateInvoiceDTO
 	if dto.BankInvoiceStatus != nil {
 		entity.BankInvoiceStatus = dto.BankInvoiceStatus
 	}
+	if dto.BankProvider != nil {
+		entity.BankProvider = dto.BankProvider
+	}
+	if dto.BankPixPayload != nil {
+		entity.BankPixPayload = dto.BankPixPayload
+	}
 	if dto.Discount != nil {
 		entity.Discount = SafeFloat(*dto.Discount)
 	}

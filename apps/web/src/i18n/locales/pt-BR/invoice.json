@@ -60,6 +60,26 @@
     "pending": "Pendente",
     "error": "Erro"
   },
+  "bank_status": {
+    "pending": "Pendente",
+    "received": "Recebido",
+    "confirmed": "Confirmado",
+    "overdue": "Vencido",
+    "refunded": "Reembolsado",
+    "received_in_cash": "Recebido em Dinheiro",
+    "refund_requested": "Reembolso Solicitado",
+    "chargeback_requested": "Chargeback Solicitado",
+    "chargeback_dispute": "Em Disputa",
+    "awaiting_chargeback_reversal": "Aguardando Reversão",
+    "dunning_requested": "Negativação Solicitada",
+    "dunning_received": "Negativação Recebida",
+    "awaiting_risk_analysis": "Análise de Risco"
+  },
+  "nf_status": {
+    "issued": "Emitida",
+    "cancelled": "Cancelada",
+    "error": "Erro"
+  },
   "filters": {
     "search_placeholder": "Buscar faturas..."
   },

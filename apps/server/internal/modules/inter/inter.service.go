@@ -325,9 +325,22 @@ func (s *Service) CreateCharge(ctx context.Context, organizationID uuid.UUID, dt
 	bankInvID := resp.CodigoSolicitacao
 	bankStatus := "CREATED"
 
+	// Fetch PIX info
+	var pixPayload *string
+	pixInfo, err := interClient.GetCharge(bankInvID)
+	if err != nil {
+		// Log warning but don't fail, similar to Asaas
+		fmt.Printf("Warning: failed to get inter pix info: %v\n", err)
+	} else {
+		if pixInfo.Pix.PixCopiaECola != "" {
+			pixPayload = &pixInfo.Pix.PixCopiaECola
+		}
+	}
+
 	updateDto := invoice.UpdateInvoiceDTO{
 		BankInvoiceID:     &bankInvID,
 		BankInvoiceStatus: &bankStatus,
+		BankPixPayload:    pixPayload,
 	}
 
 	_, err = s.invoiceService.Update(ctx, invoiceID, updateDto)
